@@ -7,23 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC4B68022667670800682E7A /* DashboardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4B68012667670800682E7A /* DashboardDetails.swift */; };
+		CC4B68072667D38A00682E7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCE18A4526663D2F00C0E4BD /* Assets.xcassets */; };
+		CCB1CDE126674DB900E6F83A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDE026674DB900E6F83A /* LoginView.swift */; };
+		CCB1CDE426674DF900E6F83A /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDE326674DF900E6F83A /* LoginResponse.swift */; };
+		CCB1CDE626674E2A00E6F83A /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDE526674E2A00E6F83A /* UserSettings.swift */; };
+		CCB1CDE92667506500E6F83A /* CommonStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDE82667506500E6F83A /* CommonStrings.swift */; };
+		CCB1CDEC2667565500E6F83A /* WorkspaceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDEB2667565500E6F83A /* WorkspaceResponse.swift */; };
+		CCB1CDEE2667569600E6F83A /* Logout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDED2667569600E6F83A /* Logout.swift */; };
+		CCB1CDF0266756D400E6F83A /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDEF266756D400E6F83A /* DashboardView.swift */; };
 		CCE18A4226663D2B00C0E4BD /* ICMMSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE18A4126663D2B00C0E4BD /* ICMMSApp.swift */; };
-		CCE18A4426663D2B00C0E4BD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE18A4326663D2B00C0E4BD /* ContentView.swift */; };
-		CCE18A4626663D2F00C0E4BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCE18A4526663D2F00C0E4BD /* Assets.xcassets */; };
-		CCE18A4926663D3000C0E4BD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCE18A4826663D3000C0E4BD /* Preview Assets.xcassets */; };
+		CCE18A4426663D2B00C0E4BD /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE18A4326663D2B00C0E4BD /* WorkspaceView.swift */; };
 		CCE18A5326663D8F00C0E4BD /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CCE18A5226663D8F00C0E4BD /* FirebaseMessaging */; };
-		CCE18A5926664A3C00C0E4BD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CCE18A5826664A3C00C0E4BD /* GoogleService-Info.plist */; };
+		CCE926A326689332000FD606 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CCE926A226689332000FD606 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CC4B68012667670800682E7A /* DashboardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDetails.swift; sourceTree = "<group>"; };
+		CCB1CDE026674DB900E6F83A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		CCB1CDE326674DF900E6F83A /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
+		CCB1CDE526674E2A00E6F83A /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		CCB1CDE82667506500E6F83A /* CommonStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonStrings.swift; sourceTree = "<group>"; };
+		CCB1CDEB2667565500E6F83A /* WorkspaceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceResponse.swift; sourceTree = "<group>"; };
+		CCB1CDED2667569600E6F83A /* Logout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logout.swift; sourceTree = "<group>"; };
+		CCB1CDEF266756D400E6F83A /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		CCB1CDF126675E1100E6F83A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = /Users/tahreem/Documents/GitHub/ICMMS/ICMMS/Info.plist; sourceTree = "<absolute>"; };
 		CCE18A3E26663D2B00C0E4BD /* ICMMS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ICMMS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCE18A4126663D2B00C0E4BD /* ICMMSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICMMSApp.swift; sourceTree = "<group>"; };
-		CCE18A4326663D2B00C0E4BD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CCE18A4326663D2B00C0E4BD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		CCE18A4526663D2F00C0E4BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CCE18A4826663D3000C0E4BD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		CCE18A4A26663D3000C0E4BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CCE18A552666429200C0E4BD /* ICMMS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ICMMS.entitlements; sourceTree = "<group>"; };
-		CCE18A5826664A3C00C0E4BD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CCE9269C26688F9B000FD606 /* ICMMS.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ICMMS.entitlements; sourceTree = SOURCE_ROOT; };
+		CCE926A226689332000FD606 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +53,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CCB1CDDF26674DA700E6F83A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				CCE18A4326663D2B00C0E4BD /* WorkspaceView.swift */,
+				CCB1CDE026674DB900E6F83A /* LoginView.swift */,
+				CCB1CDEF266756D400E6F83A /* DashboardView.swift */,
+				CC4B68012667670800682E7A /* DashboardDetails.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		CCB1CDE226674DEC00E6F83A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CCB1CDE326674DF900E6F83A /* LoginResponse.swift */,
+				CCB1CDEB2667565500E6F83A /* WorkspaceResponse.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CCB1CDE72667505500E6F83A /* General */ = {
+			isa = PBXGroup;
+			children = (
+				CCB1CDE526674E2A00E6F83A /* UserSettings.swift */,
+				CCB1CDE82667506500E6F83A /* CommonStrings.swift */,
+				CCB1CDED2667569600E6F83A /* Logout.swift */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		CCB1CDEA2667516500E6F83A /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				CCE18A4526663D2F00C0E4BD /* Assets.xcassets */,
+			);
+			path = Others;
+			sourceTree = "<group>";
+		};
 		CCE18A3526663D2B00C0E4BD = {
 			isa = PBXGroup;
 			children = (
@@ -57,12 +110,14 @@
 		CCE18A4026663D2B00C0E4BD /* ICMMS */ = {
 			isa = PBXGroup;
 			children = (
-				CCE18A552666429200C0E4BD /* ICMMS.entitlements */,
+				CCE926A226689332000FD606 /* GoogleService-Info.plist */,
+				CCE9269C26688F9B000FD606 /* ICMMS.entitlements */,
+				CCB1CDF126675E1100E6F83A /* Info.plist */,
 				CCE18A4126663D2B00C0E4BD /* ICMMSApp.swift */,
-				CCE18A4326663D2B00C0E4BD /* ContentView.swift */,
-				CCE18A5826664A3C00C0E4BD /* GoogleService-Info.plist */,
-				CCE18A4526663D2F00C0E4BD /* Assets.xcassets */,
-				CCE18A4A26663D3000C0E4BD /* Info.plist */,
+				CCB1CDEA2667516500E6F83A /* Others */,
+				CCB1CDE72667505500E6F83A /* General */,
+				CCB1CDE226674DEC00E6F83A /* Model */,
+				CCB1CDDF26674DA700E6F83A /* Login */,
 				CCE18A4726663D3000C0E4BD /* Preview Content */,
 			);
 			path = ICMMS;
@@ -139,9 +194,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCE18A4926663D3000C0E4BD /* Preview Assets.xcassets in Resources */,
-				CCE18A5926664A3C00C0E4BD /* GoogleService-Info.plist in Resources */,
-				CCE18A4626663D2F00C0E4BD /* Assets.xcassets in Resources */,
+				CC4B68072667D38A00682E7A /* Assets.xcassets in Resources */,
+				CCE926A326689332000FD606 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,8 +206,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCE18A4426663D2B00C0E4BD /* ContentView.swift in Sources */,
+				CCB1CDE126674DB900E6F83A /* LoginView.swift in Sources */,
+				CC4B68022667670800682E7A /* DashboardDetails.swift in Sources */,
+				CCB1CDEE2667569600E6F83A /* Logout.swift in Sources */,
+				CCE18A4426663D2B00C0E4BD /* WorkspaceView.swift in Sources */,
+				CCB1CDE426674DF900E6F83A /* LoginResponse.swift in Sources */,
+				CCB1CDF0266756D400E6F83A /* DashboardView.swift in Sources */,
+				CCB1CDE626674E2A00E6F83A /* UserSettings.swift in Sources */,
 				CCE18A4226663D2B00C0E4BD /* ICMMSApp.swift in Sources */,
+				CCB1CDEC2667565500E6F83A /* WorkspaceResponse.swift in Sources */,
+				CCB1CDE92667506500E6F83A /* CommonStrings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,7 +343,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = ICMMS/ICMMS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = /Users/tahreem/Documents/GitHub/ICMMS/ICMMS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"ICMMS/Preview Content\"";
 				DEVELOPMENT_TEAM = K7A2554X83;
@@ -295,7 +359,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tahreem.ICMMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -304,7 +368,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = ICMMS/ICMMS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = /Users/tahreem/Documents/GitHub/ICMMS/ICMMS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"ICMMS/Preview Content\"";
 				DEVELOPMENT_TEAM = K7A2554X83;
@@ -318,7 +384,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tahreem.ICMMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -13,15 +13,24 @@ struct ICMMSApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var
         delegate
-    
+    @State var fcmRegTokenMessage = ""
+    @State var message : [String: Any] = [:]
+
     var body: some Scene {
         
-        
-        
         WindowGroup {
-            ContentView()
+            MainScreen()
+                .environmentObject(UserSettings())
                 .onAppear(){
-                    print("This is the messaging token: \(Messaging.messaging())")
+                    Messaging.messaging().token { token, error in
+                      if let error = error {
+                        print("Error fetching FCM registration token: \(error)")
+                      } else if let token = token {
+                        self.fcmRegTokenMessage = "Remote FCM registration token: \(token)"
+                        UserDefaults.standard.setValue(token, forKey: "deviceToken")
+                        UserDefaults.standard.synchronize()
+                      }
+                    }
                 }
         }
         
