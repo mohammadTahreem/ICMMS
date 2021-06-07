@@ -9,7 +9,7 @@ import Foundation
 
 struct CommonStrings {
     
-//    let apiURL: String = "http://192.168.2.9:8081/api/"
+//    let apiURL: String = "http://192.168.1.5:8081/api/"
 //    let apiURL: String = "http://103.26.41.230:8086/i-cmmstest/api/"
     let apiURL: String = "http://103.24.4.168:8085/cmms/api/"
     let usernameTech: String = "Technician"

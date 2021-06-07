@@ -7,6 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC3E9F4C2668F71300BA47F2 /* SearchFaultReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F4B2668F71300BA47F2 /* SearchFaultReportView.swift */; };
+		CC3E9F4E2668F75600BA47F2 /* FaultSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F4D2668F75600BA47F2 /* FaultSearchResponse.swift */; };
+		CC3E9F502668F7A300BA47F2 /* GeneralMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F4F2668F7A300BA47F2 /* GeneralMethods.swift */; };
+		CC3E9F522668F7E900BA47F2 /* EditFaultReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F512668F7E900BA47F2 /* EditFaultReportView.swift */; };
+		CC3E9F542668F83600BA47F2 /* CurrentFrResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F532668F83600BA47F2 /* CurrentFrResponse.swift */; };
+		CC3E9F562668F86800BA47F2 /* PostCurrentFr.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F552668F86800BA47F2 /* PostCurrentFr.swift */; };
+		CC3E9F582668F8A500BA47F2 /* UpdateFaultRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F572668F8A500BA47F2 /* UpdateFaultRequest.swift */; };
+		CC3E9F5A2668F8D200BA47F2 /* LabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F592668F8D200BA47F2 /* LabelTextField.swift */; };
+		CC3E9F5C2668F98500BA47F2 /* URLImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F5B2668F98500BA47F2 /* URLImage.swift */; };
+		CC3E9F5E2668F9A400BA47F2 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F5D2668F9A400BA47F2 /* ImageLoader.swift */; };
+		CC3E9F602668F9E200BA47F2 /* AcceptPauseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F5F2668F9E200BA47F2 /* AcceptPauseSheet.swift */; };
+		CC3E9F622668FA2300BA47F2 /* AcceptRejectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F612668FA2300BA47F2 /* AcceptRejectModel.swift */; };
+		CC3E9F642668FA4B00BA47F2 /* RequestPauseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F632668FA4B00BA47F2 /* RequestPauseResponse.swift */; };
+		CC3E9F662668FA7F00BA47F2 /* RequestForPauseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F652668FA7F00BA47F2 /* RequestForPauseSheet.swift */; };
+		CC3E9F682668FADF00BA47F2 /* RequestForPauseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F672668FADF00BA47F2 /* RequestForPauseModel.swift */; };
+		CC3E9F6A2668FB0D00BA47F2 /* AcknowledgerFaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F692668FB0D00BA47F2 /* AcknowledgerFaultView.swift */; };
+		CC3E9F6C2668FB8800BA47F2 /* SignatureUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F6B2668FB8800BA47F2 /* SignatureUI.swift */; };
+		CC3E9F732669FA0B00BA47F2 /* ScanEquipOrLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F722669FA0B00BA47F2 /* ScanEquipOrLocationView.swift */; };
+		CC3E9F76266A008000BA47F2 /* CarBode in Frameworks */ = {isa = PBXBuildFile; productRef = CC3E9F75266A008000BA47F2 /* CarBode */; };
+		CC3E9F78266A236F00BA47F2 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F77266A236F00BA47F2 /* LocationManager.swift */; };
+		CC3E9F7A266A33CE00BA47F2 /* Geolocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F79266A33CE00BA47F2 /* Geolocation.swift */; };
+		CC3E9F7C266A3D5000BA47F2 /* AlertId.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F7B266A3D5000BA47F2 /* AlertId.swift */; };
+		CC3E9F7E266DDB1E00BA47F2 /* EquipScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F7D266DDB1E00BA47F2 /* EquipScanView.swift */; };
 		CC4B68022667670800682E7A /* DashboardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4B68012667670800682E7A /* DashboardDetails.swift */; };
 		CC4B68072667D38A00682E7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCE18A4526663D2F00C0E4BD /* Assets.xcassets */; };
 		CCB1CDE126674DB900E6F83A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDE026674DB900E6F83A /* LoginView.swift */; };
@@ -23,6 +46,28 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CC3E9F4B2668F71300BA47F2 /* SearchFaultReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFaultReportView.swift; sourceTree = "<group>"; };
+		CC3E9F4D2668F75600BA47F2 /* FaultSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaultSearchResponse.swift; sourceTree = "<group>"; };
+		CC3E9F4F2668F7A300BA47F2 /* GeneralMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralMethods.swift; sourceTree = "<group>"; };
+		CC3E9F512668F7E900BA47F2 /* EditFaultReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFaultReportView.swift; sourceTree = "<group>"; };
+		CC3E9F532668F83600BA47F2 /* CurrentFrResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentFrResponse.swift; sourceTree = "<group>"; };
+		CC3E9F552668F86800BA47F2 /* PostCurrentFr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCurrentFr.swift; sourceTree = "<group>"; };
+		CC3E9F572668F8A500BA47F2 /* UpdateFaultRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFaultRequest.swift; sourceTree = "<group>"; };
+		CC3E9F592668F8D200BA47F2 /* LabelTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTextField.swift; sourceTree = "<group>"; };
+		CC3E9F5B2668F98500BA47F2 /* URLImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImage.swift; sourceTree = "<group>"; };
+		CC3E9F5D2668F9A400BA47F2 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		CC3E9F5F2668F9E200BA47F2 /* AcceptPauseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptPauseSheet.swift; sourceTree = "<group>"; };
+		CC3E9F612668FA2300BA47F2 /* AcceptRejectModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcceptRejectModel.swift; sourceTree = "<group>"; };
+		CC3E9F632668FA4B00BA47F2 /* RequestPauseResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPauseResponse.swift; sourceTree = "<group>"; };
+		CC3E9F652668FA7F00BA47F2 /* RequestForPauseSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestForPauseSheet.swift; sourceTree = "<group>"; };
+		CC3E9F672668FADF00BA47F2 /* RequestForPauseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestForPauseModel.swift; sourceTree = "<group>"; };
+		CC3E9F692668FB0D00BA47F2 /* AcknowledgerFaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgerFaultView.swift; sourceTree = "<group>"; };
+		CC3E9F6B2668FB8800BA47F2 /* SignatureUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureUI.swift; sourceTree = "<group>"; };
+		CC3E9F722669FA0B00BA47F2 /* ScanEquipOrLocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanEquipOrLocationView.swift; sourceTree = "<group>"; };
+		CC3E9F77266A236F00BA47F2 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		CC3E9F79266A33CE00BA47F2 /* Geolocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geolocation.swift; sourceTree = "<group>"; };
+		CC3E9F7B266A3D5000BA47F2 /* AlertId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertId.swift; sourceTree = "<group>"; };
+		CC3E9F7D266DDB1E00BA47F2 /* EquipScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipScanView.swift; sourceTree = "<group>"; };
 		CC4B68012667670800682E7A /* DashboardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDetails.swift; sourceTree = "<group>"; };
 		CCB1CDE026674DB900E6F83A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CCB1CDE326674DF900E6F83A /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
@@ -47,12 +92,33 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCE18A5326663D8F00C0E4BD /* FirebaseMessaging in Frameworks */,
+				CC3E9F76266A008000BA47F2 /* CarBode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC3E9F4A2668F6DE00BA47F2 /* FaultReport */ = {
+			isa = PBXGroup;
+			children = (
+				CC3E9F4B2668F71300BA47F2 /* SearchFaultReportView.swift */,
+				CC3E9F512668F7E900BA47F2 /* EditFaultReportView.swift */,
+				CC3E9F692668FB0D00BA47F2 /* AcknowledgerFaultView.swift */,
+				CC3E9F5F2668F9E200BA47F2 /* AcceptPauseSheet.swift */,
+				CC3E9F652668FA7F00BA47F2 /* RequestForPauseSheet.swift */,
+				CC3E9F7D266DDB1E00BA47F2 /* EquipScanView.swift */,
+			);
+			path = FaultReport;
+			sourceTree = "<group>";
+		};
+		CC3E9F6D2669F18B00BA47F2 /* LayoutModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LayoutModel;
+			sourceTree = "<group>";
+		};
 		CCB1CDDF26674DA700E6F83A /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -68,7 +134,15 @@
 			isa = PBXGroup;
 			children = (
 				CCB1CDE326674DF900E6F83A /* LoginResponse.swift */,
+				CC3E9F672668FADF00BA47F2 /* RequestForPauseModel.swift */,
+				CC3E9F632668FA4B00BA47F2 /* RequestPauseResponse.swift */,
+				CC3E9F612668FA2300BA47F2 /* AcceptRejectModel.swift */,
 				CCB1CDEB2667565500E6F83A /* WorkspaceResponse.swift */,
+				CC3E9F4D2668F75600BA47F2 /* FaultSearchResponse.swift */,
+				CC3E9F532668F83600BA47F2 /* CurrentFrResponse.swift */,
+				CC3E9F552668F86800BA47F2 /* PostCurrentFr.swift */,
+				CC3E9F572668F8A500BA47F2 /* UpdateFaultRequest.swift */,
+				CC3E9F79266A33CE00BA47F2 /* Geolocation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -79,6 +153,11 @@
 				CCB1CDE526674E2A00E6F83A /* UserSettings.swift */,
 				CCB1CDE82667506500E6F83A /* CommonStrings.swift */,
 				CCB1CDED2667569600E6F83A /* Logout.swift */,
+				CC3E9F6B2668FB8800BA47F2 /* SignatureUI.swift */,
+				CC3E9F4F2668F7A300BA47F2 /* GeneralMethods.swift */,
+				CC3E9F592668F8D200BA47F2 /* LabelTextField.swift */,
+				CC3E9F5B2668F98500BA47F2 /* URLImage.swift */,
+				CC3E9F5D2668F9A400BA47F2 /* ImageLoader.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -86,7 +165,10 @@
 		CCB1CDEA2667516500E6F83A /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				CC3E9F722669FA0B00BA47F2 /* ScanEquipOrLocationView.swift */,
 				CCE18A4526663D2F00C0E4BD /* Assets.xcassets */,
+				CC3E9F77266A236F00BA47F2 /* LocationManager.swift */,
+				CC3E9F7B266A3D5000BA47F2 /* AlertId.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -112,8 +194,10 @@
 			children = (
 				CCE926A226689332000FD606 /* GoogleService-Info.plist */,
 				CCE9269C26688F9B000FD606 /* ICMMS.entitlements */,
-				CCB1CDF126675E1100E6F83A /* Info.plist */,
 				CCE18A4126663D2B00C0E4BD /* ICMMSApp.swift */,
+				CCB1CDF126675E1100E6F83A /* Info.plist */,
+				CC3E9F6D2669F18B00BA47F2 /* LayoutModel */,
+				CC3E9F4A2668F6DE00BA47F2 /* FaultReport */,
 				CCB1CDEA2667516500E6F83A /* Others */,
 				CCB1CDE72667505500E6F83A /* General */,
 				CCB1CDE226674DEC00E6F83A /* Model */,
@@ -149,6 +233,7 @@
 			name = ICMMS;
 			packageProductDependencies = (
 				CCE18A5226663D8F00C0E4BD /* FirebaseMessaging */,
+				CC3E9F75266A008000BA47F2 /* CarBode */,
 			);
 			productName = ICMMS;
 			productReference = CCE18A3E26663D2B00C0E4BD /* ICMMS.app */;
@@ -179,6 +264,7 @@
 			mainGroup = CCE18A3526663D2B00C0E4BD;
 			packageReferences = (
 				CCE18A5126663D8F00C0E4BD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CC3E9F74266A008000BA47F2 /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */,
 			);
 			productRefGroup = CCE18A3F26663D2B00C0E4BD /* Products */;
 			projectDirPath = "";
@@ -206,16 +292,38 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC3E9F7C266A3D5000BA47F2 /* AlertId.swift in Sources */,
 				CCB1CDE126674DB900E6F83A /* LoginView.swift in Sources */,
+				CC3E9F682668FADF00BA47F2 /* RequestForPauseModel.swift in Sources */,
+				CC3E9F78266A236F00BA47F2 /* LocationManager.swift in Sources */,
+				CC3E9F4E2668F75600BA47F2 /* FaultSearchResponse.swift in Sources */,
+				CC3E9F5E2668F9A400BA47F2 /* ImageLoader.swift in Sources */,
 				CC4B68022667670800682E7A /* DashboardDetails.swift in Sources */,
+				CC3E9F622668FA2300BA47F2 /* AcceptRejectModel.swift in Sources */,
+				CC3E9F582668F8A500BA47F2 /* UpdateFaultRequest.swift in Sources */,
+				CC3E9F4C2668F71300BA47F2 /* SearchFaultReportView.swift in Sources */,
 				CCB1CDEE2667569600E6F83A /* Logout.swift in Sources */,
 				CCE18A4426663D2B00C0E4BD /* WorkspaceView.swift in Sources */,
+				CC3E9F602668F9E200BA47F2 /* AcceptPauseSheet.swift in Sources */,
 				CCB1CDE426674DF900E6F83A /* LoginResponse.swift in Sources */,
+				CC3E9F5A2668F8D200BA47F2 /* LabelTextField.swift in Sources */,
+				CC3E9F662668FA7F00BA47F2 /* RequestForPauseSheet.swift in Sources */,
 				CCB1CDF0266756D400E6F83A /* DashboardView.swift in Sources */,
+				CC3E9F7A266A33CE00BA47F2 /* Geolocation.swift in Sources */,
+				CC3E9F7E266DDB1E00BA47F2 /* EquipScanView.swift in Sources */,
+				CC3E9F642668FA4B00BA47F2 /* RequestPauseResponse.swift in Sources */,
 				CCB1CDE626674E2A00E6F83A /* UserSettings.swift in Sources */,
+				CC3E9F542668F83600BA47F2 /* CurrentFrResponse.swift in Sources */,
+				CC3E9F502668F7A300BA47F2 /* GeneralMethods.swift in Sources */,
 				CCE18A4226663D2B00C0E4BD /* ICMMSApp.swift in Sources */,
+				CC3E9F522668F7E900BA47F2 /* EditFaultReportView.swift in Sources */,
+				CC3E9F6A2668FB0D00BA47F2 /* AcknowledgerFaultView.swift in Sources */,
+				CC3E9F6C2668FB8800BA47F2 /* SignatureUI.swift in Sources */,
 				CCB1CDEC2667565500E6F83A /* WorkspaceResponse.swift in Sources */,
 				CCB1CDE92667506500E6F83A /* CommonStrings.swift in Sources */,
+				CC3E9F562668F86800BA47F2 /* PostCurrentFr.swift in Sources */,
+				CC3E9F5C2668F98500BA47F2 /* URLImage.swift in Sources */,
+				CC3E9F732669FA0B00BA47F2 /* ScanEquipOrLocationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +520,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CC3E9F74266A008000BA47F2 /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/heart/CarBode-Barcode-Scanner-For-SwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.2;
+			};
+		};
 		CCE18A5126663D8F00C0E4BD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -423,6 +539,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CC3E9F75266A008000BA47F2 /* CarBode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC3E9F74266A008000BA47F2 /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */;
+			productName = CarBode;
+		};
 		CCE18A5226663D8F00C0E4BD /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CCE18A5126663D8F00C0E4BD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

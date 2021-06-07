@@ -109,7 +109,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate{
         let userInfo = notification.request.content.userInfo
         
         Messaging.messaging().appDidReceiveMessage(userInfo)
-        
+        print(userInfo)
         // Change this to your preferred presentation option
         completionHandler([[.banner, .badge, .sound]])
     }
@@ -120,7 +120,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate{
         let userInfo = response.notification.request.content.userInfo
         
         Messaging.messaging().appDidReceiveMessage(userInfo)
-        
+        print(userInfo)
         completionHandler()
     }
     

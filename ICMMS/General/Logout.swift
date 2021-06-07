@@ -70,7 +70,6 @@ struct Logout: View {
                     _ = try? JSONSerialization.jsonObject(with: data!, options: [])
                     let domain = Bundle.main.bundleIdentifier!
                     UserDefaults.standard.removePersistentDomain(forName: domain)
-                    UserDefaults.standard.setValue(deviceToken, forKey: "deviceToken")
                     UserDefaults.standard.synchronize()
                     self.settings.loggedIn = false
                 }
@@ -81,7 +80,6 @@ struct Logout: View {
             }
             
         }.resume()
-        
     }
 }
 

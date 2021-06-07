@@ -57,8 +57,7 @@ struct DashboardView: View {
     @ViewBuilder func destination(dashDetails: DashboadDetails) -> some View {
         switch dashDetails.viewName {
         case .searchFaultReportView:
-            //SearchFaultReportView()
-        Text("Sea fa re")
+            SearchFaultReportView()
         case .scanFaultReportView:
             //ScanFaultReportView()
             Text("Scan Fault Report View")
