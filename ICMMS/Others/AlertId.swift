@@ -16,5 +16,9 @@ struct AlertId: Identifiable {
         case response204
         case response422
         case response400
+        case responseEquip200
+        case response214
+        case response215
+        case response216
     }
 }

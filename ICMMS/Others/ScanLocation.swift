@@ -9,7 +9,7 @@ import SwiftUI
 import CarBode
 import AVFoundation
 
-struct ScanEquipOrLocationView: View {
+struct ScanLocation: View {
     @Binding var showScanSheet : Bool
     @State var qrValue = ""
     @State var cameraPosition = AVCaptureDevice.Position.back    
@@ -70,7 +70,7 @@ struct ScanEquipOrLocationView: View {
             }
             responseCode = String(Int(response.statusCode))
             showScanSheet = false
-            
+            print("The response code is: \(responseCode)")
         }
         dataTask.resume()
     }

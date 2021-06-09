@@ -55,7 +55,7 @@ struct WorkspaceView: View {
         let currentUrl = CommonStrings().apiURL
         
         guard let url = URL(string: "\(currentUrl)workspaces") else {return}
-        
+        print(url)
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")

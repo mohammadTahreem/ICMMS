@@ -16,6 +16,7 @@ struct RequestForPauseSheet: View {
     @State private var errorAlert: Bool = false
     @Binding var requestPauseIsPresented: Bool
     @State private var isLoading = false
+    @Binding var closeSheetString : String
     
     var body: some View {
         VStack{
@@ -60,6 +61,11 @@ struct RequestForPauseSheet: View {
                         Button("Request Pause"){
                             requestPauseFunc()
                         }
+                        .padding()
+                        .background(Color("Indeco_blue"))
+                        .cornerRadius(8)
+                        .foregroundColor(.white)
+                        .padding()
                     }
                 }
                 .alert(isPresented: $updatedAlert, content: {
@@ -82,6 +88,7 @@ struct RequestForPauseSheet: View {
     
     
     func requestPauseFunc() {
+        closeSheetString = "close"
         isLoading.toggle()
         let body : RequestForPauseModel = RequestForPauseModel(eotType: eotTypeSelected, eotTime: eotTime, frId: requestForPauseModel.frId, observation: requestForPauseModel.observation, actionTaken: requestForPauseModel.actionTaken, remarks: requestForPauseModel.remarks)
         

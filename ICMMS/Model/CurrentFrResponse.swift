@@ -7,6 +7,12 @@
 
 import Foundation
 
+
+struct EquipmentSearchClass: Codable {
+    var equipmentCode: String?
+    var frId: String?
+}
+
 struct CurrentFrResponse: Codable {
     var frId : String?
     var clientFrId : String?
@@ -52,6 +58,9 @@ struct CurrentFrResponse: Codable {
     var acknowledgementTime : String?
     var eotTime : String?
     var technicianSignature: String?
+    
+    
+    
 }
 
 struct Equipment: Codable {

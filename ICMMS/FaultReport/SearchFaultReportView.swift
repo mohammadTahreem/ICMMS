@@ -56,6 +56,7 @@ struct FaultSearchView: View {
     @State var searchText: String = ""
     @State var activeInactive: String
     @State var searchFaultResponse : [FaultSearchResponse] = []
+    @State var ackSheetBool = false
     
     var body: some View {
         
@@ -94,7 +95,6 @@ struct FaultSearchView: View {
         let currentUrl = CommonStrings().apiURL
         
         let urlString = "\(currentUrl)faultreport/search?query=\(searchText)&type=\(activeInactive)"
-        print(urlString)
         
         guard let url = URL(string: urlString) else {return}
         
@@ -148,7 +148,7 @@ struct SearchFaultReportView: View {
                 Logout().environmentObject(settings)
             }
         }
-        .navigationBarTitle("Search Fault Reports")
+        .navigationBarTitle("Search")
         
     }
 }
