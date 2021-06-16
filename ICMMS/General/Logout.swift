@@ -45,7 +45,7 @@ struct Logout: View {
         
         let currentUrl = CommonStrings().apiURL
         
-        let urlString = "\(currentUrl)logout?&deviceToken=\(deviceToken ?? "jhg")"
+        let urlString = "\(currentUrl)logout?&deviceToken=\(deviceToken ?? "no data")"
         guard let url = URL(string: urlString) else {return }
         
         var urlRequest = URLRequest(url: url)

@@ -38,8 +38,8 @@ struct EditFaultReportView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var selection: Int? = nil
     @State var closeSheetString: String = ""
-
-
+    @State var receivedValueAckFR = ""
+    @State var openQuotationSheet = false
     
     var body: some View {
         
@@ -57,158 +57,12 @@ struct EditFaultReportView: View {
                 ScrollView {
                     VStack{
                         //general items. Not editable
-                        VStack{
-                            
-                            LabelTextField(label: "Case Id", placeHolder: frId)
-                            
-                            if(currentFrResponse.department != nil && currentFrResponse.department?.name != nil){
-                                LabelTextField(label: "Department", placeHolder: currentFrResponse.department!.name!)
-                            } else{
-                                LabelTextField(label: "Department", placeHolder: "Department")
-                            }
-                            
-                            if(currentFrResponse.requestorName != nil){
-                                LabelTextField(label: "Requestor Name", placeHolder: currentFrResponse.requestorName!)
-                            }else{
-                                LabelTextField(label: "Requestor Name", placeHolder: "Requestor Name")
-                            }
-                            
-                            if(currentFrResponse.activationTime != nil){
-                                LabelTextField(label: "Activation Date",
-                                               placeHolder:GeneralMethods().convertTStringToString(isoDate: currentFrResponse.activationTime!))
-                            }else{
-                                LabelTextField(label: "Activation Date", placeHolder: "Activation Date")
-                            }
-                            
-                            if(currentFrResponse.arrivalTime != nil){
-                                LabelTextField(label:"Arrival Date",
-                                               placeHolder: GeneralMethods().convertTStringToString(isoDate: currentFrResponse.arrivalTime!))
-                            }else{
-                                LabelTextField(label: "Arrival Date", placeHolder: "Arrival Date")
-                            }
-                            
-                            if(currentFrResponse.responseTime != nil){
-                                LabelTextField(label: "Response Time", placeHolder:currentFrResponse.responseTime!)
-                            }else{
-                                LabelTextField(label: "Response Time", placeHolder: "Response Time")
-                            }
-                            
-                            if(currentFrResponse.acknowledgementTime != nil){
-                                LabelTextField(label: "Acknowledge Time", placeHolder:GeneralMethods().convertTStringToString(isoDate: currentFrResponse.acknowledgementTime!))
-                            }else{
-                                LabelTextField(label: "Acknowledge Time", placeHolder: "Acknowledge Time")
-                            }
-                            
-                            if(currentFrResponse.downTime != nil){
-                                LabelTextField(label: "Down Time", placeHolder:currentFrResponse.downTime!)
-                            }else{
-                                LabelTextField(label: "Down Time", placeHolder: "Down Time")
-                            }
-                            
-                            if(currentFrResponse.eotTime != nil){
-                                LabelTextField(label: "EOT", placeHolder:currentFrResponse.eotTime!)
-                            }else{
-                                LabelTextField(label: "EOT", placeHolder: "EOT")
-                            }
-                            
-                            if(currentFrResponse.eotType != nil){
-                                LabelTextField(label: "Required EOT Time", placeHolder: currentFrResponse.eotType!)
-                            }else{
-                                LabelTextField(label: "Required EOT Time", placeHolder: "Required EOT Time")
-                            }
-                        }
+                        GeneralItems(frId: frId, currentFrResponse: currentFrResponse,
+                                     observationString: $observationString, actionTakenString: $actionTakenString)
+                            .sheet(isPresented: $openQuotationSheet , content: {
+                                UploadQuotationView(frId: frId)
+                            })
                         
-                        VStack{
-                            
-                            VStack{
-                                if(currentFrResponse.requestorContactNo != nil){
-                                    LabelTextField(label: "Contact Number", placeHolder:currentFrResponse.requestorContactNo!)
-                                }else{
-                                    LabelTextField(label: "Contact Number", placeHolder: "Contact Number")
-                                }
-                                
-                                if(currentFrResponse.priority != nil && currentFrResponse.priority?.name != nil) {
-                                    LabelTextField(label: "Priority", placeHolder:currentFrResponse.priority!.name!)
-                                }else{
-                                    LabelTextField(label: "Priority", placeHolder: "Priority")
-                                }
-                                
-                                if(currentFrResponse.building != nil && currentFrResponse.building?.name != nil) {
-                                    LabelTextField(label: "Building", placeHolder: currentFrResponse.building!.name!)
-                                }else{
-                                    LabelTextField(label: "Building", placeHolder: "Building")
-                                }
-                                
-                                if(currentFrResponse.location != nil && currentFrResponse.location?.name != nil){
-                                    LabelTextField(label: "Location", placeHolder: currentFrResponse.location!.name!)
-                                }else{
-                                    LabelTextField(label: "Location", placeHolder: "Location")
-                                }
-                                
-                                if(currentFrResponse.division != nil && currentFrResponse.division?.name != nil){
-                                    LabelTextField(label: "Division", placeHolder: currentFrResponse.division!.name!)
-                                }else{
-                                    LabelTextField(label: "Division", placeHolder: "Division")
-                                }
-                                
-                                if(currentFrResponse.locationDesc != nil){
-                                    LabelTextField(label: "Location Description", placeHolder: currentFrResponse.locationDesc!)
-                                }else{
-                                    LabelTextField(label: "Location Description", placeHolder: "Location Description")
-                                }
-                                
-                                if(currentFrResponse.faultCategory != nil && currentFrResponse.faultCategory?.name != nil){
-                                    LabelTextField(label: "Fault Category", placeHolder: currentFrResponse.faultCategory!.name!)
-                                }else{
-                                    LabelTextField(label: "Fault Category", placeHolder: "Fault Category")
-                                }
-                                
-                                if(currentFrResponse.faultCategoryDesc != nil){
-                                    LabelTextField(label: "Fault Description", placeHolder: currentFrResponse.faultCategoryDesc!)
-                                }else{
-                                    LabelTextField(label: "Fault Description", placeHolder: "Fault Description")
-                                }
-                                
-                                if(currentFrResponse.maintGrp != nil && currentFrResponse.maintGrp?.name != nil ){
-                                    LabelTextField(label: "Maintenance Group", placeHolder: currentFrResponse.maintGrp!.name!)
-                                }else{
-                                    LabelTextField(label: "Maintenance Group", placeHolder: "Maintenance Group")
-                                }
-                            }
-                            //Observation and Action Taken
-                            VStack{
-                                
-                                Section(header: HStack{Text("Observation")
-                                    .font(.headline)
-                                    Spacer()
-                                }){
-                                    TextField("Observation", text: $observationString)
-                                        .padding()
-                                        .background(Color("light_gray"))
-                                        .foregroundColor(.black)
-                                        .cornerRadius(8)
-                                }
-                                .padding(.horizontal, 15)
-                                
-                                Section(header: HStack{Text("ActionTaken")
-                                    .font(.headline)
-                                    Spacer()
-                                }){
-                                    TextField("Action Taken", text: $actionTakenString)
-                                        .padding()
-                                        .background(Color("light_gray"))
-                                        .foregroundColor(.black)
-                                        .cornerRadius(8)
-                                }.padding(.horizontal, 15)
-                                
-                                
-                                if(currentFrResponse.equipment != nil && currentFrResponse.equipment?.name != nil){
-                                    LabelTextField(label: "Equipment", placeHolder: currentFrResponse.equipment!.name!)
-                                }else{
-                                    LabelTextField(label: "Equipment", placeHolder: "Equipment")
-                                }
-                            }
-                        }
                         VStack{
                             //remarks
                             VStack{
@@ -278,7 +132,6 @@ struct EditFaultReportView: View {
                                 
                                 if(currentFrResponse.attendedBy != nil){
                                     VStack() {
-                                        
                                         ForEach (currentFrResponse.attendedBy!, id:\.self){ item in
                                             LabelTextField(label: "Attended By", placeHolder: item.name!)
                                         }
@@ -290,8 +143,7 @@ struct EditFaultReportView: View {
                             }
                             // ack signature and tech signature
                             VStack{
-                                if (currentFrResponse.acknowledgedBy != nil &&
-                                        UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag){
+                                if (currentFrResponse.acknowledgedBy != nil){
                                     
                                     if(currentFrResponse.acknowledgedBy?.signature != nil){
                                         VStack{
@@ -318,8 +170,7 @@ struct EditFaultReportView: View {
                                     }
                                 }
                                 
-                                if(currentFrResponse.technicianSignature != nil &&
-                                    UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag){
+                                if(currentFrResponse.technicianSignature != nil){
                                     VStack{
                                         Text("Technician Signature")
                                             .padding()
@@ -452,7 +303,7 @@ struct EditFaultReportView: View {
                                         .padding()
                                         .sheet(isPresented: $requestPauseIsPresented, onDismiss: {
                                             if closeSheetString == "close"{
-                                                
+                                                self.alertId = AlertId(id: .closeFRIfRequestPaused)
                                             }
                                         }){
                                             RequestForPauseSheet(requestForPauseModel: pauseRequestCall(), requestPauseIsPresented: $requestPauseIsPresented, closeSheetString: $closeSheetString)
@@ -472,20 +323,25 @@ struct EditFaultReportView: View {
                                                 .padding()
                                         }else{
                                             Button(action: {
-                                                if (UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech){
-                                                    if pickerItem == "Open" {
-                                                        updateFaultReportFunc(updateFaultReportRequest: updateFaultReportRequest)
-                                                    }else if pickerItem == "Completed"{
-                                                        ackSheetBool = true
+                                                if (pickerItem != currentFrResponse.status!){
+                                                    if (UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech){
+                                                        if pickerItem == "Open" {
+                                                            updateFaultReportFunc(updateFaultReportRequest: updateFaultReportRequest)
+                                                        }else if pickerItem == "Completed"{
+                                                            ackSheetBool = true
+                                                        }
                                                     }
+                                                    else{
+                                                        updateFaultReportFunc(updateFaultReportRequest: updateFaultReportRequest)
+                                                    }
+                                                }else{
+                                                    self.alertId = AlertId(id: .sameStatusForUpdateAlert)
                                                 }
-                                                else{
-                                                    updateFaultReportFunc(updateFaultReportRequest: updateFaultReportRequest)
-                                                }
-                                            }, label: { HStack{
+                                            }
+                                            , label: { HStack{
                                                 Spacer()
                                                 if (UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech){
-                                                    if pickerItem == "Open" {
+                                                    if pickerItem == CommonStrings().statusOpen || pickerItem == CommonStrings().statusPause {
                                                         Text("Update")
                                                     }else{
                                                         Text("Acknowledge")
@@ -501,9 +357,19 @@ struct EditFaultReportView: View {
                                             .cornerRadius(8)
                                             .foregroundColor(.white)
                                             .padding()
-                                            .sheet(isPresented: $ackSheetBool, content: {
-                                                AcknowledgerFaultView(ackSheetBool: $ackSheetBool, dataItems: updateFaultReportRequest, currentFrResponse: currentFrResponse)
-                                                
+                                            .onChange(of: pickerItem, perform: { picker in
+                                                if picker == CommonStrings().statusOpen {
+                                                    showRequestPauseButton = true
+                                                }else if picker == CommonStrings().statusCompleted{
+                                                    showRequestPauseButton = false
+                                                }
+                                            })
+                                            .sheet(isPresented: $ackSheetBool,onDismiss: {
+                                                if receivedValueAckFR == CommonStrings().successResponse{
+                                                    self.alertId = AlertId(id: .closeFrAfterUpdate)
+                                                }
+                                            }, content: {
+                                                AcknowledgerFaultView(ackSheetBool: $ackSheetBool, dataItems: updateFaultReportRequest, currentFrResponse: currentFrResponse, receivedValueAckFR: $receivedValueAckFR)
                                             })
                                         }
                                     }
@@ -512,7 +378,7 @@ struct EditFaultReportView: View {
                                 }
                             }
                             .alert(item: $alertId) { (alertId) -> Alert in
-                                return createAlert(alertId: alertId)
+                                return createAlert(alertId: alertId, updateFaultReportRequest: updateFaultReportRequest, currentStatus: currentFrResponse.status!)
                             }
                         }
                         
@@ -627,9 +493,7 @@ struct EditFaultReportView: View {
         .resume()
     }
     
-    private func createAlert(alertId: AlertId) -> Alert {
-        print("the alert id is: \(alertId.id)")
-        
+    private func createAlert(alertId: AlertId, updateFaultReportRequest: UpdateFaultRequest, currentStatus: String) -> Alert {
         switch alertId.id {
         case .respone200:
             return Alert(title: Text("The location is set"), dismissButton: .default(Text("Okay"), action: {
@@ -652,12 +516,33 @@ struct EditFaultReportView: View {
                 showUpdateButton = true
                 showRequestPauseButton = true
             }))
+        case .closeFRIfRequestPaused:
+            return Alert(title: Text("Request for pause sent"), dismissButton: .default(Text("Okay!"), action: {
+                presentationMode.wrappedValue.dismiss()
+            }))
+        case .closeFrAfterUpdate:
+            return Alert(title: Text("Fault Report Updated"), dismissButton: .default(Text("Okay!"), action: {
+                presentationMode.wrappedValue.dismiss()
+            }))
         case .response215:
             return Alert(title: Text("Equipment scanned is not of the viewed fault report"), dismissButton: .cancel())
         case .response216:
             return Alert(title: Text("No Fault Reports found on this code"), dismissButton: .default(Text("Okay"), action: {
                 presentationMode.wrappedValue.dismiss()
             }))
+        case .sameStatusForUpdateAlert:
+            return Alert(title: Text("Updating with \"\(currentStatus)\" status"),
+                         message: Text("Do you wish to update the FR with \"\(currentStatus)\" status?"),
+                         primaryButton: .default(Text("Okay!"), action: {
+                                                    updateFaultReportFunc(updateFaultReportRequest: updateFaultReportRequest)}),
+                         secondaryButton: .cancel())
+        case .uploadQuotationAlert:
+            return Alert(title: Text("Upload Qoutation"), message: Text("Upload Quotation for further action!"),
+                         dismissButton: .default(Text("Okay!"), action: {
+                            self.openQuotationSheet = true
+                         }))
+        case .none:
+            return Alert(title: Text("test"))
         }
     }
     
@@ -701,11 +586,14 @@ struct EditFaultReportView: View {
             if response.statusCode == 200 {
                 
                 guard let _ = data else { return }
-                
+                self.alertId = AlertId(id: .closeFrAfterUpdate)
                 if let updateFrResponse = try? JSONDecoder().decode(CurrentFrResponse.self, from: data!){
                     DispatchQueue.main.async {
                         print(updateFrResponse)
+                        
                     }
+                }else{
+                    print("not working")
                 }
                 
             } else {
@@ -741,6 +629,15 @@ struct EditFaultReportView: View {
                     showLocationButton = false
                 }else if currentFrResponse.editable! == true && currentFrResponse.status! == CommonStrings().statusOpen && currentFrResponse.equipment == nil{
                     showEquipButton = false
+                    showLocationButton = false
+                    showUpdateButton = true
+                }else if currentFrResponse.editable! == true && currentFrResponse.status! == CommonStrings().statusPause &&
+                            currentFrResponse.eotType == CommonStrings().eotTypeGreaterActual{
+                    self.alertId = AlertId(id: .uploadQuotationAlert)
+                }
+                else if currentFrResponse.editable! == false && currentFrResponse.status! == CommonStrings().statusPause{
+                    showLocationButton = true
+                }else if currentFrResponse.editable! == true && currentFrResponse.status! == CommonStrings().statusPause {
                     showLocationButton = false
                     showUpdateButton = true
                 }
@@ -798,3 +695,6 @@ struct EditFaultReportView: View {
     }
     
 }
+
+
+

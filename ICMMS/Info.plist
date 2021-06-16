@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -12,12 +14,16 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
+	<key>UIFileSharingEnabled</key>
+<true/>
+<key>LSSupportsOpeningDocumentsInPlace</key>
+<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-    <string>Your location is required for xyz benefits for you</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Your location is required for xyz benefits for you</string>
+	<string>Your location is required for xyz benefits for you</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is required for xyz benefits for you</string>
 	<key>NSCameraUsageDescription</key>
-<string>This app needs access to the camera, to be able to read barcodes.</string>
+	<string>This app needs access to the camera, to be able to read barcodes.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

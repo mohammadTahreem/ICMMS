@@ -62,23 +62,22 @@ struct DashboardView: View {
             //ScanFaultReportView()
             Text("Scan Fault Report View")
         case .searchPOView:
-            //SearchPOView()
-            Text("Search Purchase")
+            SearchPDFView(quoteOrPurchase: "Purchase Order")
         case .searchQoutView:
-            //SearchQoutView()
-            Text("Search Quotation")
+            SearchPDFView(quoteOrPurchase: "Quotation")
         case .taskScanView:
             //TaskScanView()
             Text("Scan Tasks")
         case .taskSearchView:
             Text("TSV")
-            //TaskSearchView()
+        //TaskSearchView()
         }
     }
     
     func saveWorkSpaceInUserDeaults(workspace: String) {
         UserDefaults.standard.setValue(workspace, forKey: "workspace")
         UserDefaults.standard.synchronize()
+        print(workspace)
     }
     
 }

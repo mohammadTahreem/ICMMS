@@ -14,9 +14,10 @@ struct WorkspaceView: View {
     @State private var loginAlert: Bool = false
     @State private var errorAlert: Bool = false
     @EnvironmentObject var settings: UserSettings
+    @State var alertId: AlertId?
+    @Environment(\.presentationMode) var presentationMode
     var body: some View {
         NavigationView{
-            
             if progressViewBool {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
@@ -32,12 +33,16 @@ struct WorkspaceView: View {
                 List(workspaceResponse, id: \.self) { workspaceResponse in
                     ZStack{
                         Button("") {}
+                            .alert(item: $alertId) { (alertId) -> Alert in
+                                return createAlert(alertId: alertId)
+                            }
                         NavigationLink(destination: DashboardView(workspace: workspaceResponse.workspaceId)){
                             WorkSpaceCardView(workspaceResponse: workspaceResponse)
                                 .padding()
                         }
                     }
                 }
+                .padding()
                 .alert(isPresented: $loginAlert, content: {
                     Alert(title: Text("Error"), message: Text("There was an error. Please try logging in again!"), dismissButton: .default(Text("Okay!")))
                 })
@@ -51,6 +56,17 @@ struct WorkspaceView: View {
         }
     }
     
+    private func createAlert(alertId: AlertId) -> Alert{
+        switch alertId.respId {
+        
+        case .responseTimeOut:
+            return Alert(title: Text("Time Out Error"), dismissButton: .default(Text("Okay"), action: {
+                presentationMode.wrappedValue.dismiss()
+            }))
+        case .none:
+          return Alert(title: Text("Test"))
+        }
+    }
     func getWorkspaces()  {
         let currentUrl = CommonStrings().apiURL
         
@@ -64,7 +80,7 @@ struct WorkspaceView: View {
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
                 print("Request error: ", error)
-                errorAlert = true
+                self.alertId = AlertId(respId: .responseTimeOut)
                 return
             }
             
@@ -73,12 +89,10 @@ struct WorkspaceView: View {
             }
             
             if response.statusCode == 200 {
-                guard let _ = data else { return }
                 DispatchQueue.main.async {
                     do {
                         let workspaceResponse = try JSONDecoder().decode([WorkspaceResponse].self, from: data!)
                         self.workspaceResponse = workspaceResponse
-                        print(self.workspaceResponse)
                     } catch let error {
                         print("Error decoding: ", error)
                         errorAlert = true

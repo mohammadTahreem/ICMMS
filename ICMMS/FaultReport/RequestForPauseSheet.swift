@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RequestForPauseSheet: View {
     @State private var eotList: [String] = []
-    @State private var eotTypeSelected: String = "Greater than S$1000"
+    @State private var eotTypeSelected: String = CommonStrings().eotTypeGreater
     @State var requestForPauseModel: RequestForPauseModel
     @State private var eotTime: String = ""
     @State private var updatedAlert: Bool = false
@@ -43,8 +43,8 @@ struct RequestForPauseSheet: View {
                             }){
                     TextField("Eot Time", text: $eotTime)
                         .onAppear(){
-                            eotList.append("Greater than S$1000")
-                            eotList.append("Less than S$1000")
+                            eotList.append(CommonStrings().eotTypeGreater)
+                            eotList.append(CommonStrings().eotTypeLesser)
                         }.textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.decimalPad)
                         .alert(isPresented: $errorAlert, content: {
@@ -90,6 +90,13 @@ struct RequestForPauseSheet: View {
     func requestPauseFunc() {
         closeSheetString = "close"
         isLoading.toggle()
+        
+        if eotTypeSelected == CommonStrings().eotTypeGreater {
+            eotTypeSelected = CommonStrings().eotTypeGreaterActual
+        }else if eotTypeSelected == CommonStrings().eotTypeLesser{
+            eotTypeSelected = CommonStrings().eotTypeLesserActual
+        }
+        
         let body : RequestForPauseModel = RequestForPauseModel(eotType: eotTypeSelected, eotTime: eotTime, frId: requestForPauseModel.frId, observation: requestForPauseModel.observation, actionTaken: requestForPauseModel.actionTaken, remarks: requestForPauseModel.remarks)
         
         let encodedBody = try? JSONEncoder().encode(body)

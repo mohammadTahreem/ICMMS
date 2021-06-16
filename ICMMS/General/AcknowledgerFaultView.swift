@@ -18,24 +18,26 @@ struct AcknowledgerFaultView: View {
     @State var ackSign : String = ""
     @State var techSignBool = false
     @State var ackSignBool = false
-    let ackSignCanvas = PencilKitRepresentable()
-    let techSignCanvas = PencilKitRepresentable()
+    @State var ackSignCanvas = PKCanvasView()
+    @State var techSignCanvas = PKCanvasView()
     let imgRect = CGRect(x: 0, y: 0, width: 400.0, height: 100.0)
     @State private var onSuccess: Bool = false
     @State private var onFailure: Bool = false
     @State private var isLoading: Bool = false
     @State var dataItems: UpdateFaultRequest
     @State var currentFrResponse : CurrentFrResponse
+    @Binding var receivedValueAckFR: String
     
     var body: some View {
         
-        NavigationView{
+        
         ZStack{
             Color("light_gray")
                 .ignoresSafeArea()
             VStack{
                 
-                ackSignCanvas.frame(height: 100.0)
+                PencilKitRepresentable(canvas: $ackSignCanvas)
+                    .frame(height: 100.0)
                     .cornerRadius(8)
                     .border(Color.gray, width: 2)
                     .padding()
@@ -58,7 +60,8 @@ struct AcknowledgerFaultView: View {
                         Alert(title: Text("Error"), message: Text("Fault Id:\(currentFrResponse.frId ?? "" )  couldn't be updated"), dismissButton: .default(Text("Okay")))
                     })
                 
-                techSignCanvas.frame(height: 100.0)
+                PencilKitRepresentable(canvas: $techSignCanvas)
+                    .frame(height: 100.0)
                     .cornerRadius(8)
                     .border(Color.gray, width: 2)
                     .padding()
@@ -101,34 +104,35 @@ struct AcknowledgerFaultView: View {
                 }
                 
             }
-            
             .background(Color(.systemBackground))
             .cornerRadius(8)
             .padding()
         }
-        .navigationBarTitle("Acknowledger Details")
-        }
+        
+        
     }
     
+    
     func checkForConditions() {
-        ackSign = saveSignature(canvasView: ackSignCanvas)
-        techSign = saveSignature(canvasView: techSignCanvas)
-        
-        techSignBool = techSignCanvas.checkIfEmpty()
-        ackSignBool = ackSignCanvas.checkIfEmpty()
+        ackSign = saveSignature(canvas: ackSignCanvas)
+        techSign = saveSignature(canvas: techSignCanvas)
+        print(ackSign)
+        techSignBool = techSignCanvas.drawing.strokes.isEmpty
+        ackSignBool = ackSignCanvas.drawing.strokes.isEmpty
         
         if (ackName.isEmpty
                 || ackRank.isEmpty
                 || techSignBool
-                || ackSignBool){
+                || ackSignBool
+        ){
             showErrorAlert = true
         }else{
             showErrorAlert = false
         }
     }
     
-    func saveSignature(canvasView: PencilKitRepresentable) -> String {
-        let imageData : UIImage = canvasView.canvas.drawing.image(from: imgRect, scale: 1.0)
+    func saveSignature(canvas: PKCanvasView) -> String {
+        let imageData : UIImage = canvas.drawing.image(from: canvas.drawing.bounds, scale: 1.0)
         let originalImage = imageData.pngData()!
         return originalImage.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
     }
@@ -176,6 +180,7 @@ struct AcknowledgerFaultView: View {
                     }
                 }
                 onSuccess = true
+                receivedValueAckFR = CommonStrings().successResponse
             } else {
                 print("The last print statement: \(data!)")
                 print("Error code: \(response.statusCode)")
