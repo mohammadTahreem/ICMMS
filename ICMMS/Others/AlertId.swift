@@ -9,8 +9,8 @@ import SwiftUI
 
 struct AlertId: Identifiable {
     
-    var id: AlertType?
-    var respId: ResponseAlertTypes?
+    var id: AlertType
+    
     
     enum AlertType {
         case respone200
@@ -25,9 +25,8 @@ struct AlertId: Identifiable {
         case closeFrAfterUpdate
         case sameStatusForUpdateAlert
         case uploadQuotationAlert
+        case cantTakeActionTillQuotationAcceptedAlert
     }
     
-    enum ResponseAlertTypes {
-        case responseTimeOut
-    }
+    
 }

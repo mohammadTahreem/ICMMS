@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-struct GeneralItems: View {
+struct GeneralItemsFaultReport: View {
     
     @State var frId: String
     @State var currentFrResponse: CurrentFrResponse

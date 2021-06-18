@@ -26,14 +26,33 @@ struct UploadPurchaseOrderView: View {
             
             webView
                 .onAppear(){
-                    guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/quotation/\(frId)") else {return}
-                    var urlRequest = URLRequest(url: url)
-                    urlRequest.httpMethod = "GET"
-                    urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                    urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
-                    urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
-                    urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
-                    self.urlRequest = urlRequest
+                    guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/purchaseOrder/\(frId)") else {return}
+                    var urlRequestNew = URLRequest(url: url)
+                    urlRequestNew.httpMethod = "GET"
+                    urlRequestNew.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                    urlRequestNew.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+                    urlRequestNew.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+                    urlRequestNew.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+                    
+                    let dataTask = URLSession.shared.dataTask(with: urlRequestNew) { (data, response, error) in
+                        if let error = error {
+                            print("Request error: ", error)
+                            return
+                        }
+                        
+                        guard let response = response as? HTTPURLResponse else {
+                            print("response error: \(String(describing: error))")
+                            return
+                        }
+                        
+                        if response.statusCode == 200 {
+                            self.urlRequest = urlRequestNew
+                        }else{
+                            print("Error: \(response.statusCode). There was an error")
+                        }
+                    }
+                    dataTask.resume()
+                    
                 }
                 .cornerRadius(10)
                 .padding()

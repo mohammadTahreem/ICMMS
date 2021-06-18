@@ -77,7 +77,6 @@ struct DashboardView: View {
     func saveWorkSpaceInUserDeaults(workspace: String) {
         UserDefaults.standard.setValue(workspace, forKey: "workspace")
         UserDefaults.standard.synchronize()
-        print(workspace)
     }
     
 }

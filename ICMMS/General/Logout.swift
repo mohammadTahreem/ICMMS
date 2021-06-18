@@ -80,6 +80,9 @@ struct Logout: View {
             }
             
         }.resume()
+        
+        UserDefaults.standard.setValue(deviceToken, forKey: "deviceToken")
+        UserDefaults.standard.synchronize()
     }
 }
 

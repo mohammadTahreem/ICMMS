@@ -13,6 +13,8 @@ struct SearchPDFView: View {
     @State var searchFaultResponse : [FaultSearchResponse] = []
     @EnvironmentObject var settings: UserSettings
     @State var progressBarBool = false
+    @State var openQuotationSheet: Bool = false
+    @State var successBoolQuotation: Bool = false
     var body: some View {
         VStack{
             TextField("Search for \(quoteOrPurchase)",text: $searchText)
@@ -35,7 +37,8 @@ struct SearchPDFView: View {
                 List (searchFaultResponse, id: \.self)  { searchFaultResponse in
                     ZStack{
                         Button("") {}
-                        NavigationLink(destination: UploadQuotationView(frId: searchFaultResponse.frId!)){
+                        NavigationLink(destination: UploadQuotationView(frId: searchFaultResponse.frId!, openQuotationSheet: $openQuotationSheet,
+                                                                        successBoolQuotation: $successBoolQuotation)){
                             FaultSearchCardView(searchFaultResponse: searchFaultResponse)
                                 .padding()
                                 .background(Color("light_gray"))

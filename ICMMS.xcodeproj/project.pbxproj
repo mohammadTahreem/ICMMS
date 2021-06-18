@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC260BB2267C6E9D002AA8E6 /* IsFromNoti.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB1267C6E9D002AA8E6 /* IsFromNoti.swift */; };
+		CC260BB4267CA0C5002AA8E6 /* FloatingMenuPdf.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB3267CA0C5002AA8E6 /* FloatingMenuPdf.swift */; };
+		CC260BB7267CB586002AA8E6 /* ImageViewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB6267CB586002AA8E6 /* ImageViewSheet.swift */; };
+		CC260BB9267CB789002AA8E6 /* FRImageResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB8267CB789002AA8E6 /* FRImageResponseModel.swift */; };
 		CC3E9F4C2668F71300BA47F2 /* SearchFaultReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F4B2668F71300BA47F2 /* SearchFaultReportView.swift */; };
 		CC3E9F4E2668F75600BA47F2 /* FaultSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F4D2668F75600BA47F2 /* FaultSearchResponse.swift */; };
 		CC3E9F502668F7A300BA47F2 /* GeneralMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F4F2668F7A300BA47F2 /* GeneralMethods.swift */; };
@@ -36,7 +40,9 @@
 		CC4340CF2679C7D7009999B6 /* UploadPurchaseOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4340CE2679C7D7009999B6 /* UploadPurchaseOrderView.swift */; };
 		CC4340D22679C8EE009999B6 /* SearchPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4340D12679C8EE009999B6 /* SearchPDFView.swift */; };
 		CC4340D62679F836009999B6 /* pdfback.png in Resources */ = {isa = PBXBuildFile; fileRef = CC4340D52679F835009999B6 /* pdfback.png */; };
-		CC4340D8267A09FD009999B6 /* GeneralItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4340D7267A09FD009999B6 /* GeneralItems.swift */; };
+		CC4340D8267A09FD009999B6 /* GeneralItemsFaultReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4340D7267A09FD009999B6 /* GeneralItemsFaultReport.swift */; };
+		CC4340DA267A18CD009999B6 /* WorkspaceAlertId.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4340D9267A18CC009999B6 /* WorkspaceAlertId.swift */; };
+		CC4340DC267B0DCB009999B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC4340DB267B0DCB009999B6 /* GoogleService-Info.plist */; };
 		CC4B68022667670800682E7A /* DashboardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4B68012667670800682E7A /* DashboardDetails.swift */; };
 		CC4B68072667D38A00682E7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCE18A4526663D2F00C0E4BD /* Assets.xcassets */; };
 		CCB1CDE126674DB900E6F83A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDE026674DB900E6F83A /* LoginView.swift */; };
@@ -49,13 +55,15 @@
 		CCE18A4226663D2B00C0E4BD /* ICMMSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE18A4126663D2B00C0E4BD /* ICMMSApp.swift */; };
 		CCE18A4426663D2B00C0E4BD /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE18A4326663D2B00C0E4BD /* WorkspaceView.swift */; };
 		CCE18A5326663D8F00C0E4BD /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CCE18A5226663D8F00C0E4BD /* FirebaseMessaging */; };
-		CCE926A326689332000FD606 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CCE926A226689332000FD606 /* GoogleService-Info.plist */; };
 		CCF6DEAA267328C300716D25 /* AcknowledgerFaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF6DEA9267328C300716D25 /* AcknowledgerFaultView.swift */; };
 		CCF6DEAC2673290200716D25 /* PencilKitRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF6DEAB2673290200716D25 /* PencilKitRepresentable.swift */; };
-		CCF6DEAE26736C1700716D25 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF6DEAD26736C1700716D25 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CC260BB1267C6E9D002AA8E6 /* IsFromNoti.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsFromNoti.swift; sourceTree = "<group>"; };
+		CC260BB3267CA0C5002AA8E6 /* FloatingMenuPdf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMenuPdf.swift; sourceTree = "<group>"; };
+		CC260BB6267CB586002AA8E6 /* ImageViewSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewSheet.swift; sourceTree = "<group>"; };
+		CC260BB8267CB789002AA8E6 /* FRImageResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRImageResponseModel.swift; sourceTree = "<group>"; };
 		CC3E9F4B2668F71300BA47F2 /* SearchFaultReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFaultReportView.swift; sourceTree = "<group>"; };
 		CC3E9F4D2668F75600BA47F2 /* FaultSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaultSearchResponse.swift; sourceTree = "<group>"; };
 		CC3E9F4F2668F7A300BA47F2 /* GeneralMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralMethods.swift; sourceTree = "<group>"; };
@@ -84,7 +92,9 @@
 		CC4340CE2679C7D7009999B6 /* UploadPurchaseOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPurchaseOrderView.swift; sourceTree = "<group>"; };
 		CC4340D12679C8EE009999B6 /* SearchPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPDFView.swift; sourceTree = "<group>"; };
 		CC4340D52679F835009999B6 /* pdfback.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pdfback.png; sourceTree = "<group>"; };
-		CC4340D7267A09FD009999B6 /* GeneralItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralItems.swift; sourceTree = "<group>"; };
+		CC4340D7267A09FD009999B6 /* GeneralItemsFaultReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralItemsFaultReport.swift; sourceTree = "<group>"; };
+		CC4340D9267A18CC009999B6 /* WorkspaceAlertId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAlertId.swift; sourceTree = "<group>"; };
+		CC4340DB267B0DCB009999B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CC4B68012667670800682E7A /* DashboardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDetails.swift; sourceTree = "<group>"; };
 		CCB1CDE026674DB900E6F83A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CCB1CDE326674DF900E6F83A /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
@@ -100,10 +110,8 @@
 		CCE18A4526663D2F00C0E4BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CCE18A4826663D3000C0E4BD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CCE9269C26688F9B000FD606 /* ICMMS.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ICMMS.entitlements; sourceTree = SOURCE_ROOT; };
-		CCE926A226689332000FD606 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		CCF6DEA9267328C300716D25 /* AcknowledgerFaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgerFaultView.swift; sourceTree = "<group>"; };
 		CCF6DEAB2673290200716D25 /* PencilKitRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PencilKitRepresentable.swift; sourceTree = "<group>"; };
-		CCF6DEAD26736C1700716D25 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +127,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC260BB5267CB54E002AA8E6 /* ImageViews */ = {
+			isa = PBXGroup;
+			children = (
+				CC260BB6267CB586002AA8E6 /* ImageViewSheet.swift */,
+			);
+			path = ImageViews;
+			sourceTree = "<group>";
+		};
 		CC3E9F4A2668F6DE00BA47F2 /* FaultReport */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +199,7 @@
 				CC3E9F572668F8A500BA47F2 /* UpdateFaultRequest.swift */,
 				CC3E9F79266A33CE00BA47F2 /* Geolocation.swift */,
 				CC4340CC2679C696009999B6 /* UploadQuotationModel.swift */,
+				CC260BB8267CB789002AA8E6 /* FRImageResponseModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,7 +216,7 @@
 				CC3E9F592668F8D200BA47F2 /* LabelTextField.swift */,
 				CC3E9F5B2668F98500BA47F2 /* URLImage.swift */,
 				CC3E9F5D2668F9A400BA47F2 /* ImageLoader.swift */,
-				CCF6DEAD26736C1700716D25 /* AppDelegate.swift */,
+				CC260BB1267C6E9D002AA8E6 /* IsFromNoti.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -212,7 +229,9 @@
 				CC3E9F7B266A3D5000BA47F2 /* AlertId.swift */,
 				CCE18A4526663D2F00C0E4BD /* Assets.xcassets */,
 				CC4340D52679F835009999B6 /* pdfback.png */,
-				CC4340D7267A09FD009999B6 /* GeneralItems.swift */,
+				CC4340D7267A09FD009999B6 /* GeneralItemsFaultReport.swift */,
+				CC4340D9267A18CC009999B6 /* WorkspaceAlertId.swift */,
+				CC260BB3267CA0C5002AA8E6 /* FloatingMenuPdf.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -236,7 +255,8 @@
 		CCE18A4026663D2B00C0E4BD /* ICMMS */ = {
 			isa = PBXGroup;
 			children = (
-				CCE926A226689332000FD606 /* GoogleService-Info.plist */,
+				CC260BB5267CB54E002AA8E6 /* ImageViews */,
+				CC4340DB267B0DCB009999B6 /* GoogleService-Info.plist */,
 				CCE9269C26688F9B000FD606 /* ICMMS.entitlements */,
 				CCE18A4126663D2B00C0E4BD /* ICMMSApp.swift */,
 				CCB1CDF126675E1100E6F83A /* Info.plist */,
@@ -327,8 +347,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC4B68072667D38A00682E7A /* Assets.xcassets in Resources */,
-				CCE926A326689332000FD606 /* GoogleService-Info.plist in Resources */,
 				CC4340D62679F836009999B6 /* pdfback.png in Resources */,
+				CC4340DC267B0DCB009999B6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,12 +359,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC4340D8267A09FD009999B6 /* GeneralItems.swift in Sources */,
-				CCF6DEAE26736C1700716D25 /* AppDelegate.swift in Sources */,
+				CC4340D8267A09FD009999B6 /* GeneralItemsFaultReport.swift in Sources */,
 				CC4340BF26771B45009999B6 /* PDFKitRepresentedView.swift in Sources */,
 				CC3E9F7C266A3D5000BA47F2 /* AlertId.swift in Sources */,
+				CC260BB2267C6E9D002AA8E6 /* IsFromNoti.swift in Sources */,
 				CCB1CDE126674DB900E6F83A /* LoginView.swift in Sources */,
 				CC3E9F682668FADF00BA47F2 /* RequestForPauseModel.swift in Sources */,
+				CC260BB4267CA0C5002AA8E6 /* FloatingMenuPdf.swift in Sources */,
+				CC4340DA267A18CD009999B6 /* WorkspaceAlertId.swift in Sources */,
 				CC4340CD2679C696009999B6 /* UploadQuotationModel.swift in Sources */,
 				CC3E9F78266A236F00BA47F2 /* LocationManager.swift in Sources */,
 				CC4340D22679C8EE009999B6 /* SearchPDFView.swift in Sources */,
@@ -371,6 +393,8 @@
 				CC3E9F542668F83600BA47F2 /* CurrentFrResponse.swift in Sources */,
 				CC4340CB2678A1E8009999B6 /* WebViewKit.swift in Sources */,
 				CC3E9F502668F7A300BA47F2 /* GeneralMethods.swift in Sources */,
+				CC260BB9267CB789002AA8E6 /* FRImageResponseModel.swift in Sources */,
+				CC260BB7267CB586002AA8E6 /* ImageViewSheet.swift in Sources */,
 				CCE18A4226663D2B00C0E4BD /* ICMMSApp.swift in Sources */,
 				CC3E9F522668F7E900BA47F2 /* EditFaultReportView.swift in Sources */,
 				CCB1CDEC2667565500E6F83A /* WorkspaceResponse.swift in Sources */,
@@ -520,8 +544,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tahreem.ICMMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -545,8 +571,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tahreem.ICMMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

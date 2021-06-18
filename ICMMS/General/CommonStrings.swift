@@ -26,5 +26,9 @@ struct CommonStrings {
     
     let eotTypeGreaterActual = "Greater Than $1000"
     let eotTypeLesserActual = "Less Than $1000"
+    let quotationStatusUploaded = "Uploaded"
+    let quotationStatusAccepted = "Accepted"
+    let quotationStatusRejected = "Rejected"
     
+    let editFaultReportActivity = "EditFaultReportActivity"
 }

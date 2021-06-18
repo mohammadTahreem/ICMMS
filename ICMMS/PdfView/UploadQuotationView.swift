@@ -21,7 +21,8 @@ struct UploadQuotationView: View {
     @State var showDownloadButton = false
     @State var fileURL: URL = Bundle.main.url(forResource: "pdfback", withExtension: "png")!
     @State var fileData: Data = Data()
-    @State var successBool: Bool = false
+    @Binding var openQuotationSheet: Bool
+    @Binding var successBoolQuotation: Bool
     @EnvironmentObject var settings: UserSettings
     
     var body: some View {
@@ -39,7 +40,7 @@ struct UploadQuotationView: View {
                     urlRequest1.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
                     urlRequest1.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
                     
-                    let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+                    let dataTask = URLSession.shared.dataTask(with: urlRequest1) { (data, response, error) in
                         if let error = error {
                             print("Request error: ", error)
                             return
@@ -52,7 +53,10 @@ struct UploadQuotationView: View {
                         
                         if response.statusCode == 200 {
                             self.urlRequest = urlRequest1
-                            successBool = true
+                            if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag{
+                            showDownloadButton = true
+                                
+                            }
                         }else{
                             print("Error: \(response.statusCode). There was an error")
                         }
@@ -77,8 +81,10 @@ struct UploadQuotationView: View {
                     Button("Upload Document"){
                         docSheet.toggle()
                     }
-                    .alert(isPresented: $successBool, content: {
-                        Alert(title: Text("Success"), message: Text("Quotation is uploaded"), dismissButton: .cancel())
+                    .alert(isPresented: $successBoolQuotation, content: {
+                        Alert(title: Text("Success"), message: Text("Quotation is uploaded"), dismissButton: .default(Text("Okay"), action: {
+                            openQuotationSheet = false
+                        }))
                     })
                     
                     .sheet(isPresented: $docSheet) {
@@ -139,7 +145,7 @@ struct UploadQuotationView: View {
             }
             
             if response.statusCode == 200 {
-                successBool = true
+                successBoolQuotation = true
             }else{
                 print("Error: \(response.statusCode). There was an error")
             }
@@ -194,8 +200,8 @@ struct UploadQuotationView: View {
     }
 }
 
-struct UploadQuotationView_Previews: PreviewProvider {
-    static var previews: some View {
-        UploadQuotationView(frId: "")
-    }
-}
+//struct UploadQuotationView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        UploadQuotationView(frId: "")
+//    }
+//}

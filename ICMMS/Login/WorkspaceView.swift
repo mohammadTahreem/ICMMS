@@ -14,7 +14,7 @@ struct WorkspaceView: View {
     @State private var loginAlert: Bool = false
     @State private var errorAlert: Bool = false
     @EnvironmentObject var settings: UserSettings
-    @State var alertId: AlertId?
+    @State var alertId: WorkspaceAlertId?
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         NavigationView{
@@ -56,20 +56,18 @@ struct WorkspaceView: View {
         }
     }
     
-    private func createAlert(alertId: AlertId) -> Alert{
-        switch alertId.respId {
+    private func createAlert(alertId: WorkspaceAlertId) -> Alert{
+        switch alertId.id {
         
         case .responseTimeOut:
             return Alert(title: Text("Time Out Error"), dismissButton: .default(Text("Okay"), action: {
                 presentationMode.wrappedValue.dismiss()
             }))
-        case .none:
-          return Alert(title: Text("Test"))
         }
     }
     func getWorkspaces()  {
         let currentUrl = CommonStrings().apiURL
-        
+        print(UserDefaults.standard.string(forKey: "token")!)
         guard let url = URL(string: "\(currentUrl)workspaces") else {return}
         print(url)
         var urlRequest = URLRequest(url: url)
@@ -80,7 +78,7 @@ struct WorkspaceView: View {
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
                 print("Request error: ", error)
-                self.alertId = AlertId(respId: .responseTimeOut)
+                self.alertId = WorkspaceAlertId(id: .responseTimeOut)
                 return
             }
             

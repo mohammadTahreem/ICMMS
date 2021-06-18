@@ -171,20 +171,31 @@ struct LoginViewPre: PreviewProvider {
 }
 
 struct MainScreen: View{
-    
+    @EnvironmentObject var isFrom : IsFromNoti
     @EnvironmentObject var settings: UserSettings
+    var frId = UserDefaults.standard.string(forKey: "frId")
+    var workspace = UserDefaults.standard.string(forKey: "workspace")
+    var view = UserDefaults.standard.string(forKey: "view")
+    @State var showEditFr = UserDefaults.standard.string(forKey: "showEditFr")
     
     var body: some View{
         
-        if settings.loggedIn {
+        if settings.loggedIn && !isFrom.isFromNotication {
             WorkspaceView().environmentObject(settings)
-        }else {
-            if UserDefaults.standard.bool(forKey: "loggedIn") == true {
+        }else if settings.loggedIn && isFrom.isFromNotication {
+            NavigationView{
+                EditFaultReportView(frId: frId!)
+            }
+        } else {
+            if UserDefaults.standard.bool(forKey: "loggedIn") == true && !isFrom.isFromNotication {
                 WorkspaceView().environmentObject(settings)
-            }else{
+            }else if UserDefaults.standard.bool(forKey: "loggedIn") == false && !isFrom.isFromNotication {
                 LoginView().environmentObject(settings)
+            }else if UserDefaults.standard.bool(forKey: "loggedIn") == true && isFrom.isFromNotication {
+                NavigationView{
+                    EditFaultReportView(frId: frId!)
+                }
             }
         }
     }
-    
 }

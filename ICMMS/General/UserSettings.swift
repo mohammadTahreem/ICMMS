@@ -14,6 +14,8 @@ class UserSettings: ObservableObject {
             UserDefaults.standard.set(loggedIn, forKey: "loggedIn")
         }
     }
+   
+    
     
     init() {
         self.loggedIn = UserDefaults.standard.object(forKey: "username") as? Bool ?? false

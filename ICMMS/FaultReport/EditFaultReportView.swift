@@ -40,6 +40,10 @@ struct EditFaultReportView: View {
     @State var closeSheetString: String = ""
     @State var receivedValueAckFR = ""
     @State var openQuotationSheet = false
+    @State var successBoolQuotation = false
+    @State var openPurchaseSheet = false
+    @State var successBoolPurchase = false
+    @State private var activeSheet: EditFaultActiveSheet?
     
     var body: some View {
         
@@ -54,14 +58,22 @@ struct EditFaultReportView: View {
                         getCurrentFaultReport(frId: frId)
                     }
             }else{
+                
+                ZStack{
                 ScrollView {
                     VStack{
                         //general items. Not editable
-                        GeneralItems(frId: frId, currentFrResponse: currentFrResponse,
+                        GeneralItemsFaultReport(frId: frId, currentFrResponse: currentFrResponse,
                                      observationString: $observationString, actionTakenString: $actionTakenString)
-                            .sheet(isPresented: $openQuotationSheet , content: {
-                                UploadQuotationView(frId: frId)
-                            })
+                            .sheet(item: $activeSheet) { item in
+                                switch item {
+                                case .first:
+                                    UploadQuotationView(frId: frId, openQuotationSheet: $openQuotationSheet, successBoolQuotation: $successBoolQuotation)
+                                case .second:
+                                    //SecondView()
+                                    Text("sec")
+                                }
+                            }
                         
                         VStack{
                             //remarks
@@ -204,7 +216,8 @@ struct EditFaultReportView: View {
                                             getCurrentFrUsingEquipment(qrValue: QRValue)
                                         }
                                     },content: {
-                                        EquipScanView(showScanSheet: $showScanSheet, QRValue: $QRValue, frId: currentFrResponse.frId!, responseCode: $responseCode)
+                                        EquipScanView(showScanSheet: $showScanSheet, QRValue: $QRValue,
+                                                      frId: currentFrResponse.frId!, responseCode: $responseCode)
                                             .onAppear(){
                                                 QRValue = String()
                                             }
@@ -384,6 +397,32 @@ struct EditFaultReportView: View {
                         
                     }.padding(.top, 20)
                 }
+                    
+                    
+                    ZStack(alignment: .bottomTrailing) {
+                        
+                        Rectangle()
+                            .foregroundColor(.clear)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        FloatingMenuPdf(moreIcon: "newquote", purchaseImage: "quote_p", quoteImage: "quote_q", frId: frId,
+                                        successBoolQuotation: $successBoolQuotation, openQuotationSheet: $openQuotationSheet,
+                                        openPurchaseSheet: $openPurchaseSheet, successBoolPurchase: $successBoolPurchase)
+                            .padding()
+                    }
+                    
+                    ZStack(alignment: .bottomLeading) {
+                        
+                        Rectangle()
+                            .foregroundColor(.clear)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        FloatingMenuImages(moreIcon: "newquote", purchaseImage: "quote_p", quoteImage: "quote_q", frId: frId,
+                                           successBeforeImageBool: $successBoolQuotation, openBeforeImageSheetBool: $openQuotationSheet,
+                                           openAfterImageSheetBool: $openPurchaseSheet, successBeforeImageSheetBool: $successBoolPurchase)
+                            .padding()
+                    }
+                    
+                    
+                }
             }
         }
         .navigationBarItems(trailing: Logout().environmentObject(settings))
@@ -540,9 +579,10 @@ struct EditFaultReportView: View {
             return Alert(title: Text("Upload Qoutation"), message: Text("Upload Quotation for further action!"),
                          dismissButton: .default(Text("Okay!"), action: {
                             self.openQuotationSheet = true
+                            activeSheet = .first
                          }))
-        case .none:
-            return Alert(title: Text("test"))
+        case .cantTakeActionTillQuotationAcceptedAlert:
+            return Alert(title: Text("Can't take action till quotation gets accepted!"), dismissButton: .default(Text("Okay"))) 
         }
     }
     
@@ -631,9 +671,17 @@ struct EditFaultReportView: View {
                     showEquipButton = false
                     showLocationButton = false
                     showUpdateButton = true
-                }else if currentFrResponse.editable! == true && currentFrResponse.status! == CommonStrings().statusPause &&
-                            currentFrResponse.eotType == CommonStrings().eotTypeGreaterActual{
+                }else if currentFrResponse.status! == CommonStrings().statusPause &&
+                            currentFrResponse.eotType == CommonStrings().eotTypeGreaterActual &&
+                            currentFrResponse.quotationStatus == CommonStrings().quotationStatusRejected{
                     self.alertId = AlertId(id: .uploadQuotationAlert)
+                }else if currentFrResponse.editable! == true && currentFrResponse.status! == CommonStrings().statusPause &&
+                            currentFrResponse.eotType == CommonStrings().eotTypeGreaterActual &&
+                            currentFrResponse.quotationStatus == CommonStrings().quotationStatusUploaded {
+                    self.alertId = AlertId(id: .cantTakeActionTillQuotationAcceptedAlert)
+                    showEquipButton = false
+                    showUpdateButton = false
+                    showLocationButton = false
                 }
                 else if currentFrResponse.editable! == false && currentFrResponse.status! == CommonStrings().statusPause{
                     showLocationButton = true
