@@ -24,10 +24,20 @@ struct UploadQuotationView: View {
     @Binding var openQuotationSheet: Bool
     @Binding var successBoolQuotation: Bool
     @EnvironmentObject var settings: UserSettings
+    @State var remarksField: String = ""
+    @State var showAcceptReject: Bool = false
+    @Binding var quotationAccepted: Bool
+    @Binding var quotationRejected: Bool
+    @State var isLoadingRejected = false
+    @State var isLoadingAccepted = false
+    var currentFrResponse: CurrentFrResponse?
+    
+    @State var viewOpenedFrom: String
     
     var body: some View {
         
         let webView = WebView(request: urlRequest)
+        VStack{
         VStack{
             
             webView
@@ -53,23 +63,27 @@ struct UploadQuotationView: View {
                         
                         if response.statusCode == 200 {
                             self.urlRequest = urlRequest1
-                            if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag{
-                            showDownloadButton = true
-                                
+                            
+                            
+                            if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech{
+                                if viewOpenedFrom == CommonStrings().editFaultReportActivity && currentFrResponse != nil && currentFrResponse?.status == CommonStrings().statusPause {
+                                    showUploadButton = true
+                                }else if viewOpenedFrom == CommonStrings().searchQuotation {
+                                    showUploadButton = true
+                                }
+                            }else if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag &&
+                                        self.urlRequest != URLRequest(url: Bundle.main.url(forResource: "pdfback", withExtension: "png")!){
+                                showDownloadButton = true
+                                if currentFrResponse != nil && currentFrResponse?.status == CommonStrings().statusPause {
+                                    showAcceptReject = true
+                                }
                             }
+                            
                         }else{
                             print("Error: \(response.statusCode). There was an error")
                         }
                     }
                     dataTask.resume()
-                    
-                    if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech &&
-                        self.urlRequest == URLRequest(url: Bundle.main.url(forResource: "pdfback", withExtension: "png")!) {
-                        showUploadButton = true
-                    }else if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag &&
-                                self.urlRequest != URLRequest(url: Bundle.main.url(forResource: "pdfback", withExtension: "png")!){
-                        showDownloadButton = true
-                    }
                 }
                 .cornerRadius(10)
                 .padding()
@@ -90,7 +104,7 @@ struct UploadQuotationView: View {
                     .sheet(isPresented: $docSheet) {
                         DocumentPicker(fileContent: $fileURL, fileData: $fileData)
                             .onDisappear(){
-                                if fileURL != URL(string: CommonStrings().appleURL)! {
+                                if fileURL != Bundle.main.url(forResource: "pdfback", withExtension: "png")! {
                                     urlRequest = URLRequest(url: fileURL)
                                     let fileStream:String = fileData.base64EncodedString(options: NSData.Base64EncodingOptions.init(rawValue: 0))
                                     uploadToServer(fileStream: fileStream)
@@ -115,11 +129,70 @@ struct UploadQuotationView: View {
             }
             .padding()
         }
+            
+            if showAcceptReject{
+                VStack{
+                    TextField("Remarks", text: $remarksField)
+                        .padding()
+                        .background(Color("light_gray"))
+                        .foregroundColor(.black)
+                        .cornerRadius(8)
+                    
+                    HStack{
+                        
+                        if isLoadingAccepted{
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .padding()
+                        }else{
+                            Button(action: {
+                                quotationAcceptReject(status: CommonStrings().quotationStatusAccepted)
+                            }, label: {
+                                Text(CommonStrings().quotationStatusAccepted)
+                            })
+                            .padding()
+                            .background(Color("Indeco_blue"))
+                            .cornerRadius(8)
+                            .foregroundColor(.white)
+                            .alert(isPresented: $quotationAccepted, content: {
+                                Alert(title: Text("Quotation Accepted"), dismissButton: .default(Text("Okay"), action: {
+                                    openQuotationSheet = false
+                                }))
+                            })
+                        }
+                        if isLoadingRejected{
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .padding()
+                        }else{
+                            Button(action: {
+                                quotationAcceptReject(status: CommonStrings().quotationStatusRejected)
+                            }, label: {
+                                Text(CommonStrings().quotationStatusRejected)
+                            })
+                            .padding()
+                            .background(Color("Indeco_blue"))
+                            .cornerRadius(8)
+                            .foregroundColor(.white)
+                            .alert(isPresented: $quotationRejected, content: {
+                                Alert(title: Text("Quotation Rejected"), dismissButton: .default(Text("Okay!"), action: {
+                                    openQuotationSheet = false
+                                }))
+                            })
+                        }
+                    }
+                    .padding()
+                    .padding(.bottom, 50)
+                }
+                .padding()
+            }
+        }
+        
         .navigationBarTitle("Quotation Upload")
         .navigationBarItems(trailing: Logout().environmentObject(settings))
     }
     
-    func uploadToServer(fileStream: String)  {
+    private func uploadToServer(fileStream: String)  {
         
         let body = UploadQuotationModel(id: frId, data: fileStream)
         let encodedBody = try? JSONEncoder().encode(body)
@@ -198,10 +271,64 @@ struct UploadQuotationView: View {
         }
         dataTask.resume()
     }
+    
+    func quotationAcceptReject(status: String) {
+        
+        if status == CommonStrings().quotationStatusAccepted{
+            isLoadingAccepted = true
+        }else if status == CommonStrings().quotationStatusRejected{
+            isLoadingRejected = true
+        }
+        
+        guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/quotation/status") else {return}
+        
+        let body = AcceptRejectQuotationModel(frId: frId, quotationStatus: status, remarks: [remarksField])
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+        urlRequest.httpBody = try? JSONEncoder().encode(body)
+        
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            if let error = error {
+                print("Request error: ", error)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                print("response error: \(String(describing: error))")
+                return
+            }
+            
+            if response.statusCode == 200 {
+                if status == CommonStrings().quotationStatusAccepted{
+                    quotationAccepted = true
+                }else if status == CommonStrings().quotationStatusRejected{
+                    quotationRejected = true
+                }
+                
+            }else{
+                print("Error: \(response.statusCode). There was an error")
+            }
+            isLoadingAccepted = false
+            isLoadingRejected = false
+        }
+        dataTask.resume()
+    }
+    
+    
 }
 
-//struct UploadQuotationView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        UploadQuotationView(frId: "")
-//    }
-//}
+struct UploadQuotationView_Previews: PreviewProvider {
+    
+    
+    
+    static var previews: some View {
+            UploadQuotationView(frId: "FR-ID", openQuotationSheet: .constant(true),
+                                successBoolQuotation: .constant(false),
+                                quotationAccepted: .constant(false), quotationRejected: .constant(false), currentFrResponse: CurrentFrResponse(), viewOpenedFrom: CommonStrings().searchQuotation) .environmentObject(UserSettings())
+        }
+}

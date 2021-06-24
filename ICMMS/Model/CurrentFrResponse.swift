@@ -54,11 +54,11 @@ struct CurrentFrResponse: Codable {
     var responseTime : String?
     var downTime : String?
     var pauseTime : String?
-    var compvarionTime : String?
+    var completionTime : String?
     var acknowledgementTime : String?
     var eotTime : String?
     var technicianSignature: String?
-    
+    var reportedDate: String?
     
     
 }

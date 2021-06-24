@@ -57,6 +57,7 @@ struct FaultSearchView: View {
     @State var activeInactive: String
     @State var searchFaultResponse : [FaultSearchResponse] = []
     @State var ackSheetBool = false
+    @State var searchBool = false
     
     var body: some View {
         
@@ -73,25 +74,31 @@ struct FaultSearchView: View {
                 .padding()
             
             Spacer()
-            
-            List (searchFaultResponse, id: \.self)  { searchFaultResponse in
-                ZStack{
-                    Button("") {}
-                    NavigationLink(destination: EditFaultReportView(frId: searchFaultResponse.frId!)){
-                        FaultSearchCardView(searchFaultResponse: searchFaultResponse)
-                            .padding()
-                            .background(Color("light_gray"))
-                            .foregroundColor(.black)
-                            .cornerRadius(8)
-                            .shadow(radius: 5)
-                            .padding()
+            if searchBool {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .padding()
+                Spacer()
+            }else{
+                List (searchFaultResponse, id: \.self)  { searchFaultResponse in
+                    ZStack{
+                        Button("") {}
+                        NavigationLink(destination: EditFaultReportView(frId: searchFaultResponse.frId!)){
+                            FaultSearchCardView(searchFaultResponse: searchFaultResponse)
+                                .padding()
+                                .background(Color("light_gray"))
+                                .foregroundColor(.black)
+                                .cornerRadius(8)
+                                .shadow(radius: 5)
+                                .padding()
+                        }
                     }
                 }
             }
-            
         }
     }
     func getFaultReports(searchText: String)  {
+        searchBool = true
         let currentUrl = CommonStrings().apiURL
         
         let urlString = "\(currentUrl)faultreport/search?query=\(searchText)&type=\(activeInactive)"
@@ -121,7 +128,7 @@ struct FaultSearchView: View {
                     print("Error decoding: \(dictionary)")
                 }
             }
-            
+            searchBool = false
         }.resume()
     }
 }
@@ -143,12 +150,13 @@ struct SearchFaultReportView: View {
                     Text("InActive")
                 }
         }
+        //.tabViewStyle(PageTabViewStyle())
         .toolbar(){
             ToolbarItem(placement: .navigationBarTrailing){
                 Logout().environmentObject(settings)
             }
         }
-        .navigationBarTitle("Search")
+        .navigationBarTitle("Search Fault Reports")
         
     }
 }

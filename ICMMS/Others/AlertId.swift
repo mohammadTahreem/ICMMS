@@ -26,6 +26,10 @@ struct AlertId: Identifiable {
         case sameStatusForUpdateAlert
         case uploadQuotationAlert
         case cantTakeActionTillQuotationAcceptedAlert
+        case uploadPurchaseOrder
+        case pauseRequestRejectedCase
+        case acceptSheetBoolCase
+        case remarksListLessThanOne
     }
     
     

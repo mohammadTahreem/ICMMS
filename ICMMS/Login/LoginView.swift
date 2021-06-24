@@ -177,24 +177,30 @@ struct MainScreen: View{
     var workspace = UserDefaults.standard.string(forKey: "workspace")
     var view = UserDefaults.standard.string(forKey: "view")
     @State var showEditFr = UserDefaults.standard.string(forKey: "showEditFr")
-    
+        
     var body: some View{
         
         if settings.loggedIn && !isFrom.isFromNotication {
             WorkspaceView().environmentObject(settings)
         }else if settings.loggedIn && isFrom.isFromNotication {
             NavigationView{
-                EditFaultReportView(frId: frId!)
+                if frId != nil{
+                    EditFaultReportView(frId: frId!)
+                        .environmentObject(settings)
+                }
             }
         } else {
             if UserDefaults.standard.bool(forKey: "loggedIn") == true && !isFrom.isFromNotication {
                 WorkspaceView().environmentObject(settings)
             }else if UserDefaults.standard.bool(forKey: "loggedIn") == false && !isFrom.isFromNotication {
                 LoginView().environmentObject(settings)
-            }else if UserDefaults.standard.bool(forKey: "loggedIn") == true && isFrom.isFromNotication {
+            }else if UserDefaults.standard.bool(forKey: "loggedIn") == true && isFrom.isFromNotication && frId != nil{
                 NavigationView{
                     EditFaultReportView(frId: frId!)
+                        .environmentObject(settings)
                 }
+            }else if UserDefaults.standard.bool(forKey: "loggedIn") == false && isFrom.isFromNotication && frId == nil{
+                LoginView().environmentObject(settings)
             }
         }
     }

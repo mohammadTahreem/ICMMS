@@ -16,7 +16,7 @@ struct WorkspaceAlertId: Identifiable {
 }
 
 enum EditFaultActiveSheet: Identifiable {
-    case first, second
+    case upQuoSheetCase, second
     
     var id: Int {
         hashValue

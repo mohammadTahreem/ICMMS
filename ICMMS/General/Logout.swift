@@ -22,10 +22,9 @@ struct Logout: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 35, height: 35)
                 .onTapGesture {
-                    messageSheetBool.toggle()
+                    messageSheetBool = true
                 }.sheet(isPresented: $messageSheetBool, content: {
-                   // MessagesSheet(messageSheetBool: $messageSheetBool)
-                    Text("Messsages Sheet")
+                    MessagesSheet(messageSheetBool: $messageSheetBool)
                 })
             Button(
                 action: {logout()},
@@ -71,6 +70,8 @@ struct Logout: View {
                     let domain = Bundle.main.bundleIdentifier!
                     UserDefaults.standard.removePersistentDomain(forName: domain)
                     UserDefaults.standard.synchronize()
+                    UserDefaults.standard.setValue(deviceToken, forKey: "deviceToken")
+                    UserDefaults.standard.synchronize()
                     self.settings.loggedIn = false
                 }
                 
@@ -80,9 +81,6 @@ struct Logout: View {
             }
             
         }.resume()
-        
-        UserDefaults.standard.setValue(deviceToken, forKey: "deviceToken")
-        UserDefaults.standard.synchronize()
     }
 }
 

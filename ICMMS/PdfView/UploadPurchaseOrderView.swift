@@ -12,10 +12,10 @@ struct UploadPurchaseOrderView: View {
     @State var docSheet = false
     @State var pdfView = PDFKitRepresentedView(Data())
     @State var data = Data()
-    @State var urlRequest = URLRequest(url: URL(string: "https://www.apple.com")!)
+    @State var urlRequest = URLRequest(url: Bundle.main.url(forResource: "pdfback", withExtension: "png")!)
     @State var showUploadButton = true
     @State var showDownloadButton = false
-    @State var fileURL: URL = URL(string: "https://www.apple.com")!
+    @State var fileURL: URL = Bundle.main.url(forResource: "pdfback", withExtension: "png")!
     @State var fileData: Data = Data()
     @State var successBool: Bool = false
     @EnvironmentObject var settings: UserSettings
@@ -47,6 +47,7 @@ struct UploadPurchaseOrderView: View {
                         
                         if response.statusCode == 200 {
                             self.urlRequest = urlRequestNew
+                            showUploadButton = false
                         }else{
                             print("Error: \(response.statusCode). There was an error")
                         }
@@ -71,7 +72,7 @@ struct UploadPurchaseOrderView: View {
                     .sheet(isPresented: $docSheet) {
                         DocumentPicker(fileContent: $fileURL, fileData: $fileData)
                             .onDisappear(){
-                                if fileURL != URL(string: "https://www.apple.com")! {
+                                if fileURL != Bundle.main.url(forResource: "pdfback", withExtension: "png")! {
                                     urlRequest = URLRequest(url: fileURL)
                                     let fileStream:String = fileData.base64EncodedString(options: NSData.Base64EncodingOptions.init(rawValue: 0))
                                     uploadToServer(fileStream: fileStream)
@@ -100,7 +101,7 @@ struct UploadPurchaseOrderView: View {
         .navigationBarItems(trailing: Logout().environmentObject(settings))
     }
     
-    func uploadToServer(fileStream: String)  {
+    private func uploadToServer(fileStream: String)  {
         
         let body = UploadQuotationModel(id: frId, data: fileStream)
         let encodedBody = try? JSONEncoder().encode(body)

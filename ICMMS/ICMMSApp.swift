@@ -12,7 +12,6 @@ import Firebase
 struct ICMMSApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @State var fcmRegTokenMessage = ""
     
     var body: some Scene {
         
@@ -25,16 +24,15 @@ struct ICMMSApp: App {
                         if let error = error {
                             print("Error in FCM Token: \(error)")
                         } else if let token = token {
-                            self.fcmRegTokenMessage = "Remote FCM registration token: \(token)"
                             UserDefaults.standard.setValue(token, forKey: "deviceToken")
                             UserDefaults.standard.synchronize()
                         }
                     }
+                    
                 }
         }
     }
 }
-
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -170,7 +168,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     }
 }
 // [END ios_10_message_handling]
-
 extension AppDelegate : MessagingDelegate {
     // [START refresh_token]
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
@@ -183,4 +180,3 @@ extension AppDelegate : MessagingDelegate {
     }
     // [END refresh_token]
 }
-

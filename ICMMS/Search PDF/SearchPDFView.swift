@@ -15,6 +15,8 @@ struct SearchPDFView: View {
     @State var progressBarBool = false
     @State var openQuotationSheet: Bool = false
     @State var successBoolQuotation: Bool = false
+    @State var quotationAccepted: Bool = false
+    @State var quotationRejected: Bool = false
     var body: some View {
         VStack{
             TextField("Search for \(quoteOrPurchase)",text: $searchText)
@@ -27,18 +29,16 @@ struct SearchPDFView: View {
                 .foregroundColor(.black)
                 .cornerRadius(8)
                 .padding()
-            
-            Spacer()
             if progressBarBool {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
                     .padding()
+                Spacer()
             }else{
                 List (searchFaultResponse, id: \.self)  { searchFaultResponse in
                     ZStack{
                         Button("") {}
-                        NavigationLink(destination: UploadQuotationView(frId: searchFaultResponse.frId!, openQuotationSheet: $openQuotationSheet,
-                                                                        successBoolQuotation: $successBoolQuotation)){
+                        NavigationLink(destination: UploadQuotationView(frId: searchFaultResponse.frId!, openQuotationSheet: $openQuotationSheet, successBoolQuotation: $successBoolQuotation, quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected, viewOpenedFrom: CommonStrings().searchQuotation)){
                             FaultSearchCardView(searchFaultResponse: searchFaultResponse)
                                 .padding()
                                 .background(Color("light_gray"))
@@ -104,52 +104,3 @@ struct SearchPDFView_Previews: PreviewProvider {
         SearchPDFView(quoteOrPurchase: "Quotation")
     }
 }
-
-
-/*
- if ((statusCommingFromCall.equals("Pause")) && eotTypee.equals("Greater Than $1000")
- && jsonObject.get("quotationStatus").isJsonNull()) {
- scanLocationBtn.setVisibility(View.GONE);
- scanEquipmentBtn.setVisibility(View.GONE);
- alertDialog("Quotation");
- Toast.makeText(EditFaultOnSearchActivity.this, "Please Upload Quotation For Further Action ", Toast.LENGTH_LONG).show();
- } else if ((statusCommingFromCall.equals("Pause")) && eotTypee.equals("Greater Than $1000")
- && jsonObject.get("quotationStatus").getAsString().equals("Rejected")) {
- scanLocationBtn.setVisibility(View.GONE);
- scanEquipmentBtn.setVisibility(View.GONE);
- alertDialog("Quotation");
- Toast.makeText(EditFaultOnSearchActivity.this, "Please Upload Quotation For Further Action ", Toast.LENGTH_LONG).show();
- } else if (statusCommingFromCall.equals("Pause") && eotTypee.equals("Greater Than $1000") &&
- jsonObject.get("quotationStatus").getAsString().equals("Accepted") &&
- jsonObject.get("purchaseOrder").isJsonNull()) {
- scanLocationBtn.setVisibility(View.GONE);
- scanEquipmentBtn.setVisibility(View.GONE);
- alertDialog("Purchase");
- Toast.makeText(EditFaultOnSearchActivity.this, "Please Upload Purchase Order For Further Action ", Toast.LENGTH_LONG).show();
- } else if ((statusCommingFromCall.equals("Pause")) && eotTypee.equals("Greater Than $1000")
- && jsonObject.get("quotationStatus").getAsString().equals("Uploaded")) {
- scanLocationBtn.setVisibility(View.GONE);
- scanEquipmentBtn.setVisibility(View.GONE);
- Toast.makeText(EditFaultOnSearchActivity.this, "You cannot take action until the Quotation has been Accepted/Rejected ", Toast.LENGTH_LONG).show();
- } else if ((role.equals(Constants.ROLE_TECHNICIAN)) && statusCommingFromCall.equals("Closed")
- || statusCommingFromCall.equals("Pause Requested")) {
- scanEquipmentBtn.setVisibility(View.GONE);
- scanLocationBtn.setVisibility(View.GONE);
- } else if (role.equals(Constants.ROLE_TECHNICIAN) && editableVariable.equals("true")) {
- if (!(jsonObject.get("equipment").isJsonNull())) {
- scanEquipmentBtn.setVisibility(View.VISIBLE); 
- acceptButton.setVisibility(View.GONE);
- rejectButton.setVisibility(View.GONE);
- autoCompleteSpinner.setDropDownHeight(0);
- } else if (jsonObject.get("equipment").isJsonNull()) {
- linearLayoutdisable.setVisibility(View.GONE);
- Intent intent = new Intent(EditFaultOnSearchActivity.this, EditFaultReportActivity.class);
- intent.putExtra("workspace", workSpaceid);
- intent.putExtra("value", "Fault");
- intent.putExtra("frId", jsonObject.get("frId").getAsString());
- intent.putExtra("latOfSearch", latitude);
- intent.putExtra("longOfSearch", longitude);
- startActivity(intent);
- finish();
- }
- */

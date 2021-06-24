@@ -9,8 +9,8 @@ import SwiftUI
 
 struct DashboardView: View {
     @EnvironmentObject var settings: UserSettings
-    
-    
+    @State var showScanSheet = false
+    @State var qrValue = ""
     let workspace : String
     
     var columns: [GridItem] = [
@@ -35,7 +35,7 @@ struct DashboardView: View {
                             Text(dashboardDetails.itemName)
                                 .lineLimit(0)
                                 .font(.caption)
-                                .foregroundColor(/*@START_MENU_TOKEN@*/Color(red: 0.024, green: 0.329, blue: 0.645)/*@END_MENU_TOKEN@*/)
+                                .foregroundColor(Color("Indeco_blue"))
                         }.padding()
                     }
                 }
@@ -59,18 +59,16 @@ struct DashboardView: View {
         case .searchFaultReportView:
             SearchFaultReportView()
         case .scanFaultReportView:
-            //ScanFaultReportView()
-            Text("Scan Fault Report View")
+            //EquipScanView(showScanSheet: $showScanSheet, QRValue: $qrValue, frId: <#T##String#>, responseCode: <#T##Binding<String>#>)
+        Text("scan fault")
         case .searchPOView:
             SearchPDFView(quoteOrPurchase: "Purchase Order")
         case .searchQoutView:
             SearchPDFView(quoteOrPurchase: "Quotation")
-        case .taskScanView:
-            //TaskScanView()
-            Text("Scan Tasks")
-        case .taskSearchView:
-            Text("TSV")
-        //TaskSearchView()
+//        case .taskScanView:
+//            Text("Scan Tasks")
+//        case .taskSearchView:
+//            Text("TSV")
         }
     }
     

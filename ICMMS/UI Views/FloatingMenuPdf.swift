@@ -14,13 +14,16 @@ struct FloatingMenuPdf: View {
     @State var moreIcon: String
     @State var purchaseImage: String
     @State var quoteImage: String
-    
     @State var frId: String
     @Binding var successBoolQuotation: Bool
     @Binding var openQuotationSheet: Bool
-    
     @Binding var openPurchaseSheet : Bool
     @Binding var successBoolPurchase : Bool
+    @State var currentFrResponse: CurrentFrResponse
+    @State var showUpdateButton: Bool
+    @Binding var quotationAccepted: Bool
+    @Binding var quotationRejected: Bool
+    
     
     var body: some View {
         VStack{
@@ -32,7 +35,8 @@ struct FloatingMenuPdf: View {
                         openQuotationSheet = true
                     }
                 .sheet(isPresented: $openQuotationSheet, content: {
-                    UploadQuotationView(frId: frId, openQuotationSheet: $openQuotationSheet, successBoolQuotation: $successBoolQuotation)
+                    UploadQuotationView(frId: frId, openQuotationSheet: $openQuotationSheet,
+                                        successBoolQuotation: $successBoolQuotation, quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected, currentFrResponse: currentFrResponse, viewOpenedFrom: CommonStrings().editFaultReportActivity)
                 })
             }
             if showMenuItem2 {
@@ -54,7 +58,7 @@ struct FloatingMenuPdf: View {
                     .padding()
                     .frame(width: 80, height: 80)
                     .background(Color(.white))
-                    .cornerRadius(20)
+                    .cornerRadius(30)
                     .shadow(radius: 10)
                     
             }
@@ -67,11 +71,11 @@ struct FloatingMenuPdf: View {
     }
 }
 
-//struct FloatingMenu_Previews: PreviewProvider {
-//    static var previews: some View {
-//        FloatingMenu(moreIcon: "newquote", purchaseImage: "quote_p", quoteImage: "quote_q")
-//    }
-//}
+struct FloatingMenu_Previews: PreviewProvider {
+    static var previews: some View {
+        MenuItem(icon: "fabback")
+    }
+}
 
 struct MenuItem: View {
     var icon: String
@@ -81,7 +85,7 @@ struct MenuItem: View {
             .padding()
             .frame(width: 70, height: 70)
             .background(Color(.white))
-            .cornerRadius(20)
+            .cornerRadius(30)
             .shadow(radius: 10)
         
         
@@ -96,14 +100,14 @@ struct FloatingMenuImages: View {
     @State var moreIcon: String
     @State var purchaseImage: String
     @State var quoteImage: String
-    
     @State var frId: String
     @Binding var successBeforeImageBool: Bool
     @Binding var openBeforeImageSheetBool: Bool
     
     @Binding var openAfterImageSheetBool : Bool
     @Binding var successBeforeImageSheetBool : Bool
-    
+    @State var currentFrResponse: CurrentFrResponse
+    @State var showUpdateButton: Bool
     var body: some View {
         VStack{
             
@@ -114,7 +118,7 @@ struct FloatingMenuImages: View {
                         openBeforeImageSheetBool = true
                     }
                     .sheet(isPresented: $openBeforeImageSheetBool, content: {
-                        ImageViewSheet(frId: frId, value: "FR-BI-", viewName: "beforeimage")
+                        ImageViewSheet(frId: frId, valueType: "FR-BI-", viewName: "Before", currentFrResonse: currentFrResponse, showUpdateButton: showUpdateButton)
                     })
             }
             if showMenuItem2 {
@@ -123,7 +127,7 @@ struct FloatingMenuImages: View {
                         openAfterImageSheetBool = true
                     }
                     .sheet(isPresented: $openAfterImageSheetBool, content: {
-                        ImageViewSheet(frId: frId, value: "FR-AI-", viewName: "afterimage")
+                        ImageViewSheet(frId: frId, valueType: "FR-AI-", viewName: "After", currentFrResonse: currentFrResponse, showUpdateButton: showUpdateButton)
                     })
             }
             
@@ -136,7 +140,7 @@ struct FloatingMenuImages: View {
                     .padding()
                     .frame(width: 80, height: 80)
                     .background(Color(.white))
-                    .cornerRadius(20)
+                    .cornerRadius(30)
                     .shadow(radius: 10)
                 
             }
