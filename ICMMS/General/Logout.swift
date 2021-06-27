@@ -14,6 +14,7 @@ struct Logout: View {
     @EnvironmentObject var settings: UserSettings
     @State var messageSheetBool: Bool = false
     @State var errorPresented: Bool = false
+    @State var logoutLoading: Bool = false
     
     var body: some View{
         HStack{
@@ -26,22 +27,28 @@ struct Logout: View {
                 }.sheet(isPresented: $messageSheetBool, content: {
                     MessagesSheet(messageSheetBool: $messageSheetBool)
                 })
-            Button(
-                action: {logout()},
-                label: {Image("logout").resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 45, height: 45)
-                }
-            ).alert(isPresented: $errorPresented, content: {
-                Alert(title: Text("Error"), message: Text("There was an error:"), dismissButton: .cancel())
-            })
+            if logoutLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .padding()
+            }else{
+                Button(
+                    action: {logout()},
+                    label: {Image("logout").resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 45, height: 45)
+                    }
+                ).alert(isPresented: $errorPresented, content: {
+                    Alert(title: Text("Error"), message: Text("There was an error:"), dismissButton: .cancel())
+                })
+            }
         }
     }
     
     
     
     func logout()  {
-        
+        logoutLoading = true
         let currentUrl = CommonStrings().apiURL
         
         let urlString = "\(currentUrl)logout?&deviceToken=\(deviceToken ?? "no data")"
@@ -79,7 +86,7 @@ struct Logout: View {
                 print("The error is: \(String(describing: error))")
                 errorPresented.toggle()
             }
-            
+            logoutLoading = false
         }.resume()
     }
 }

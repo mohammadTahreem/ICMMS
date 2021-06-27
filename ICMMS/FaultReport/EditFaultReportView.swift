@@ -28,7 +28,7 @@ struct EditFaultReportView: View {
     @State var remarksList: [String] = []
     @State private var isLoading: Bool = false
     @State private var requestPauseIsPresented: Bool = false
-    @State private var acceptSheetBool: Bool = false
+    @State private var acceptSheetIsPresented: Bool = false
     @State var ackSheetBool : Bool = false
     @State var responseCode: String = ""
     @State var locationAlert: Bool = false
@@ -264,7 +264,7 @@ struct EditFaultReportView: View {
                                     if showAcceptReject {
                                         
                                         Button(action: {
-                                            acceptSheetBool.toggle()
+                                            acceptSheetIsPresented = true
                                         }, label: { HStack{
                                             Spacer()
                                             Text("Accept")
@@ -275,12 +275,12 @@ struct EditFaultReportView: View {
                                         .cornerRadius(8)
                                         .foregroundColor(.white)
                                         .padding()
-                                        .sheet(isPresented: $acceptSheetBool,onDismiss: {
+                                        .sheet(isPresented: $acceptSheetIsPresented, onDismiss: {
                                             if acceptedSuccessBool  {
                                                 self.alertId = AlertId(id: .acceptSheetBoolCase)
                                             }
                                         }, content: {
-                                            AcceptPauseSheet(acceptRejectModel: acceptRejectModelFunc(), acceptSheetBool: $acceptSheetBool,
+                                            AcceptPauseSheet(acceptRejectModel: acceptRejectModelFunc(), acceptSheetIsPresented: $acceptSheetIsPresented,
                                                              acceptedSuccessBool: $acceptedSuccessBool)
                                         })
                                         
@@ -292,7 +292,7 @@ struct EditFaultReportView: View {
                                                     .padding()
                                             }else{
                                                 Button(action: {
-                                                    acceptRejectCall()
+                                                    pauseRejectCall()
                                                 }, label: {
                                                     HStack{
                                                         Spacer()
@@ -450,8 +450,7 @@ struct EditFaultReportView: View {
                         FloatingMenuPdf(moreIcon: "newquote", purchaseImage: "quote_p", quoteImage: "quote_q", frId: frId,
                                         successBoolQuotation: $successBoolQuotation, openQuotationSheet: $openQuotationSheet,
                                         openPurchaseSheet: $openPurchaseSheet, successBoolPurchase: $successBoolPurchase,
-                                        currentFrResponse: currentFrResponse, showUpdateButton: showUpdateButton,
-                                        quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected)
+                                        currentFrResponse: currentFrResponse, showUpdateButton: showUpdateButton)
                             .padding()
                     }
                     
@@ -625,7 +624,12 @@ struct EditFaultReportView: View {
             return Alert(title: Text("Updating with \"\(currentStatus)\" status"),
                          message: Text("Do you wish to update the FR with \"\(currentStatus)\" status?"),
                          primaryButton: .default(Text("Okay!"), action: {
-                                                    updateFaultReportFunc(updateFaultReportRequest: updateFaultReportRequest)}),
+                                                    if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag
+                                                        && pickerItem == CommonStrings().statusCompleted{
+                                                        self.alertId = AlertId(id: .mACantCompleteFR)
+                                                    }else{
+                                                        updateFaultReportFunc(updateFaultReportRequest: updateFaultReportRequest)
+                                                    }}),
                          secondaryButton: .cancel())
         case .uploadQuotationAlert:
             return Alert(title: Text("Upload Qoutation"), message: Text("Upload Quotation for further action!"),
@@ -639,27 +643,45 @@ struct EditFaultReportView: View {
             return Alert(title: Text("Can't take action till quotation gets accepted!"), dismissButton: .default(Text("Okay")))
         case .pauseRequestRejectedCase:
             return
-                Alert(title: Text("Pause request rejected"), dismissButton: .default(Text("Okay"), action: {
+                Alert(title: Text("Pause request rejected"),message: Text(""), dismissButton: .default(Text("Okay"), action: {
                     presentationMode.wrappedValue.dismiss()
                 }))
         case .acceptSheetBoolCase:
-            return Alert(title: Text("Pause Accepted"), dismissButton: .default(Text("Okay!"), action: {
+            return Alert(title: Text("Pause Accepted"), message: Text(""), dismissButton: .default(Text("Okay!"), action: {
                 presentationMode.wrappedValue.dismiss()
             }))
             
         case .remarksListLessThanOne:
             return Alert(title: Text("Add remarks"), message: Text("Please add atleast one remark before closing Fault Report."), dismissButton: .cancel())
+        case .mACantCompleteFR:
+            return Alert(title: Text("Can't complete Fault Report"), message: Text("Managing Agent can't complete the Fault Report!"), dismissButton: .cancel())
+        case .pauseRequestAcceptedCase:
+            return Alert(title: Text("Pause Request Accepted"), dismissButton: .default(Text("Okay"), action: {
+                presentationMode.wrappedValue.dismiss()
+            }))
         }
     }
     
-    func acceptRejectCall()  {
+    func pauseRejectCall()  {
         isLoading = true
+        var currentRemarksList: [String] = []
+        for remark in remarksList {
+            if currentFrResponse.remarks != nil {
+                if !currentFrResponse.remarks!.contains(remark) {
+                    currentRemarksList.append(remark)
+                }
+            }else{
+                currentRemarksList.append(remark)
+            }
+        }
         
         let acceptRejectModel = AcceptRejectModel(frId: frId,
                                                   observation: observationString,
                                                   actionTaken: actionTakenString,
                                                   // fmmDoc: nil
-                                                  remarks: remarksList)
+                                                  remarks: currentRemarksList)
+        
+        print(currentRemarksList)
         
         let encodedBody = try? JSONEncoder().encode(acceptRejectModel)
         
@@ -762,6 +784,7 @@ struct EditFaultReportView: View {
                     }else{
                         if currentFrResponse.equipment == nil{
                             showUpdateButton = true
+                            showRequestPauseButton = true
                             showLocationButton = false
                             showEquipButton = false
                         }else{
@@ -883,7 +906,20 @@ struct EditFaultReportView: View {
     }
     
     func acceptRejectModelFunc() -> AcceptRejectModel {
-        return AcceptRejectModel(frId: currentFrResponse.frId, observation: observationString, actionTaken: actionTakenString, fmmDocForAuthorize: "", remarks: remarksList)
+        
+        var currentRemarksList: [String] = []
+        
+        for remark in remarksList {
+            if currentFrResponse.remarks != nil {
+                if !currentFrResponse.remarks!.contains(remark) {
+                    currentRemarksList.append(remark)
+                }
+            }else{
+                currentRemarksList.append(remark)
+            }
+        }
+        
+        return AcceptRejectModel(frId: currentFrResponse.frId, observation: observationString, actionTaken: actionTakenString, fmmDocForAuthorize: "", remarks: currentRemarksList)
     }
     
     

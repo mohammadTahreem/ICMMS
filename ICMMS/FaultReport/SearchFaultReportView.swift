@@ -72,7 +72,6 @@ struct FaultSearchView: View {
                 .foregroundColor(.black)
                 .cornerRadius(8)
                 .padding()
-            
             Spacer()
             if searchBool {
                 ProgressView()

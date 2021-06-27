@@ -10,8 +10,11 @@ import Foundation
 
 struct WorkspaceAlertId: Identifiable {
     var id: ResponseAlertTypes
+    
     enum ResponseAlertTypes {
         case responseTimeOut
+        case errorAlert
+        case loginAlert
     }
 }
 

@@ -31,6 +31,7 @@ struct UploadQuotationView: View {
     @State var isLoadingRejected = false
     @State var isLoadingAccepted = false
     var currentFrResponse: CurrentFrResponse?
+    @State var quotationTitle = ""
     
     @State var viewOpenedFrom: String
     
@@ -38,17 +39,27 @@ struct UploadQuotationView: View {
         
         let webView = WebView(request: urlRequest)
         VStack{
-        VStack{
-            
-            webView
-                .onAppear(){
-                    guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/quotation/\(frId)") else {return}
-                    var urlRequest1 = URLRequest(url: url)
-                    urlRequest1.httpMethod = "GET"
-                    urlRequest1.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                    urlRequest1.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
-                    urlRequest1.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
-                    urlRequest1.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+            VStack{
+                
+                webView
+                    .onAppear(){
+                        
+                        if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech{
+                            quotationTitle = "Quotation Upload"
+                            if currentFrResponse?.status! != CommonStrings().statusClosed && currentFrResponse?.status! != CommonStrings().statusCompleted{
+                                showUploadButton = true
+                            }
+                        }else{
+                            quotationTitle = "Quotation"
+                        }
+                        
+                        guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/quotation/\(frId)") else {return}
+                        var urlRequest1 = URLRequest(url: url)
+                        urlRequest1.httpMethod = "GET"
+                        urlRequest1.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                        urlRequest1.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+                        urlRequest1.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+                        urlRequest1.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
                     
                     let dataTask = URLSession.shared.dataTask(with: urlRequest1) { (data, response, error) in
                         if let error = error {
@@ -187,8 +198,7 @@ struct UploadQuotationView: View {
                 .padding()
             }
         }
-        
-        .navigationBarTitle("Quotation Upload")
+        .navigationBarTitle(quotationTitle)
         .navigationBarItems(trailing: Logout().environmentObject(settings))
     }
     

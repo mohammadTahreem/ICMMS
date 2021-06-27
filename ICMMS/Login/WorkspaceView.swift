@@ -10,49 +10,34 @@ import SwiftUI
 struct WorkspaceView: View {
     
     @State var workspaceResponse: [WorkspaceResponse] = []
-    @State var progressViewBool: Bool = true
-    @State private var loginAlert: Bool = false
-    @State private var errorAlert: Bool = false
-    @EnvironmentObject var settings: UserSettings
-    @State var alertId: WorkspaceAlertId?
+    @State var progressViewBool: Bool = false
+    @State var workspaceAlertId: WorkspaceAlertId?
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         NavigationView{
-            if progressViewBool {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .padding()
-                    .alert(isPresented: $errorAlert, content: {
-                        Alert(title: Text("Error"), message: Text("Please try again!"),
-                              dismissButton: .cancel())
-                    })
-                    .onAppear(){
-                        getWorkspaces()
-                    }
-            }else{
-                List(workspaceResponse, id: \.self) { workspaceResponse in
-                    ZStack{
-                        Button("") {}
-                            .alert(item: $alertId) { (alertId) -> Alert in
-                                return createAlert(alertId: alertId)
-                            }
+            VStack{
+                if progressViewBool{
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .padding()
+                }else{
+                    List(workspaceResponse, id: \.self) { workspaceResponse in
+                        
                         NavigationLink(destination: DashboardView(workspace: workspaceResponse.workspaceId)){
                             WorkSpaceCardView(workspaceResponse: workspaceResponse)
                                 .padding()
                         }
-                    }
+                        .alert(item: $workspaceAlertId) { alertId -> Alert in
+                            return createAlert(alertId: alertId)}
+                    }.listStyle(PlainListStyle())
                 }
-                .padding()
-                .alert(isPresented: $loginAlert, content: {
-                    Alert(title: Text("Error"), message: Text("There was an error. Please try logging in again!"), dismissButton: .default(Text("Okay!")))
-                })
-                .navigationBarTitle("Workspaces", displayMode: .inline)
-                .toolbar(){
-                    ToolbarItem(placement: .navigationBarTrailing){
-                        Logout().environmentObject(settings)
-                    }
-                }
+            }.onAppear(){
+                getWorkspaces()
             }
+            .navigationBarTitle("Workspaces", displayMode: .inline)
+            .navigationBarItems(trailing: Text(UserDefaults.standard.string(forKey: "role") ?? "")
+                                    .foregroundColor(Color("Indeco_blue")))
+            
         }
     }
     
@@ -63,11 +48,16 @@ struct WorkspaceView: View {
             return Alert(title: Text("Time Out Error"), dismissButton: .default(Text("Okay"), action: {
                 presentationMode.wrappedValue.dismiss()
             }))
+        case .errorAlert:
+            return Alert(title: Text("Error"), message: Text("Please try again!"),
+                  dismissButton: .cancel())
+        case .loginAlert:
+            return Alert(title: Text("Error"), message: Text("There was an error. Please try logging in again!"), dismissButton: .default(Text("Okay!")))
         }
     }
     func getWorkspaces()  {
+        progressViewBool = true
         let currentUrl = CommonStrings().apiURL
-        print(UserDefaults.standard.string(forKey: "token")!)
         guard let url = URL(string: "\(currentUrl)workspaces") else {return}
         print(url)
         var urlRequest = URLRequest(url: url)
@@ -78,7 +68,7 @@ struct WorkspaceView: View {
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
                 print("Request error: ", error)
-                self.alertId = WorkspaceAlertId(id: .responseTimeOut)
+                self.workspaceAlertId = WorkspaceAlertId(id: .responseTimeOut)
                 return
             }
             
@@ -93,16 +83,16 @@ struct WorkspaceView: View {
                         self.workspaceResponse = workspaceResponse
                     } catch let error {
                         print("Error decoding: ", error)
-                        errorAlert = true
+                        self.workspaceAlertId = WorkspaceAlertId(id: .errorAlert)
                     }
                 }
             }else if response.statusCode == 401 {
                 print("Error: \(response.statusCode)")
-                self.loginAlert = true
+                self.workspaceAlertId = WorkspaceAlertId(id: .loginAlert)
             }
             else{
                 print("The last print statement: \(data!)")
-                self.errorAlert = true
+                self.workspaceAlertId = WorkspaceAlertId(id: .errorAlert)
             }
             progressViewBool = false
         }

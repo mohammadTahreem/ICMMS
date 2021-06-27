@@ -59,7 +59,7 @@ struct DashboardView: View {
         case .searchFaultReportView:
             SearchFaultReportView()
         case .scanFaultReportView:
-            //EquipScanView(showScanSheet: $showScanSheet, QRValue: $qrValue, frId: <#T##String#>, responseCode: <#T##Binding<String>#>)
+//            EquipScanView(showScanSheet: $showScanSheet, QRValue: $qrValue, frId: <#T##String#>, responseCode: <#T##Binding<String>#>)
         Text("scan fault")
         case .searchPOView:
             SearchPDFView(quoteOrPurchase: "Purchase Order")

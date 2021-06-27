@@ -11,7 +11,7 @@ import SwiftUI
 
 struct AcceptPauseSheet: View {
     @State var acceptRejectModel: AcceptRejectModel
-    @Binding var acceptSheetBool: Bool
+    @Binding var acceptSheetIsPresented: Bool
     @State var urlRequest = URLRequest(url: Bundle.main.url(forResource: "pdfback", withExtension: "png")!)
     @State var docSheet = false
     @State var fileURL: URL = Bundle.main.url(forResource: "pdfback", withExtension: "png")!
@@ -26,7 +26,7 @@ struct AcceptPauseSheet: View {
                 .padding()
                 .alert(isPresented: $acceptedSuccessBool) {
                     Alert(title: Text("Accepted Successfully!"), dismissButton: .default(Text("Okay!"), action: {
-                        acceptSheetBool = false
+                        acceptSheetIsPresented = false
                     }))
                 }
             HStack{

@@ -1,6 +1,6 @@
 //
 //  MessagesSheet.swift
-//  APITestApp
+//  ICMMSAPP
 //
 //  Created by Mohammad Tahreem Qadri on 27/04/21.
 //
@@ -11,17 +11,17 @@ struct MessagesSheet: View {
     
     @State var messages: [MessagesModel] = [MessagesModel()]
     @Binding var messageSheetBool: Bool
-    @State var isLoading = false
+    @State var isLoading = true
     
     var body: some View {
         NavigationView{
             VStack{
-                List(messages, id:\.self){ message in
-                    if isLoading{
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .padding()
-                    }else{
+                if isLoading{
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .padding()
+                }else{
+                    List(messages, id:\.self){ message in
                         NavigationLink(destination: ChatSheet(type: message.type ?? "", messageTitle: message.title ?? "")){
                             MessageCardView(message: message)
                                 .padding()
@@ -90,29 +90,22 @@ struct MessageCardView: View {
                     .foregroundColor(.black)
                     .font(.caption)
                     .bold()
-                    .padding()
-                if(message.createdDate != nil){
-                    Text(GeneralMethods().convertTStringToString(isoDate: message.createdDate!) )
-                        .padding()
-                        .foregroundColor(Color("Indeco_blue"))
-                        .font(.caption)
-                        .minimumScaleFactor(0.5)
-                        .lineLimit(1)
-                }else{
-                    Text("2020-08-08 12:32")
-                        .foregroundColor(Color("Indeco_blue"))
-                        .padding()
-                        .font(.caption)
-                        .minimumScaleFactor(0.5)
-                        .lineLimit(1)
-                }
-            }
+                    
+                Spacer()
+                Text(GeneralMethods().convertTStringToString(isoDate: message.createdDate ?? "2020-08-08 12:32") )
+                    .foregroundColor(Color("Indeco_blue"))
+                    .font(.caption)
+                    .minimumScaleFactor(0.5)
+                    .lineLimit(1)
+            }.padding()
+            
+            Divider()
+                .padding(.horizontal, 20)
             Text(message.text ?? "")
                 .font(.caption)
                 .foregroundColor(.black)
-                .padding()
                 .lineLimit(3)
-            
+                .padding()
         }
         .background(Color("light_gray"))
         .cornerRadius(8)
@@ -123,6 +116,9 @@ struct MessageCardView: View {
 struct MessagesSheet_Previews: PreviewProvider {
     @State static var isShowing = false
     static var previews: some View {
-        MessagesSheet(messageSheetBool: $isShowing)
+        
+        MessageCardView(message: MessagesModel(title: "Quotation Uploaded", text: "Purchase Order has been Uploaded for Fault Report Id : FR-DEMO-062021-00116 in building TOWER1 & location LEVEL1", createdDate: "2021-06-14T12:39:41", type: "Qoutation Uploaded", id: 123321))
+        
+//        MessagesSheet(messages: [MessagesModel(title: "Quotation Uploaded", text: "Purchase Order has been Uploaded for Fault Report Id : FR-DEMO-062021-00116 in building TOWER1 & location LEVEL1", createdDate: "2021-06-14T12:39:41", type: "Qoutation Uploaded", id: 123321)], messageSheetBool: .constant(true), isLoading: false)
     }
 }

@@ -21,8 +21,8 @@ struct FloatingMenuPdf: View {
     @Binding var successBoolPurchase : Bool
     @State var currentFrResponse: CurrentFrResponse
     @State var showUpdateButton: Bool
-    @Binding var quotationAccepted: Bool
-    @Binding var quotationRejected: Bool
+    @State var quotationAccepted: Bool = false
+    @State var quotationRejected: Bool = false
     
     
     var body: some View {
@@ -45,7 +45,7 @@ struct FloatingMenuPdf: View {
                         openPurchaseSheet = true
                     }
                     .sheet(isPresented: $openPurchaseSheet, content: {
-                        UploadPurchaseOrderView(frId: frId)
+                        UploadPurchaseOrderView(frId: frId, currentFrResponse: currentFrResponse)
                     })
             }
             
@@ -56,7 +56,7 @@ struct FloatingMenuPdf: View {
                 Image(moreIcon)
                     .resizable()
                     .padding()
-                    .frame(width: 80, height: 80)
+                    .frame(width: 60, height: 60)
                     .background(Color(.white))
                     .cornerRadius(30)
                     .shadow(radius: 10)
@@ -83,7 +83,7 @@ struct MenuItem: View {
         Image(icon)
             .resizable()
             .padding()
-            .frame(width: 70, height: 70)
+            .frame(width: 50, height: 50)
             .background(Color(.white))
             .cornerRadius(30)
             .shadow(radius: 10)
@@ -138,7 +138,7 @@ struct FloatingMenuImages: View {
                 Image("fabback")
                     .resizable()
                     .padding()
-                    .frame(width: 80, height: 80)
+                    .frame(width: 60, height: 60)
                     .background(Color(.white))
                     .cornerRadius(30)
                     .shadow(radius: 10)

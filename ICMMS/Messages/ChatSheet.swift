@@ -1,6 +1,6 @@
 //
 //  ChatSheet.swift
-//  APITestApp
+//  ICMMS
 //
 //  Created by Mohammad Tahreem Qadri on 28/04/21.
 //
@@ -14,14 +14,16 @@ struct ChatSheet: View {
     @State var messageTitle: String?
     @State var isLoading = false
     var body: some View {
-        List(chats, id:\.self){ chat in
+        VStack{
             if isLoading{
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
                     .padding()
             }else{
-                MessageCardView(message: chat)
-                    .padding()
+                List(chats, id:\.self){ chat in
+                    MessageCardView(message: chat)
+                        .padding()
+                }
             }
         }.navigationBarTitle("\(messageTitle!)")
         .onAppear(){

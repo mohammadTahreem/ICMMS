@@ -13,12 +13,13 @@ struct UploadPurchaseOrderView: View {
     @State var pdfView = PDFKitRepresentedView(Data())
     @State var data = Data()
     @State var urlRequest = URLRequest(url: Bundle.main.url(forResource: "pdfback", withExtension: "png")!)
-    @State var showUploadButton = true
+    @State var showUploadButton = false
     @State var showDownloadButton = false
     @State var fileURL: URL = Bundle.main.url(forResource: "pdfback", withExtension: "png")!
     @State var fileData: Data = Data()
     @State var successBool: Bool = false
     @EnvironmentObject var settings: UserSettings
+    var currentFrResponse: CurrentFrResponse?
     var body: some View {
         
         let webView = WebView(request: urlRequest)
@@ -26,6 +27,15 @@ struct UploadPurchaseOrderView: View {
             
             webView
                 .onAppear(){
+                    
+                    if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech{
+                        if currentFrResponse?.status != nil{
+                            if currentFrResponse?.status! != CommonStrings().statusClosed && currentFrResponse?.status! != CommonStrings().statusCompleted{
+                                showUploadButton = true
+                            }
+                        }
+                    }
+                    
                     guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/purchaseOrder/\(frId)") else {return}
                     var urlRequestNew = URLRequest(url: url)
                     urlRequestNew.httpMethod = "GET"
@@ -188,6 +198,6 @@ struct UploadPurchaseOrderView: View {
 
 struct UploadPurchaseOrderView_Previews: PreviewProvider {
     static var previews: some View {
-        UploadPurchaseOrderView(frId: "")
+        UploadPurchaseOrderView(frId: "", currentFrResponse: CurrentFrResponse())
     }
 }

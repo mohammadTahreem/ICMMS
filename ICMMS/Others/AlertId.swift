@@ -28,8 +28,10 @@ struct AlertId: Identifiable {
         case cantTakeActionTillQuotationAcceptedAlert
         case uploadPurchaseOrder
         case pauseRequestRejectedCase
+        case pauseRequestAcceptedCase
         case acceptSheetBoolCase
         case remarksListLessThanOne
+        case mACantCompleteFR
     }
     
     
