@@ -11,7 +11,7 @@
 		CC1BF94026847A9900930195 /* ChatSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1BF93E26847A9900930195 /* ChatSheet.swift */; };
 		CC1BF94126847A9900930195 /* MessagesSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1BF93F26847A9900930195 /* MessagesSheet.swift */; };
 		CC1BF94326847AC000930195 /* MessagesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1BF94226847AC000930195 /* MessagesModel.swift */; };
-		CC260BB2267C6E9D002AA8E6 /* IsFromNoti.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB1267C6E9D002AA8E6 /* IsFromNoti.swift */; };
+		CC260BB2267C6E9D002AA8E6 /* IsFromNotificationClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB1267C6E9D002AA8E6 /* IsFromNotificationClass.swift */; };
 		CC260BB4267CA0C5002AA8E6 /* FloatingMenuPdf.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB3267CA0C5002AA8E6 /* FloatingMenuPdf.swift */; };
 		CC260BB7267CB586002AA8E6 /* ImageViewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB6267CB586002AA8E6 /* ImageViewSheet.swift */; };
 		CC260BB9267CB789002AA8E6 /* FRImageResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB8267CB789002AA8E6 /* FRImageResponseModel.swift */; };
@@ -74,7 +74,7 @@
 		CC1BF93E26847A9900930195 /* ChatSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatSheet.swift; sourceTree = "<group>"; };
 		CC1BF93F26847A9900930195 /* MessagesSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSheet.swift; sourceTree = "<group>"; };
 		CC1BF94226847AC000930195 /* MessagesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesModel.swift; sourceTree = "<group>"; };
-		CC260BB1267C6E9D002AA8E6 /* IsFromNoti.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsFromNoti.swift; sourceTree = "<group>"; };
+		CC260BB1267C6E9D002AA8E6 /* IsFromNotificationClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsFromNotificationClass.swift; sourceTree = "<group>"; };
 		CC260BB3267CA0C5002AA8E6 /* FloatingMenuPdf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMenuPdf.swift; sourceTree = "<group>"; };
 		CC260BB6267CB586002AA8E6 /* ImageViewSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewSheet.swift; sourceTree = "<group>"; };
 		CC260BB8267CB789002AA8E6 /* FRImageResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRImageResponseModel.swift; sourceTree = "<group>"; };
@@ -276,7 +276,7 @@
 				CC3E9F592668F8D200BA47F2 /* LabelTextField.swift */,
 				CC3E9F5B2668F98500BA47F2 /* URLImage.swift */,
 				CC3E9F5D2668F9A400BA47F2 /* ImageLoader.swift */,
-				CC260BB1267C6E9D002AA8E6 /* IsFromNoti.swift */,
+				CC260BB1267C6E9D002AA8E6 /* IsFromNotificationClass.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -427,7 +427,7 @@
 				CC1BF94126847A9900930195 /* MessagesSheet.swift in Sources */,
 				CC51EABC2681AC8400E6FDBB /* DeleteImageRequest.swift in Sources */,
 				CC3E9F7C266A3D5000BA47F2 /* AlertId.swift in Sources */,
-				CC260BB2267C6E9D002AA8E6 /* IsFromNoti.swift in Sources */,
+				CC260BB2267C6E9D002AA8E6 /* IsFromNotificationClass.swift in Sources */,
 				CCB1CDE126674DB900E6F83A /* LoginView.swift in Sources */,
 				CC3E9F682668FADF00BA47F2 /* RequestForPauseModel.swift in Sources */,
 				CC260BB4267CA0C5002AA8E6 /* FloatingMenuPdf.swift in Sources */,

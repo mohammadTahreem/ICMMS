@@ -46,7 +46,6 @@ struct RequestForPauseSheet: View {
                             eotList.append(CommonStrings().eotTypeGreater)
                             eotList.append(CommonStrings().eotTypeLesser)
                         }.textFieldStyle(RoundedBorderTextFieldStyle())
-                        .keyboardType(.decimalPad)
                         .alert(isPresented: $errorAlert, content: {
                             Alert(title: Text("Error"), message: Text("There was an error"), dismissButton: .cancel())
                         })

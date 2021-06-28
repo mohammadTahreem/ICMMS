@@ -23,6 +23,8 @@ struct FloatingMenuPdf: View {
     @State var showUpdateButton: Bool
     @State var quotationAccepted: Bool = false
     @State var quotationRejected: Bool = false
+    @Environment(\.presentationMode) var presentationMode
+
     
     
     var body: some View {
@@ -44,6 +46,9 @@ struct FloatingMenuPdf: View {
                     .onTapGesture {
                         openPurchaseSheet = true
                     }
+                    .alert(isPresented: $quotationRejected, content: {
+                        Alert(title: Text("Quotation Rejected"), dismissButton: .cancel())
+                    })
                     .sheet(isPresented: $openPurchaseSheet, content: {
                         UploadPurchaseOrderView(frId: frId, currentFrResponse: currentFrResponse)
                     })
@@ -61,6 +66,11 @@ struct FloatingMenuPdf: View {
                     .cornerRadius(30)
                     .shadow(radius: 10)
                     
+            }
+            .alert(isPresented: $quotationAccepted) {
+                Alert(title: Text("Quotation Accepted successfully!"), primaryButton: .default(Text("Okay!"), action: {
+                    presentationMode.wrappedValue.dismiss()
+                }), secondaryButton: .cancel())
             }
             
         }

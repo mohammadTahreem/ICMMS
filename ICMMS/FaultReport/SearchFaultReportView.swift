@@ -121,7 +121,7 @@ struct FaultSearchView: View {
                 }
             }else{
                 print("There was an error: \(error.debugDescription)")
-                
+                self.searchFaultResponse = []
                 let json = try? JSONSerialization.jsonObject(with: data!, options: [])
                 if let dictionary = json as? [String: Any] {
                     print("Error decoding: \(dictionary)")

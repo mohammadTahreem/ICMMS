@@ -7,6 +7,6 @@
 
 import Foundation
 
-class IsFromNoti: ObservableObject {
+class IsFromNotificationClass: ObservableObject {
     @Published var isFromNotication: Bool = false
 }

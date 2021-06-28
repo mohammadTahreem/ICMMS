@@ -28,7 +28,6 @@ struct ICMMSApp: App {
                             UserDefaults.standard.synchronize()
                         }
                     }
-                    
                 }
         }
     }
@@ -39,7 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let gcmMessageIDKey = "gcm.message_id"
     let state = UIApplication.shared.applicationState
-    @ObservedObject var fromNoti: IsFromNoti = IsFromNoti()
+    
+    var frId: String = ""
+    @ObservedObject var fromNoti: IsFromNotificationClass = IsFromNotificationClass()
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -81,8 +82,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Messaging.messaging().appDidReceiveMessage(userInfo)
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
+            print("Message ID 1: \(messageID)")
         }
+
+        
         // Print full message.
         print(userInfo)
     }
@@ -93,7 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
         if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
+            print("Message ID 2: \(messageID)")
         }
         
         completionHandler(UIBackgroundFetchResult.newData)
@@ -121,10 +124,12 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         let userInfo = notification.request.content.userInfo
         
         if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
+            print("Message ID 3: \(messageID)")
         }
         // [END_EXCLUDE]
         // Print full message.
+        
+        
         print("The message is: \(userInfo)")
         
         Messaging.messaging().appDidReceiveMessage(userInfo)
@@ -141,9 +146,11 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         // Print message ID.
         fromNoti.isFromNotication = true
         if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
+            print("Message ID 4: \(messageID)")
         }
         
+        UserDefaults.standard.removeObject(forKey: "frId")
+        UserDefaults.standard.synchronize()
         if state == .background || state == .active || state == .inactive  {
             UserDefaults.standard.removeObject(forKey: "frId")
             UserDefaults.standard.synchronize()
@@ -158,7 +165,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
             }
             UserDefaults.standard.synchronize()
         }
-        
+
         // [END_EXCLUDE]
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         Messaging.messaging().appDidReceiveMessage(userInfo)

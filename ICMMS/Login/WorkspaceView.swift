@@ -27,9 +27,9 @@ struct WorkspaceView: View {
                             WorkSpaceCardView(workspaceResponse: workspaceResponse)
                                 .padding()
                         }
-                        .alert(item: $workspaceAlertId) { alertId -> Alert in
-                            return createAlert(alertId: alertId)}
                     }.listStyle(PlainListStyle())
+                    .alert(item: $workspaceAlertId) { alertId -> Alert in
+                        return createAlert(alertId: alertId)}
                 }
             }.onAppear(){
                 getWorkspaces()
@@ -50,9 +50,13 @@ struct WorkspaceView: View {
             }))
         case .errorAlert:
             return Alert(title: Text("Error"), message: Text("Please try again!"),
-                  dismissButton: .cancel())
+                         dismissButton: .cancel())
         case .loginAlert:
-            return Alert(title: Text("Error"), message: Text("There was an error. Please try logging in again!"), dismissButton: .default(Text("Okay!")))
+            return Alert(title: Text("Error"), message: Text("There was an error. Please try logging in again!"),
+                         dismissButton: .default(Text("Logout!"), action: {
+                            Logout().logout()
+                            
+                         }))
         }
     }
     func getWorkspaces()  {
@@ -67,8 +71,8 @@ struct WorkspaceView: View {
         
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
-                print("Request error: ", error)
                 self.workspaceAlertId = WorkspaceAlertId(id: .responseTimeOut)
+                print("Request error: ", error)
                 return
             }
             

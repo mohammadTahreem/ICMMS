@@ -19,7 +19,7 @@ struct ImageViewSheet: View {
     @State var currentFrResonse: CurrentFrResponse
     @State var showUpdateButton: Bool
     @State var imageUploadAlert: Bool = false
-    @State var gettingImagesBool = false
+    @State var gettingImagesBool = true
     @State private var image: UIImage?
     @State private var shouldPresentImagePicker = false
     @State private var shouldPresentActionScheet = false
@@ -31,95 +31,102 @@ struct ImageViewSheet: View {
     var body: some View {
         
         NavigationView{
-        VStack{
-            
-            HStack{
-                if deleteButton {
-                    if deleteProgressBool {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
-                            .padding()
-                    }else{
-                        Button(action: {
-                            deleteFunction()
-                            deleteProgressBool = true
-                        }, label: {
+            VStack{
+                
+                HStack{
+                    if deleteButton {
+                        if deleteProgressBool {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+                                .padding()
+                        }else{
+                            Button(action: {
+                                deleteFunction()
+                                deleteProgressBool = true
+                            }, label: {
+                                
+                                Image("delete")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .padding()
+                                    .foregroundColor(.white)
+                                    .background(Color(.white))
+                                    .cornerRadius(40)
+                            })
+                        }
+                    }
+                    Spacer()
+                    if uploadButton {
+                        NavigationLink( destination:
+                                            UploadImageSheet(viewName: viewName,frId: frId, imageUploadAlert: $imageUploadAlert,
+                                                             image: image ?? UIImage())
+                                            .onDisappear(){
+                                                getImagesList()
+                                                
+                                            }
+                                        , isActive: $isImagePresent){
                             
-                            Image("delete")
+                            
+                            Image("upload")
                                 .resizable()
                                 .frame(width: 30, height: 30)
                                 .padding()
-                                .foregroundColor(.white)
-                                .background(Color(.white))
-                                .cornerRadius(40)
-                        })
-                    }
-                }
-                Spacer()
-                if uploadButton {
-                    NavigationLink( destination:
-                                        UploadImageSheet(viewName: viewName,frId: frId, imageUploadAlert: $imageUploadAlert,
-                                                         image: image ?? UIImage())
+                                .onTapGesture {
+                                    shouldPresentCamera = true
+                                }
+                                .sheet(isPresented: $shouldPresentCamera) {
+                                    SUImagePickerView(
+                                        image: self.$image, isPresented: self.$shouldPresentCamera)
                                         .onDisappear(){
-                                            getImagesList()
-                                            
+                                            if image != UIImage() && image != nil {
+                                                isImagePresent = true
+                                            }
                                         }
-                                    , isActive: $isImagePresent){
-                        
-                        
-                        Image("upload")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .padding()
-                            .onTapGesture {
-                                shouldPresentCamera = true
-                            }
-                            .sheet(isPresented: $shouldPresentCamera) {
-                                SUImagePickerView(
-                                    image: self.$image, isPresented: self.$shouldPresentCamera)
-                                    .onDisappear(){
-                                        if image != UIImage() && image != nil {
-                                            isImagePresent = true
-                                        }
-                                    }
-                            }
+                                }
+                        }
                     }
                 }
-            }
-            .padding()
-           if gettingImagesBool{
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
-                    .padding()
-            }else{
-            TabView{
-                ForEach(imageDataList, id:\.self) { imageData in
-                    Image(uiImage: UIImage(data: imageData.imageData)!)
-                        .resizable()
-                        .shadow(radius: 10)
-                        .frame(width: 300, height: 500)
-                        .scaledToFit()
-                        .cornerRadius(10)
-                        .onAppear(){
-                            currentImage = imageData
+                .padding()
+                if gettingImagesBool{
+                    Spacer()
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+                        .padding()
+                    Spacer()
+                }else{
+                    TabView{
+                        ForEach(imageDataList, id:\.self) { imageData in
+                            VStack{
+                                Image(uiImage: UIImage(data: imageData.imageData)!)
+                                    .resizable()
+                                    .shadow(radius: 10)
+                                    .frame(width: 300, height: 500)
+                                    .scaledToFit()
+                                    .cornerRadius(10)
+                                    .onAppear(){
+                                        currentImage = imageData
+                                    }
+                                
+                                HStack{
+                                    Text("Name")
+                                        .foregroundColor(.white)
+                                        .padding()
+                                    Spacer()
+                                    Text("Contact Number")
+                                        .foregroundColor(.white)
+                                        .padding()
+                                }
+                            }
                         }
-                }
-                .onAppear(){
-                    checkForConditions()
+                        .onAppear(){
+                            checkForConditions()
+                        }
+                    }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                 }
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-            }
-            
-//            Image("fabback")
-//                .resizable()
-//                .shadow(radius: 10)
-//                .frame(width: 300, height: 500)
-//                .scaledToFit()
-//                .cornerRadius(10)
-        }
-        .background(Color(.black))
-        .navigationBarTitle(Text("\(viewName) Image"), displayMode: .inline)
+            .background(Color(.black))
+            .navigationBarTitle(Text("\(viewName) Image"), displayMode: .inline)
         }
         .onAppear(){
             getImagesList()
@@ -148,8 +155,6 @@ struct ImageViewSheet: View {
         
         urlRequest.httpBody = try? JSONEncoder().encode(deleteImageRequest)
         
-        print(urlRequest)
-        print(deleteImageRequest)
         
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
@@ -166,7 +171,7 @@ struct ImageViewSheet: View {
                 
                 guard let _ = data else { return }
                 
-               getImagesList()
+                getImagesList()
                 
             } else {
                 print("Error code: \(response.statusCode)")
@@ -181,7 +186,6 @@ struct ImageViewSheet: View {
     func getImagesList()  {
         self.frImageResModel.removeAll()
         self.imageDataList.removeAll()
-        gettingImagesBool = true
         
         guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/\(viewName.lowercased())image/\(frId)") else {return}
         
@@ -209,17 +213,17 @@ struct ImageViewSheet: View {
                 
                 if let currentImagesList = try? JSONDecoder().decode([FRImageResponseModel].self, from: data!){
                     
-                        print(currentImagesList)
-                        self.frImageResModel = currentImagesList
-                        
-                        if !frImageResModel.isEmpty{
-                            for imageModelName in frImageResModel{
-                                getSingleImage(imageName: imageModelName.image!)
-                            }
+                    print(currentImagesList)
+                    self.frImageResModel = currentImagesList
+                    
+                    if !frImageResModel.isEmpty{
+                        for imageModelName in frImageResModel{
+                            getSingleImage(imageName: imageModelName.image!)
                         }
-                        else{
-                            print("list is empty")
-                        }
+                    }
+                    else{
+                        print("list is empty")
+                    }
                     
                 }else{
                     print("not working")

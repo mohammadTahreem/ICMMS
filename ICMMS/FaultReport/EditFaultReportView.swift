@@ -75,7 +75,7 @@ struct EditFaultReportView: View {
                                     switch item {
                                     case .upQuoSheetCase:
                                         UploadQuotationView(frId: frId, openQuotationSheet: $openQuotationSheet, successBoolQuotation: $successBoolQuotation
-                                                            , quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected, viewOpenedFrom: CommonStrings().editFaultReportActivity)
+                                                            , quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected,currentFrResponse: currentFrResponse, viewOpenedFrom: CommonStrings().editFaultReportActivity)
                                     case .second:
                                         //SecondView()
                                         Text("sec")
@@ -638,9 +638,11 @@ struct EditFaultReportView: View {
                             activeSheet = .upQuoSheetCase
                          }))
         case .uploadPurchaseOrder:
-            return Alert(title: Text("Upload Purchase order for further action"), dismissButton: .default(Text("Okay!")))
+            return Alert(title: Text("Upload Purchase order for further action"), dismissButton: .default(Text("Okay!"), action: {
+                self.openPurchaseSheet = true
+            }))
         case .cantTakeActionTillQuotationAcceptedAlert:
-            return Alert(title: Text("Can't take action till quotation gets accepted!"), dismissButton: .default(Text("Okay")))
+            return Alert(title: Text("Can't take action till quotation gets accepted or rejected!"), dismissButton: .default(Text("Okay")))
         case .pauseRequestRejectedCase:
             return
                 Alert(title: Text("Pause request rejected"),message: Text(""), dismissButton: .default(Text("Okay"), action: {

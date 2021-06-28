@@ -16,16 +16,11 @@ struct LoginView: View {
     @State private var buttonClicked = false
     @State var errorCode: String = ""
     @EnvironmentObject var settings: UserSettings
-    @State var deviceToken : String = ""
     
     
     var body: some View {
         
-        let params: [String: Any] = [
-            "username": username,
-            "password": password,
-            "deviceToken": UserDefaults.standard.string(forKey: "deviceToken") ?? "no data"
-        ]
+        
         VStack(){
             
             Spacer()
@@ -73,7 +68,7 @@ struct LoginView: View {
                             .padding(20)
                     } else {
                         Button(action: {
-                            self.getData(params: params)
+                            self.getData()
                         }, label: {
                             Text("Login").foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
@@ -105,7 +100,13 @@ struct LoginView: View {
         .navigationBarBackButtonHidden(true)
     }
     
-    func getData(params: [String:Any])  {
+    func getData()  {
+        
+        let params: [String: Any] = [
+            "username": username,
+            "password": password,
+            "deviceToken": UserDefaults.standard.string(forKey: "deviceToken")!
+        ]
         
         buttonClicked = true
         print(params)
@@ -140,7 +141,6 @@ struct LoginView: View {
                     do {
                         let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: data!)
                         UserDefaults.standard.set(loginResponse.token, forKey: "token")
-                        UserDefaults.standard.set(deviceToken, forKey: "deviceToken")
                         UserDefaults.standard.set(loginResponse.role, forKey: "role")
                         UserDefaults.standard.set(loginResponse.username, forKey: "username")
                         UserDefaults.standard.synchronize()
@@ -166,26 +166,26 @@ struct LoginView: View {
 
 struct LoginViewPre: PreviewProvider {
     static var previews: some View{
-        LoginView(deviceToken: "demo")
+        LoginView()
     }
 }
 
 struct MainScreen: View{
-    @EnvironmentObject var isFrom : IsFromNoti
+    @EnvironmentObject var isFrom : IsFromNotificationClass
     @EnvironmentObject var settings: UserSettings
     var frId = UserDefaults.standard.string(forKey: "frId")
     var workspace = UserDefaults.standard.string(forKey: "workspace")
     var view = UserDefaults.standard.string(forKey: "view")
     @State var showEditFr = UserDefaults.standard.string(forKey: "showEditFr")
-        
+    
     var body: some View{
         
         if settings.loggedIn && !isFrom.isFromNotication {
             WorkspaceView().environmentObject(settings)
         }else if settings.loggedIn && isFrom.isFromNotication {
             NavigationView{
-                if frId != nil{
-                    EditFaultReportView(frId: frId!)
+                if UserDefaults.standard.string(forKey: "frId") != nil{
+                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!)
                         .environmentObject(settings)
                 }
             }
@@ -196,7 +196,7 @@ struct MainScreen: View{
                 LoginView().environmentObject(settings)
             }else if UserDefaults.standard.bool(forKey: "loggedIn") == true && isFrom.isFromNotication && frId != nil{
                 NavigationView{
-                    EditFaultReportView(frId: frId!)
+                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!)
                         .environmentObject(settings)
                 }
             }else if UserDefaults.standard.bool(forKey: "loggedIn") == false && isFrom.isFromNotication && frId == nil{

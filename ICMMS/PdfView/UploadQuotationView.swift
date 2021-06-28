@@ -30,7 +30,7 @@ struct UploadQuotationView: View {
     @Binding var quotationRejected: Bool
     @State var isLoadingRejected = false
     @State var isLoadingAccepted = false
-    var currentFrResponse: CurrentFrResponse?
+    var currentFrResponse: CurrentFrResponse
     @State var quotationTitle = ""
     
     @State var viewOpenedFrom: String
@@ -44,9 +44,9 @@ struct UploadQuotationView: View {
                 webView
                     .onAppear(){
                         
-                        if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech{
+                        if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech && viewOpenedFrom == CommonStrings().editFaultReportActivity{
                             quotationTitle = "Quotation Upload"
-                            if currentFrResponse?.status! != CommonStrings().statusClosed && currentFrResponse?.status! != CommonStrings().statusCompleted{
+                            if currentFrResponse.status! == CommonStrings().statusPause {
                                 showUploadButton = true
                             }
                         }else{
@@ -77,7 +77,7 @@ struct UploadQuotationView: View {
                             
                             
                             if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech{
-                                if viewOpenedFrom == CommonStrings().editFaultReportActivity && currentFrResponse != nil && currentFrResponse?.status == CommonStrings().statusPause {
+                                if viewOpenedFrom == CommonStrings().editFaultReportActivity && currentFrResponse.status == CommonStrings().statusPause {
                                     showUploadButton = true
                                 }else if viewOpenedFrom == CommonStrings().searchQuotation {
                                     showUploadButton = true
@@ -85,7 +85,7 @@ struct UploadQuotationView: View {
                             }else if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag &&
                                         self.urlRequest != URLRequest(url: Bundle.main.url(forResource: "pdfback", withExtension: "png")!){
                                 showDownloadButton = true
-                                if currentFrResponse != nil && currentFrResponse?.status == CommonStrings().statusPause {
+                                if currentFrResponse.status == CommonStrings().statusPause {
                                     showAcceptReject = true
                                 }
                             }

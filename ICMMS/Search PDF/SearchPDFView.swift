@@ -38,7 +38,7 @@ struct SearchPDFView: View {
                 List (searchFaultResponse, id: \.self)  { searchFaultResponse in
                     ZStack{
                         Button("") {}
-                        NavigationLink(destination: UploadQuotationView(frId: searchFaultResponse.frId!, openQuotationSheet: $openQuotationSheet, successBoolQuotation: $successBoolQuotation, quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected, viewOpenedFrom: CommonStrings().searchQuotation)){
+                        NavigationLink(destination: UploadQuotationView(frId: searchFaultResponse.frId!, openQuotationSheet: $openQuotationSheet, successBoolQuotation: $successBoolQuotation, quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected, currentFrResponse: CurrentFrResponse(), viewOpenedFrom: CommonStrings().searchQuotation)){
                             FaultSearchCardView(searchFaultResponse: searchFaultResponse)
                                 .padding()
                                 .background(Color("light_gray"))

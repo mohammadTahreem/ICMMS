@@ -155,18 +155,8 @@ struct UploadImageSheet: View {
 }
 
 
-/*
- @POST("faultreport/{value}image")
- @Headers("Content-Type: application/json")
- Call<Void> uploadCaptureImage(@Path("value") String value,
- @Header("Authorization") String token,
- @Header("workspace") String workspace,
- @Body UploadPictureRequest uploadPictureRequest);
- UploadPictureRequest uploadPictureRequest = new UploadPictureRequest(frId, encodedString, name, contact, rank, division, sign);
- */
-
-//struct UploadImageSheet_Previews: PreviewProvider {
-//    static var previews: some View {
-//        UploadImageSheet(viewName: "before", frId: "frId", emptyAlert: )
-//    }
-//}
+struct UploadImageSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        UploadImageSheet(viewName: "Before", frId: "frID", imageUploadAlert: .constant(false), image: UIImage())
+    }
+}

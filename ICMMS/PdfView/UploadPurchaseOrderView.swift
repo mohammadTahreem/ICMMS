@@ -30,7 +30,7 @@ struct UploadPurchaseOrderView: View {
                     
                     if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech{
                         if currentFrResponse?.status != nil{
-                            if currentFrResponse?.status! != CommonStrings().statusClosed && currentFrResponse?.status! != CommonStrings().statusCompleted{
+                            if currentFrResponse?.status! == CommonStrings().statusPause{
                                 showUploadButton = true
                             }
                         }

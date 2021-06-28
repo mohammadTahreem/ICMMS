@@ -51,13 +51,15 @@ struct Logout: View {
         logoutLoading = true
         let currentUrl = CommonStrings().apiURL
         
-        let urlString = "\(currentUrl)logout?&deviceToken=\(deviceToken ?? "no data")"
+        let urlString = "\(currentUrl)logout?&deviceToken=\(UserDefaults.standard.string(forKey: "deviceToken")!)"
         guard let url = URL(string: urlString) else {return }
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.setValue(token, forHTTPHeaderField: "Authorization")
+        
+        print(urlRequest)
         
         URLSession.shared.dataTask(with: urlRequest){data, responseCode, error in
             
