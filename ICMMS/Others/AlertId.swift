@@ -32,6 +32,7 @@ struct AlertId: Identifiable {
         case acceptSheetBoolCase
         case remarksListLessThanOne
         case mACantCompleteFR
+        case techCanEditCompletedFR
     }
     
     

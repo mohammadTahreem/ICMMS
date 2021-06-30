@@ -49,6 +49,16 @@ struct EditFaultReportView: View {
     @State var showCloseButtonBool = false
     @State var quotationAccepted = false
     @State var quotationRejected = false
+    var locationManager = LocationManager()
+    var viewFrom : String 
+    var userLatitude: String {
+        return "\(locationManager.lastLocation?.coordinate.latitude ?? 0)"
+    }
+    
+    var userLongitude: String {
+        return "\(locationManager.lastLocation?.coordinate.longitude ?? 0)"
+    }
+
     
     var body: some View {
         
@@ -79,8 +89,14 @@ struct EditFaultReportView: View {
                                     case .second:
                                         //SecondView()
                                         Text("sec")
+                                        
+                                    case .upPurSheetCase:
+                                        UploadPurchaseOrderView(frId: frId)
                                     }
                                 }
+                                .onChange(of: currentFrResponse.status, perform: { value in
+                                    enableDisableButtons(currentFrResponse: currentFrResponse )
+                                })
                             
                             VStack{
                                 //remarks
@@ -229,8 +245,6 @@ struct EditFaultReportView: View {
                                                     QRValue = String()
                                                 }
                                         })
-                                    }else{
-                                        EmptyView()
                                     }
                                     
                                     if showLocationButton {
@@ -254,11 +268,10 @@ struct EditFaultReportView: View {
                                                 self.alertId = AlertId(id: .response400)
                                             }
                                         },content: {
-                                            ScanLocation(showScanSheet: $showScanSheet, frId: currentFrResponse.frId!, responseCode: $responseCode)
+                                            ScanLocation(showScanSheet: $showScanSheet, frId: currentFrResponse.frId!, responseCode: $responseCode
+                                                         , userLatitude: userLatitude, userLongitude: userLongitude)
                                         })
                                         
-                                    }else{
-                                        EmptyView()
                                     }
                                     
                                     if showAcceptReject {
@@ -379,9 +392,9 @@ struct EditFaultReportView: View {
                                                 Button(action: {
                                                     if (pickerItem != currentFrResponse.status!){
                                                         if (UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech){
-                                                            if pickerItem == "Open" {
+                                                            if pickerItem == CommonStrings().statusOpen {
                                                                 updateFaultReportFunc(updateFaultReportRequest: updateFaultReportRequest)
-                                                            }else if pickerItem == "Completed"{
+                                                            }else if pickerItem == CommonStrings().statusCompleted {
                                                                 ackSheetBool = true
                                                             }
                                                         }else{
@@ -424,7 +437,7 @@ struct EditFaultReportView: View {
                                                         self.alertId = AlertId(id: .closeFrAfterUpdate)
                                                     }
                                                 }, content: {
-                                                    AcknowledgerFaultView(ackSheetBool: $ackSheetBool, dataItems: updateFaultReportRequest, currentFrResponse: currentFrResponse, receivedValueAckFR: $receivedValueAckFR)
+                                                    AcknowledgerFaultView(ackSheetBool: $ackSheetBool, receivedValueAckFR: $receivedValueAckFR, viewFrom: CommonStrings().editFaultReportActivity)
                                                 })
                                             }
                                         }
@@ -479,8 +492,6 @@ struct EditFaultReportView: View {
     // FIXME:
     
     func getCurrentFaultReport(frId: String)  {
-        
-        currentFrResponse = CurrentFrResponse()
         let body = PostCurrentFr(geolocation: Geolocation( latitude: 0, longitude: 0), frId: frId)
         let encoded = try? JSONEncoder().encode(body)
         
@@ -512,6 +523,7 @@ struct EditFaultReportView: View {
                         let frResponseOnSearch = try JSONDecoder().decode(CurrentFrResponse.self, from: data!)
                         self.currentFrResponse = frResponseOnSearch
                         print(currentFrResponse)
+                        enableDisableButtons(currentFrResponse: frResponseOnSearch)
                     } catch let error {
                         print("Error decoding: ", error)
                     }
@@ -582,8 +594,7 @@ struct EditFaultReportView: View {
     private func createAlert(alertId: AlertId, updateFaultReportRequest: UpdateFaultRequest, currentStatus: String) -> Alert {
         switch alertId.id {
         case .respone200:
-            return Alert(title: Text("The location is set"), dismissButton: .default(Text("Okay"), action: {
-                print("location clicked")
+            return Alert(title: Text("The location scan is successfull"), dismissButton: .default(Text("Okay"), action: {
                 getCurrentFaultReport(frId: frId)
             }))
         case .response204:
@@ -612,7 +623,8 @@ struct EditFaultReportView: View {
             }))
         case .closeFrAfterUpdate:
             return Alert(title: Text("Fault Report Updated"), dismissButton: .default(Text("Okay!"), action: {
-                presentationMode.wrappedValue.dismiss()
+                getCurrentFaultReport(frId: frId)
+                enableDisableButtons(currentFrResponse: currentFrResponse)
             }))
         case .response215:
             return Alert(title: Text("Equipment scanned is not of the viewed fault report"), dismissButton: .cancel())
@@ -640,6 +652,7 @@ struct EditFaultReportView: View {
         case .uploadPurchaseOrder:
             return Alert(title: Text("Upload Purchase order for further action"), dismissButton: .default(Text("Okay!"), action: {
                 self.openPurchaseSheet = true
+                activeSheet = .upPurSheetCase
             }))
         case .cantTakeActionTillQuotationAcceptedAlert:
             return Alert(title: Text("Can't take action till quotation gets accepted or rejected!"), dismissButton: .default(Text("Okay")))
@@ -661,6 +674,11 @@ struct EditFaultReportView: View {
             return Alert(title: Text("Pause Request Accepted"), dismissButton: .default(Text("Okay"), action: {
                 presentationMode.wrappedValue.dismiss()
             }))
+        case .techCanEditCompletedFR:
+            return Alert(title: Text("Editable Fault Report"),
+                         message: Text("Technician can edit \(frId) for 15 mins"), dismissButton: .default(Text("Okay!"), action: {
+                            showUpdateButton = true
+                         }))
         }
     }
     
@@ -795,7 +813,8 @@ struct EditFaultReportView: View {
                             showUpdateButton = false
                         }
                     }
-                }else if currentFrResponse.status == CommonStrings().statusPause{
+                }
+                else if currentFrResponse.status == CommonStrings().statusPause{
                     showRequestPauseButton = false
                     showAcceptReject = false
                     
@@ -838,8 +857,8 @@ struct EditFaultReportView: View {
                     }
                     
                     
-                }else if currentFrResponse.status == CommonStrings().statusCompleted &&
-                            currentFrResponse.status == CommonStrings().statusClosed &&
+                }
+                else if currentFrResponse.status == CommonStrings().statusClosed ||
                             currentFrResponse.status == CommonStrings().statusPauseRequested
                 {
                     showEquipButton = false
@@ -848,7 +867,16 @@ struct EditFaultReportView: View {
                     showRequestPauseButton = false
                     showAcceptReject = false
                 }
-                
+                else if currentFrResponse.status == CommonStrings().statusCompleted {
+                    showEquipButton = false
+                    showUpdateButton = false
+                    showLocationButton = false
+                    showRequestPauseButton = false
+                    showAcceptReject = false
+                    if viewFrom == "Inactive"{
+                        checkIfCompletedRecently()
+                    }
+                }
             }
             
             
@@ -871,7 +899,7 @@ struct EditFaultReportView: View {
                 }else if currentFrResponse.status! == CommonStrings().statusCompleted {
                     showUpdateButton = true
                 }else if currentFrResponse.status! == CommonStrings().statusClosed ||
-                            currentFrResponse.status! == CommonStrings().statusOpen{
+                            currentFrResponse.status! == CommonStrings().statusOpen {
                     showUpdateButton = false
                     showAcceptReject = false
                 }
@@ -888,6 +916,55 @@ struct EditFaultReportView: View {
         if currentFrResponse.observation != nil { observationString = currentFrResponse.observation! }
         
         if currentFrResponse.actionTaken != nil { actionTakenString = currentFrResponse.actionTaken! }
+        
+    }
+    
+    
+    func checkIfCompletedRecently() {
+        
+        frIsLoading = true
+        guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/editcompleted/\(frId)") else {return }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+        urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+        print(urlRequest)
+        
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            if let error = error {
+                print("Request error: ", error)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                print("response error: \(String(describing: error))")
+                return
+            }
+            
+            if response.statusCode == 200 {
+                
+                guard let _ = data else { return }
+                do {
+                                        
+                    let result = try JSONDecoder().decode(Bool.self, from: data!)
+                    
+                    if result == true {
+                        showUpdateButton = true
+                    }
+                    print(result)
+                }
+                catch let error {
+                    print("Error decoding: ", error)
+                }
+            } else {
+                print("Error code: \(response.statusCode)")
+            }
+        }
+        frIsLoading = false
+        dataTask.resume()
         
     }
     

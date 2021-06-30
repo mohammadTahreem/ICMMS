@@ -13,6 +13,10 @@ struct EquipmentSearchClass: Codable {
     var frId: String?
 }
 
+struct CheckIfCompletedRecently: Codable {
+    var editable: String?
+}
+
 struct CurrentFrResponse: Codable {
     var frId : String?
     var clientFrId : String?

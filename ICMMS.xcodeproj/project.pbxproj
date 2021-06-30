@@ -15,6 +15,16 @@
 		CC260BB4267CA0C5002AA8E6 /* FloatingMenuPdf.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB3267CA0C5002AA8E6 /* FloatingMenuPdf.swift */; };
 		CC260BB7267CB586002AA8E6 /* ImageViewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB6267CB586002AA8E6 /* ImageViewSheet.swift */; };
 		CC260BB9267CB789002AA8E6 /* FRImageResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB8267CB789002AA8E6 /* FRImageResponseModel.swift */; };
+		CC35D53C2689ECA2004F290A /* AuthDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D53B2689ECA2004F290A /* AuthDetails.swift */; };
+		CC35D53E268C6CBB004F290A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC35D53D268C6CBB004F290A /* Assets.xcassets */; };
+		CC35D547268C8F16004F290A /* TaskSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D540268C8F16004F290A /* TaskSearchResponse.swift */; };
+		CC35D548268C8F16004F290A /* PmTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D541268C8F16004F290A /* PmTaskView.swift */; };
+		CC35D549268C8F16004F290A /* TaskSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D542268C8F16004F290A /* TaskSearchView.swift */; };
+		CC35D54A268C8F16004F290A /* TaskScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D543268C8F16004F290A /* TaskScanView.swift */; };
+		CC35D54B268C8F16004F290A /* PmTaskResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D544268C8F16004F290A /* PmTaskResponse.swift */; };
+		CC35D54C268C8F16004F290A /* CheckListSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D545268C8F16004F290A /* CheckListSheet.swift */; };
+		CC35D54D268C8F16004F290A /* UpdatePmTaskRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D546268C8F16004F290A /* UpdatePmTaskRequest.swift */; };
+		CC35D551268C9318004F290A /* ChecklistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D550268C9318004F290A /* ChecklistModel.swift */; };
 		CC37EC482683188A00A3B5CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC37EC472683188A00A3B5CF /* GoogleService-Info.plist */; };
 		CC3E9F4C2668F71300BA47F2 /* SearchFaultReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F4B2668F71300BA47F2 /* SearchFaultReportView.swift */; };
 		CC3E9F4E2668F75600BA47F2 /* FaultSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3E9F4D2668F75600BA47F2 /* FaultSearchResponse.swift */; };
@@ -78,6 +88,16 @@
 		CC260BB3267CA0C5002AA8E6 /* FloatingMenuPdf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMenuPdf.swift; sourceTree = "<group>"; };
 		CC260BB6267CB586002AA8E6 /* ImageViewSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewSheet.swift; sourceTree = "<group>"; };
 		CC260BB8267CB789002AA8E6 /* FRImageResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRImageResponseModel.swift; sourceTree = "<group>"; };
+		CC35D53B2689ECA2004F290A /* AuthDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDetails.swift; sourceTree = "<group>"; };
+		CC35D53D268C6CBB004F290A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CC35D540268C8F16004F290A /* TaskSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskSearchResponse.swift; sourceTree = "<group>"; };
+		CC35D541268C8F16004F290A /* PmTaskView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PmTaskView.swift; sourceTree = "<group>"; };
+		CC35D542268C8F16004F290A /* TaskSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskSearchView.swift; sourceTree = "<group>"; };
+		CC35D543268C8F16004F290A /* TaskScanView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskScanView.swift; sourceTree = "<group>"; };
+		CC35D544268C8F16004F290A /* PmTaskResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PmTaskResponse.swift; sourceTree = "<group>"; };
+		CC35D545268C8F16004F290A /* CheckListSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckListSheet.swift; sourceTree = "<group>"; };
+		CC35D546268C8F16004F290A /* UpdatePmTaskRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePmTaskRequest.swift; sourceTree = "<group>"; };
+		CC35D550268C9318004F290A /* ChecklistModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChecklistModel.swift; sourceTree = "<group>"; };
 		CC37EC472683188A00A3B5CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CC37EC4A2683374800A3B5CF /* ICMMSRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ICMMSRelease.entitlements; sourceTree = "<group>"; };
 		CC3E9F4B2668F71300BA47F2 /* SearchFaultReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFaultReportView.swift; sourceTree = "<group>"; };
@@ -164,6 +184,20 @@
 			path = ImageViews;
 			sourceTree = "<group>";
 		};
+		CC35D53F268C8EE8004F290A /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				CC35D545268C8F16004F290A /* CheckListSheet.swift */,
+				CC35D544268C8F16004F290A /* PmTaskResponse.swift */,
+				CC35D541268C8F16004F290A /* PmTaskView.swift */,
+				CC35D543268C8F16004F290A /* TaskScanView.swift */,
+				CC35D540268C8F16004F290A /* TaskSearchResponse.swift */,
+				CC35D542268C8F16004F290A /* TaskSearchView.swift */,
+				CC35D546268C8F16004F290A /* UpdatePmTaskRequest.swift */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
 		CC37EC442683156400A3B5CF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +277,7 @@
 		CCB1CDE226674DEC00E6F83A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CC35D550268C9318004F290A /* ChecklistModel.swift */,
 				CCB1CDE326674DF900E6F83A /* LoginResponse.swift */,
 				CC3E9F672668FADF00BA47F2 /* RequestForPauseModel.swift */,
 				CC3E9F632668FA4B00BA47F2 /* RequestPauseResponse.swift */,
@@ -260,6 +295,7 @@
 				CC51EABD2681B11100E6FDBB /* ImageDataList.swift */,
 				CC1BF93B268451F300930195 /* AcceptRejectQuotationModel.swift */,
 				CC1BF94226847AC000930195 /* MessagesModel.swift */,
+				CC35D53B2689ECA2004F290A /* AuthDetails.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -298,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				CC37EC4A2683374800A3B5CF /* ICMMSRelease.entitlements */,
+				CC35D53D268C6CBB004F290A /* Assets.xcassets */,
 				CCE18A4026663D2B00C0E4BD /* ICMMS */,
 				CCE18A3F26663D2B00C0E4BD /* Products */,
 				CC37EC442683156400A3B5CF /* Frameworks */,
@@ -324,6 +361,7 @@
 				CC260BB5267CB54E002AA8E6 /* ImageViews */,
 				CC4340D02679C8D0009999B6 /* Search PDF */,
 				CC4340BB26770E20009999B6 /* PdfView */,
+				CC35D53F268C8EE8004F290A /* Tasks */,
 				CC3E9F6D2669F18B00BA47F2 /* LayoutModel */,
 				CC3E9F4A2668F6DE00BA47F2 /* FaultReport */,
 				CCB1CDEA2667516500E6F83A /* Others */,
@@ -410,6 +448,7 @@
 			files = (
 				CC4B68072667D38A00682E7A /* Assets.xcassets in Resources */,
 				CC4340D62679F836009999B6 /* pdfback.png in Resources */,
+				CC35D53E268C6CBB004F290A /* Assets.xcassets in Resources */,
 				CC37EC482683188A00A3B5CF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -438,18 +477,23 @@
 				CC51EAC02681B95000E6FDBB /* SUImagePickerView.swift in Sources */,
 				CC4340D22679C8EE009999B6 /* SearchPDFView.swift in Sources */,
 				CC3E9F4E2668F75600BA47F2 /* FaultSearchResponse.swift in Sources */,
+				CC35D54D268C8F16004F290A /* UpdatePmTaskRequest.swift in Sources */,
 				CC4340C726775919009999B6 /* DocumentPicker.swift in Sources */,
 				CC3E9F5E2668F9A400BA47F2 /* ImageLoader.swift in Sources */,
 				CC4B68022667670800682E7A /* DashboardDetails.swift in Sources */,
+				CC35D54A268C8F16004F290A /* TaskScanView.swift in Sources */,
 				CC3E9F622668FA2300BA47F2 /* AcceptRejectModel.swift in Sources */,
 				CC3E9F582668F8A500BA47F2 /* UpdateFaultRequest.swift in Sources */,
 				CC3E9F4C2668F71300BA47F2 /* SearchFaultReportView.swift in Sources */,
+				CC35D54C268C8F16004F290A /* CheckListSheet.swift in Sources */,
+				CC35D549268C8F16004F290A /* TaskSearchView.swift in Sources */,
 				CCB1CDEE2667569600E6F83A /* Logout.swift in Sources */,
 				CCE18A4426663D2B00C0E4BD /* WorkspaceView.swift in Sources */,
 				CC3E9F602668F9E200BA47F2 /* AcceptPauseSheet.swift in Sources */,
 				CC1BF94326847AC000930195 /* MessagesModel.swift in Sources */,
 				CCB1CDE426674DF900E6F83A /* LoginResponse.swift in Sources */,
 				CC3E9F5A2668F8D200BA47F2 /* LabelTextField.swift in Sources */,
+				CC35D547268C8F16004F290A /* TaskSearchResponse.swift in Sources */,
 				CC5D85D126806E6D0085E2A6 /* UploadPictureRequestModel.swift in Sources */,
 				CC51EAC42681BAB100E6FDBB /* NetworkManager.swift in Sources */,
 				CC3E9F662668FA7F00BA47F2 /* RequestForPauseSheet.swift in Sources */,
@@ -460,6 +504,7 @@
 				CC4340CF2679C7D7009999B6 /* UploadPurchaseOrderView.swift in Sources */,
 				CC3E9F642668FA4B00BA47F2 /* RequestPauseResponse.swift in Sources */,
 				CCB1CDE626674E2A00E6F83A /* UserSettings.swift in Sources */,
+				CC35D548268C8F16004F290A /* PmTaskView.swift in Sources */,
 				CCF6DEAA267328C300716D25 /* AcknowledgerFaultView.swift in Sources */,
 				CC3E9F542668F83600BA47F2 /* CurrentFrResponse.swift in Sources */,
 				CC4340CB2678A1E8009999B6 /* WebViewKit.swift in Sources */,
@@ -473,7 +518,10 @@
 				CCB1CDE92667506500E6F83A /* CommonStrings.swift in Sources */,
 				CCF6DEAC2673290200716D25 /* PencilKitRepresentable.swift in Sources */,
 				CC4340BD26770E6C009999B6 /* UploadQuotationView.swift in Sources */,
+				CC35D551268C9318004F290A /* ChecklistModel.swift in Sources */,
+				CC35D53C2689ECA2004F290A /* AuthDetails.swift in Sources */,
 				CC3E9F562668F86800BA47F2 /* PostCurrentFr.swift in Sources */,
+				CC35D54B268C8F16004F290A /* PmTaskResponse.swift in Sources */,
 				CC3E9F5C2668F98500BA47F2 /* URLImage.swift in Sources */,
 				CC3E9F732669FA0B00BA47F2 /* ScanLocation.swift in Sources */,
 			);
@@ -616,6 +664,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tahreem.ICMMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -643,6 +692,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tahreem.ICMMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";

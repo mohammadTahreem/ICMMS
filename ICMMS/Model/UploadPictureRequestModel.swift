@@ -8,5 +8,5 @@
 import Foundation
 
 struct UploadPictureRequestModel: Codable {
-    var frId, image, name, contact, division, rank,  sign : String?
+    var frId, image, name, contactNo, division, rank,  sign : String?
 }

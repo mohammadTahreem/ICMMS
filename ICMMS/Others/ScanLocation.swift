@@ -13,30 +13,37 @@ struct ScanLocation: View {
     @Binding var showScanSheet : Bool
     @State var qrValue = ""
     @State var cameraPosition = AVCaptureDevice.Position.back    
-    @StateObject var locationManager = LocationManager()
     @State var frId: String
-    @Binding var responseCode: String 
+    @Binding var responseCode: String
+    @State var loadingAni : Bool = true
     
-    var userLatitude: String {
-        return "\(locationManager.lastLocation?.coordinate.latitude ?? 0)"
-    }
+    var userLatitude: String
     
-    var userLongitude: String {
-        return "\(locationManager.lastLocation?.coordinate.longitude ?? 0)"
-    }
+    var userLongitude: String
 
     var body: some View {
-        CBScanner(
-            supportBarcode: .constant([.qr, .code128]), //Set type of barcode you want to scan
-            scanInterval: .constant(5.0), //Event will trigger every 5 seconds
-            //mockBarCode: .constant(BarcodeData(value:"Mocking data", type: .qr)),
-            cameraPosition: $cameraPosition //Bind to switch front/back camera
-        ){
-            //When you click the button on screen mock data will appear here
-            print("BarCodeType =",$0.type.rawValue, "Value =",$0.value)
-            if $0.value != "" {
-                qrValue = $0.value
-                locationCall(qrValue: qrValue, userLatitude: userLatitude, userLongitude: userLongitude)
+        
+        if loadingAni {
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle())
+                .padding()
+                .onAppear(){
+                    if userLatitude != "0" && userLongitude != "0" {
+                        loadingAni = false
+                    }
+                }
+        } else {
+            CBScanner(
+                supportBarcode: .constant([.qr, .code128]), //Set type of barcode you want to scan
+                scanInterval: .constant(5.0), //Event will trigger every 5 seconds
+                //mockBarCode: .constant(BarcodeData(value:"Mocking data", type: .qr)),
+                cameraPosition: $cameraPosition //Bind to switch front/back camera
+            ){
+                print("BarCodeType =",$0.type.rawValue, "Value =",$0.value)
+                if $0.value != "" {
+                    qrValue = $0.value
+                    locationCall(qrValue: qrValue, userLatitude: userLatitude, userLongitude: userLongitude)
+                }
             }
         }
     }
@@ -76,8 +83,8 @@ struct ScanLocation: View {
     }
 }
 
-//struct ScnEquipOrLoc_Preview: PreviewProvider {
-//    static var previews: some View{
-//        ScanEquipOrLocationView()
-//    }
-//}
+struct ScnEquipOrLoc_Preview: PreviewProvider {
+    static var previews: some View{
+        ScanLocation(showScanSheet: .constant(true), frId: "frId", responseCode: .constant("respons"), userLatitude: "0", userLongitude: "09")
+    }
+}

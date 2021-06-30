@@ -24,9 +24,11 @@ struct AcknowledgerFaultView: View {
     @State private var onSuccess: Bool = false
     @State private var onFailure: Bool = false
     @State private var isLoading: Bool = false
-    @State var dataItems: UpdateFaultRequest
-    @State var currentFrResponse : CurrentFrResponse
+    @State var dataItems: UpdateFaultRequest?
+    @State var currentFrResponse : CurrentFrResponse?
     @Binding var receivedValueAckFR: String
+    @State var viewFrom: String
+    @State var tasksDataItems: UpdatePmTaskRequest?
     
     var body: some View {
         
@@ -57,7 +59,7 @@ struct AcknowledgerFaultView: View {
                     .cornerRadius(8)
                     .padding()
                     .alert(isPresented: $onFailure, content: {
-                        Alert(title: Text("Error"), message: Text("Fault Id:\(currentFrResponse.frId ?? "" )  couldn't be updated"), dismissButton: .default(Text("Okay")))
+                        Alert(title: Text("Error"), message: Text("Fault Id:\(currentFrResponse?.frId ?? "" )  couldn't be updated"), dismissButton: .default(Text("Okay")))
                     })
                 
                 PencilKitRepresentable(canvas: $techSignCanvas)
@@ -66,7 +68,7 @@ struct AcknowledgerFaultView: View {
                     .border(Color.gray, width: 2)
                     .padding()
                     .alert(isPresented: $onSuccess, content: {
-                        Alert(title: Text("Success"), message: Text("Fault: \(currentFrResponse.frId ?? "") is updated successufully"), dismissButton: .default(Text("Okay")){
+                        Alert(title: Text("Success"), message: Text("Fault: \(currentFrResponse?.frId ?? "") is updated successufully"), dismissButton: .default(Text("Okay")){
                             self.ackSheetBool = false
                         })
                     })
@@ -151,7 +153,7 @@ struct AcknowledgerFaultView: View {
         
         
         dataItems =
-            UpdateFaultRequest(acknowledgerCode: dataItems.acknowledgerCode, frId: dataItems.frId, requestorName: dataItems.requestorName, requestorContactNo: dataItems.requestorContactNo, locationDesc: dataItems.locationDesc, faultCategoryDesc: dataItems.faultCategoryDesc, acknowledgedBy: AcknowledgedBy( frId: dataItems.frId, rank: ackRank, signature: ackSign, name: ackName), building: dataItems.building, location: dataItems.location, department: dataItems.department, faultCategory: dataItems.faultCategory, priority: dataItems.priority, maintGrp: dataItems.maintGrp, division: dataItems.division, observation: dataItems.observation, diagnosis: dataItems.diagnosis, actionTaken: dataItems.actionTaken, status: dataItems.status, equipment: dataItems.equipment, remarks: dataItems.remarks, attendedBy: dataItems.attendedBy, eotTime: dataItems.eotTime, eotType: dataItems.eotType, activationTime: dataItems.activationTime, technicianSignature: techSign, arrivalTime: dataItems.arrivalTime, restartTime: dataItems.restartTime, responseTime: dataItems.responseTime, downTime: dataItems.downTime, pauseTime: dataItems.pauseTime, completionTime: dataItems.completionTime, acknowledgementTime: dataItems.acknowledgementTime, reportedDate: dataItems.reportedDate)
+            UpdateFaultRequest(acknowledgerCode: dataItems?.acknowledgerCode, frId: dataItems?.frId, requestorName: dataItems?.requestorName, requestorContactNo: dataItems?.requestorContactNo, locationDesc: dataItems?.locationDesc, faultCategoryDesc: dataItems?.faultCategoryDesc, acknowledgedBy: AcknowledgedBy( frId: dataItems?.frId, rank: ackRank, signature: ackSign, name: ackName), building: dataItems?.building, location: dataItems?.location, department: dataItems?.department, faultCategory: dataItems?.faultCategory, priority: dataItems?.priority, maintGrp: dataItems?.maintGrp, division: dataItems?.division, observation: dataItems?.observation, diagnosis: dataItems?.diagnosis, actionTaken: dataItems?.actionTaken, status: dataItems?.status, equipment: dataItems?.equipment, remarks: dataItems?.remarks, attendedBy: dataItems?.attendedBy, eotTime: dataItems?.eotTime, eotType: dataItems?.eotType, activationTime: dataItems?.activationTime, technicianSignature: techSign, arrivalTime: dataItems?.arrivalTime, restartTime: dataItems?.restartTime, responseTime: dataItems?.responseTime, downTime: dataItems?.downTime, pauseTime: dataItems?.pauseTime, completionTime: dataItems?.completionTime, acknowledgementTime: dataItems?.acknowledgementTime, reportedDate: dataItems?.reportedDate)
         
         let encodedBody = try? JSONEncoder().encode(dataItems)
         
@@ -177,7 +179,7 @@ struct AcknowledgerFaultView: View {
                 if let updateFrResponse = try? JSONDecoder().decode(CurrentFrResponse.self, from: data!){
                     DispatchQueue.main.async {
                         self.currentFrResponse = updateFrResponse
-                        print(currentFrResponse)
+                        print(currentFrResponse!)
                     }
                 }
                 onSuccess = true

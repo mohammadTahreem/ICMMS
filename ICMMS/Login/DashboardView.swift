@@ -59,16 +59,16 @@ struct DashboardView: View {
         case .searchFaultReportView:
             SearchFaultReportView()
         case .scanFaultReportView:
-//            EquipScanView(showScanSheet: $showScanSheet, QRValue: $qrValue, frId: <#T##String#>, responseCode: <#T##Binding<String>#>)
-        Text("scan fault")
+            EquipScanView(showScanSheet: $showScanSheet, QRValue: $qrValue, frId: "frId", responseCode: $qrValue)
+//        Text("scan fault")
         case .searchPOView:
             SearchPDFView(quoteOrPurchase: "Purchase Order")
         case .searchQoutView:
             SearchPDFView(quoteOrPurchase: "Quotation")
-//        case .taskScanView:
-//            Text("Scan Tasks")
-//        case .taskSearchView:
-//            Text("TSV")
+        case .taskScanView:
+            TaskScanView()
+        case .taskSearchView:
+            TaskSearchView()
         }
     }
     
@@ -106,6 +106,6 @@ struct GridStack<Content: View>: View {
 
 struct DashBoardPreview: PreviewProvider {
     static var previews: some View {
-        DashboardView(workspace: "asd")
+        DashboardView(workspace: "asd").environmentObject(UserSettings())
     }
 }

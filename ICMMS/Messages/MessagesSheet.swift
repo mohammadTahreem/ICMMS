@@ -20,6 +20,9 @@ struct MessagesSheet: View {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding()
+                        .onAppear(){
+                            getMessages()
+                        }
                 }else{
                     List(messages, id:\.self){ message in
                         NavigationLink(destination: ChatSheet(type: message.type ?? "", messageTitle: message.title ?? "")){
@@ -29,9 +32,7 @@ struct MessagesSheet: View {
                     }
                 }
             }
-            .onAppear(){
-                getMessages()
-            }
+            
             .navigationBarTitle("Messages")
         }
     }

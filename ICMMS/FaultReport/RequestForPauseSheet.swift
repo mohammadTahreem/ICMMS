@@ -123,19 +123,7 @@ struct RequestForPauseSheet: View {
                 guard let _ = data else { return }
                 updatedAlert.toggle()
                 print(data!)
-               /* DispatchQueue.main.async {
-                    do {
-                        //let decodedUsers = try JSONDecoder().decode(RequestPauseResponse.self, from: data)
-                        //self.requestPauseResponse = decodedUsers
-                        
-                        let decodedResponse = try JSONSerialization.jsonObject(with: data, options: [])
-                        print(decodedResponse)
-                        updatedAlert.toggle()
-                    } catch let error {
-                        print("Error decoding: ", error)
-                        errorAlert.toggle()
-                    }
-                } */
+               
             }
             isLoading.toggle()
         }

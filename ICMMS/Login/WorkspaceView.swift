@@ -13,6 +13,8 @@ struct WorkspaceView: View {
     @State var progressViewBool: Bool = false
     @State var workspaceAlertId: WorkspaceAlertId?
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var settings: UserSettings
+
     var body: some View {
         NavigationView{
             VStack{
@@ -35,9 +37,8 @@ struct WorkspaceView: View {
                 getWorkspaces()
             }
             .navigationBarTitle("Workspaces", displayMode: .inline)
-            .navigationBarItems(trailing: Text(UserDefaults.standard.string(forKey: "role") ?? "")
-                                    .foregroundColor(Color("Indeco_blue")))
-            
+         //   .navigationBarItems(trailing: Text(UserDefaults.standard.string(forKey: "role") ?? "").foregroundColor(Color("Indeco_blue")))
+            .navigationBarItems(trailing: Logout().environmentObject(settings))
         }
     }
     
@@ -53,10 +54,7 @@ struct WorkspaceView: View {
                          dismissButton: .cancel())
         case .loginAlert:
             return Alert(title: Text("Error"), message: Text("There was an error. Please try logging in again!"),
-                         dismissButton: .default(Text("Logout!"), action: {
-                            Logout().logout()
-                            
-                         }))
+                         dismissButton: .default(Text("Logout!")))
         }
     }
     func getWorkspaces()  {
@@ -68,6 +66,8 @@ struct WorkspaceView: View {
         urlRequest.httpMethod = "GET"
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+        
+        print(UserDefaults.standard.string(forKey: "token")!)
         
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
@@ -107,7 +107,7 @@ struct WorkspaceView: View {
 
 struct WorkspaceView_Previews: PreviewProvider {
     static var previews: some View{
-        WorkspaceView()
+        WorkspaceView().environmentObject(UserSettings())
     }
 }
 

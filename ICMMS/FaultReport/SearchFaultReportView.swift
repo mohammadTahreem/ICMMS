@@ -82,7 +82,10 @@ struct FaultSearchView: View {
                 List (searchFaultResponse, id: \.self)  { searchFaultResponse in
                     ZStack{
                         Button("") {}
-                        NavigationLink(destination: EditFaultReportView(frId: searchFaultResponse.frId!)){
+                        NavigationLink(destination: EditFaultReportView(frId: searchFaultResponse.frId!, viewFrom: activeInactive)
+                                        .onDisappear(){
+                                            self.searchFaultResponse = []
+                                        }){
                             FaultSearchCardView(searchFaultResponse: searchFaultResponse)
                                 .padding()
                                 .background(Color("light_gray"))
@@ -114,6 +117,15 @@ struct FaultSearchView: View {
         print(urlRequest)
         
         URLSession.shared.dataTask(with: urlRequest){data, responseCode, error in
+            if let error = error {
+                print("Request error: ", error)
+                return
+            }
+            
+            guard (responseCode as? HTTPURLResponse) != nil else {
+                print("response error: \(String(describing: error))")
+                return
+            }
             
             if let searchFaultResponse = try? JSONDecoder().decode([FaultSearchResponse].self, from: data!){
                 DispatchQueue.main.async {
@@ -150,11 +162,7 @@ struct SearchFaultReportView: View {
                 }
         }
         //.tabViewStyle(PageTabViewStyle())
-        .toolbar(){
-            ToolbarItem(placement: .navigationBarTrailing){
-                Logout().environmentObject(settings)
-            }
-        }
+        .navigationBarItems(trailing: Logout().environmentObject(settings))
         .navigationBarTitle("Search Fault Reports")
         
     }
@@ -163,7 +171,7 @@ struct SearchFaultReportView: View {
 
 struct SearchFRView_Preview: PreviewProvider {
     static var previews: some View {
-        FaultSearchView( activeInactive: "Active")
+        SearchFaultReportView().environmentObject(UserSettings())
     }
     
 }

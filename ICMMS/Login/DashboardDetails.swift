@@ -12,8 +12,8 @@ enum ViewList {
     case scanFaultReportView
     case searchPOView
     case searchQoutView
-    //case taskScanView
-    //case taskSearchView
+    case taskScanView
+    case taskSearchView
 }
 
 struct DashboadDetails: Identifiable, Hashable {
@@ -29,7 +29,7 @@ extension DashboadDetails{
         DashboadDetails(imageName: "scanfault", itemName: "Scan Fault Report", viewName: .scanFaultReportView),
         DashboadDetails(imageName: "purchase_order", itemName: "Search Purchase Order", viewName: .searchPOView),
         DashboadDetails(imageName: "purchase_qoutation", itemName: "Upload Qoutation", viewName: .searchQoutView),
-//        DashboadDetails(imageName: "taskscan", itemName: "Task Scan", viewName: .taskScanView),
-//        DashboadDetails(imageName: "tasksearch", itemName: "Task Search", viewName: .taskSearchView),
+        DashboadDetails(imageName: "taskscan", itemName: "Task Scan", viewName: .taskScanView),
+        DashboadDetails(imageName: "tasksearch", itemName: "Task Search", viewName: .taskSearchView),
     ]
 }

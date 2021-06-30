@@ -108,11 +108,11 @@ struct ImageViewSheet: View {
                                     }
                                 
                                 HStack{
-                                    Text("Name")
+                                    Text(imageData.reName!)
                                         .foregroundColor(.white)
                                         .padding()
                                     Spacer()
-                                    Text("Contact Number")
+                                    Text(imageData.reContact!)
                                         .foregroundColor(.white)
                                         .padding()
                                 }
@@ -218,7 +218,7 @@ struct ImageViewSheet: View {
                     
                     if !frImageResModel.isEmpty{
                         for imageModelName in frImageResModel{
-                            getSingleImage(imageName: imageModelName.image!)
+                            getSingleImage(imageName: imageModelName.image!, reName: imageModelName.name ?? "", reContact: imageModelName.contactNo ?? "")
                         }
                     }
                     else{
@@ -238,7 +238,7 @@ struct ImageViewSheet: View {
         
     }
     
-    func getSingleImage(imageName: String)  {
+    func getSingleImage(imageName: String, reName: String, reContact: String)  {
         guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/getimage/\(imageName)") else {return}
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
@@ -262,7 +262,7 @@ struct ImageViewSheet: View {
             if response.statusCode == 200 {
                 
                 guard let imageData = data else { return }
-                imageDataList.append(ImageDataList(imageData: imageData, imageName: imageName))
+                imageDataList.append(ImageDataList(imageData: imageData, imageName: imageName, reName: reName, reContact: reContact))
             } else {
                 print("Error code: \(response.statusCode)")
             }

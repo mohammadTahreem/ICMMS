@@ -11,19 +11,11 @@ import Foundation
 struct ImageDataList : Hashable{
     var imageData: Data
     var imageName: String
+    var reName, reContact: String?
 }
 
 
 struct CloseFaultReport: Encodable {
-    /*
-     private List<String> remarks = null;
-     String frId, status;
-     private Building building;
-     private Location location;
-     private ArrayList<AttendedBy> attendedBy;
-     private String username;*/
-    
-    
     var remarks: [String]?
     var frId, status, username : String?
     var building: Building?

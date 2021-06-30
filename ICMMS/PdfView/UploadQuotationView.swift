@@ -32,6 +32,9 @@ struct UploadQuotationView: View {
     @State var isLoadingAccepted = false
     var currentFrResponse: CurrentFrResponse
     @State var quotationTitle = ""
+    @Environment(\.presentationMode) var presentationMode
+    @State var downloadSuccessBool = false
+
     
     @State var viewOpenedFrom: String
     
@@ -85,7 +88,9 @@ struct UploadQuotationView: View {
                             }else if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag &&
                                         self.urlRequest != URLRequest(url: Bundle.main.url(forResource: "pdfback", withExtension: "png")!){
                                 showDownloadButton = true
-                                if currentFrResponse.status == CommonStrings().statusPause {
+                                if viewOpenedFrom == CommonStrings().editFaultReportActivity && currentFrResponse.status == CommonStrings().statusPause {
+                                    showAcceptReject = true
+                                }else{
                                     showAcceptReject = true
                                 }
                             }
@@ -136,6 +141,9 @@ struct UploadQuotationView: View {
                     .padding()
                     .background(Color("Indeco_blue"))
                     .cornerRadius(10)
+                    .alert(isPresented: $downloadSuccessBool) {
+                        Alert(title: Text("Downloaded Successfully!"), dismissButton: .default(Text("Okay")))
+                    }
                 }
             }
             .padding()
@@ -167,7 +175,12 @@ struct UploadQuotationView: View {
                             .foregroundColor(.white)
                             .alert(isPresented: $quotationAccepted, content: {
                                 Alert(title: Text("Quotation Accepted"), dismissButton: .default(Text("Okay"), action: {
-                                    openQuotationSheet = false
+                                    if viewOpenedFrom == CommonStrings().editFaultReportActivity{
+                                        openQuotationSheet = false
+                                    }else{
+                                        presentationMode.wrappedValue.dismiss()
+                                    }
+                                    
                                 }))
                             })
                         }
@@ -239,7 +252,7 @@ struct UploadQuotationView: View {
     
     func downloadAndView(fileName:String) {
         
-        
+        downloadSuccessBool = true
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
                 print("Request error: ", error)
@@ -278,6 +291,7 @@ struct UploadQuotationView: View {
             }else{
                 print("Error: \(response.statusCode). There was an error")
             }
+            downloadSuccessBool = false
         }
         dataTask.resume()
     }

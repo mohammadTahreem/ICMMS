@@ -185,7 +185,7 @@ struct MainScreen: View{
         }else if settings.loggedIn && isFrom.isFromNotication {
             NavigationView{
                 if UserDefaults.standard.string(forKey: "frId") != nil{
-                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!)
+                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!, viewFrom: "Active")
                         .environmentObject(settings)
                 }
             }
@@ -196,7 +196,7 @@ struct MainScreen: View{
                 LoginView().environmentObject(settings)
             }else if UserDefaults.standard.bool(forKey: "loggedIn") == true && isFrom.isFromNotication && frId != nil{
                 NavigationView{
-                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!)
+                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!, viewFrom: "Active")
                         .environmentObject(settings)
                 }
             }else if UserDefaults.standard.bool(forKey: "loggedIn") == false && isFrom.isFromNotication && frId == nil{

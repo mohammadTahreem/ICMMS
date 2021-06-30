@@ -104,7 +104,9 @@ struct UploadImageSheet: View {
         print(encodedString)
         
         let uploadPictureModel =  UploadPictureRequestModel(frId: frId, image: encodedString ,name: nameString,
-                                                            contact: contactNumber, division: divisionString, rank: rankString, sign: saveSignature(canvas: imageAckSign))
+                                                            contactNo: contactNumber, division: divisionString, rank: rankString, sign: saveSignature(canvas: imageAckSign))
+        
+        print(uploadPictureModel)
         
         guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/\(viewName.lowercased())image") else {return}
         
@@ -115,10 +117,6 @@ struct UploadImageSheet: View {
         urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
         urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
         urlRequest.httpBody = try? JSONEncoder().encode(uploadPictureModel)
-        
-        print(urlRequest)
-        
-        
         
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
