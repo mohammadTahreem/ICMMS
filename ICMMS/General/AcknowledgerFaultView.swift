@@ -1,3 +1,4 @@
+
 //
 //  AckWindowView.swift
 //  APITestApp
@@ -24,7 +25,7 @@ struct AcknowledgerFaultView: View {
     @State private var onSuccess: Bool = false
     @State private var onFailure: Bool = false
     @State private var isLoading: Bool = false
-    @State var dataItems: UpdateFaultRequest?
+    @State var dataItems: UpdateFaultRequest
     @State var currentFrResponse : CurrentFrResponse?
     @Binding var receivedValueAckFR: String
     @State var viewFrom: String
@@ -37,6 +38,7 @@ struct AcknowledgerFaultView: View {
             Color("light_gray")
                 .ignoresSafeArea()
             VStack{
+                
                 
                 PencilKitRepresentable(canvas: $ackSignCanvas)
                     .frame(height: 100.0)
@@ -68,7 +70,7 @@ struct AcknowledgerFaultView: View {
                     .border(Color.gray, width: 2)
                     .padding()
                     .alert(isPresented: $onSuccess, content: {
-                        Alert(title: Text("Success"), message: Text("Fault: \(currentFrResponse?.frId ?? "") is updated successufully"), dismissButton: .default(Text("Okay")){
+                        Alert(title: Text("Success"), message: Text(updateMessage()), dismissButton: .default(Text("Okay")){
                             self.ackSheetBool = false
                         })
                     })
@@ -84,21 +86,24 @@ struct AcknowledgerFaultView: View {
                         .padding()
                 }else{
                     
-                    Button("Update"){
-                        
+                    Button(action: {
                         checkForConditions()
                         if !showErrorAlert{
                             updateFaultReport()
                         }
-                        
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 20)
+                    }, label: {
+                        HStack{
+                            Spacer()
+                            Text("Update")
+                            Spacer()
+                        }
+                    })
+                    .padding()
                     .background(Color("Indeco_blue"))
                     .cornerRadius(8)
                     .foregroundColor(.white)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 20)
+                    .padding()
+                    
                     .alert(isPresented: $showErrorAlert, content: {
                         Alert(title: Text("Error"), message: Text("Please fill all fields"), dismissButton: .default(Text("Okay!")))
                     })
@@ -111,6 +116,62 @@ struct AcknowledgerFaultView: View {
             .padding()
         }
         
+        
+    }
+    
+    func updateMessage() -> String {
+        if viewFrom == CommonStrings().editFaultReportActivity{
+            return "Fault: \(String(describing: dataItems.frId)) is updated"
+        }else{
+            return "Task: \(String(describing: tasksDataItems?.taskId)) is updated"
+        }
+    }
+    
+    func updatePmTask()  {
+        
+        print("this method called")
+        isLoading = true
+        tasksDataItems = UpdatePmTaskRequest(status: tasksDataItems?.status, remarks: tasksDataItems?.remarks, completedTime: tasksDataItems?.completedTime, completedDate: tasksDataItems?.completedDate, taskId: tasksDataItems?.taskId, acknowledger: Acknowledger(rank: ackRank, signature: ackSign, name: ackName), tech_signature: techSign)
+        let encodedBody = try? JSONEncoder().encode(tasksDataItems)
+        
+        guard let url = URL(string: "\(CommonStrings().apiURL)task/updateTask") else {
+            return
+        }
+        var urlRequest = URLRequest(url: url)
+        
+        urlRequest.httpMethod = "PUT"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+        urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+        urlRequest.httpBody = encodedBody
+        
+        print(urlRequest)
+        
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            if let error = error {
+                print("Request error: ", error)
+                self.onFailure = true
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                print("response error: \(String(describing: error))")
+                self.onFailure = true
+                return
+            }
+            
+            if response.statusCode == 200 {
+                guard let _ = data else { return }
+                self.onSuccess = true
+            } else {
+                print("Error code: \(response.statusCode)")
+                self.onFailure = true
+            }
+            isLoading = false
+        }
+        
+        dataTask.resume()
         
     }
     
@@ -153,7 +214,35 @@ struct AcknowledgerFaultView: View {
         
         
         dataItems =
-            UpdateFaultRequest(acknowledgerCode: dataItems?.acknowledgerCode, frId: dataItems?.frId, requestorName: dataItems?.requestorName, requestorContactNo: dataItems?.requestorContactNo, locationDesc: dataItems?.locationDesc, faultCategoryDesc: dataItems?.faultCategoryDesc, acknowledgedBy: AcknowledgedBy( frId: dataItems?.frId, rank: ackRank, signature: ackSign, name: ackName), building: dataItems?.building, location: dataItems?.location, department: dataItems?.department, faultCategory: dataItems?.faultCategory, priority: dataItems?.priority, maintGrp: dataItems?.maintGrp, division: dataItems?.division, observation: dataItems?.observation, diagnosis: dataItems?.diagnosis, actionTaken: dataItems?.actionTaken, status: dataItems?.status, equipment: dataItems?.equipment, remarks: dataItems?.remarks, attendedBy: dataItems?.attendedBy, eotTime: dataItems?.eotTime, eotType: dataItems?.eotType, activationTime: dataItems?.activationTime, technicianSignature: techSign, arrivalTime: dataItems?.arrivalTime, restartTime: dataItems?.restartTime, responseTime: dataItems?.responseTime, downTime: dataItems?.downTime, pauseTime: dataItems?.pauseTime, completionTime: dataItems?.completionTime, acknowledgementTime: dataItems?.acknowledgementTime, reportedDate: dataItems?.reportedDate)
+            UpdateFaultRequest(acknowledgerCode: dataItems.acknowledgerCode, frId: dataItems.frId, requestorName: dataItems.requestorName, requestorContactNo: dataItems.requestorContactNo,
+                               locationDesc: dataItems.locationDesc,
+                               faultCategoryDesc: dataItems.faultCategoryDesc,
+                               acknowledgedBy: AcknowledgedBy( frId: dataItems.frId, rank: ackRank, signature: ackSign, name: ackName),
+                               building: dataItems.building,
+                               location: dataItems.location,
+                               department: dataItems.department,
+                               faultCategory: dataItems.faultCategory,
+                               priority: dataItems.priority, maintGrp:
+                                dataItems.maintGrp, division: dataItems.division,
+                               observation: dataItems.observation,
+                               diagnosis: dataItems.diagnosis,
+                               actionTaken: dataItems.actionTaken,
+                               status: dataItems.status,
+                               equipment: dataItems.equipment,
+                               remarks: dataItems.remarks,
+                               attendedBy: dataItems.attendedBy,
+                               eotTime: dataItems.eotTime,
+                               eotType: dataItems.eotType,
+                               activationTime: dataItems.activationTime,
+                               technicianSignature: techSign,
+                               arrivalTime: dataItems.arrivalTime,
+                               restartTime: dataItems.restartTime,
+                               responseTime: dataItems.responseTime,
+                               downTime: dataItems.downTime,
+                               pauseTime: dataItems.pauseTime,
+                               completionTime: dataItems.completionTime,
+                               acknowledgementTime: dataItems.acknowledgementTime,
+                               reportedDate: dataItems.reportedDate)
         
         let encodedBody = try? JSONEncoder().encode(dataItems)
         
@@ -180,9 +269,11 @@ struct AcknowledgerFaultView: View {
                     DispatchQueue.main.async {
                         self.currentFrResponse = updateFrResponse
                         print(currentFrResponse!)
+                        onSuccess = true
                     }
+                }else{
+                    onFailure = true
                 }
-                onSuccess = true
                 receivedValueAckFR = CommonStrings().successResponse
             } else {
                 print("The last print statement: \(data!)")
@@ -197,12 +288,10 @@ struct AcknowledgerFaultView: View {
     
 }
 
-//struct AckWindowView_Previews: PreviewProvider {
-//
-//    static var previews: some View {
-//        var bool1 = Binding<Bool>(get: return true, set:
-//        return false)
-//
-//        AcknowledgerFaultView(ackSheetBool: bool1 , dataItems: UpdateFaultRequest(), currentFrResponse: CurrentFrResponse())
-//    }
-//}
+struct AckWindowView_Previews: PreviewProvider {
+
+    static var previews: some View {
+
+        AcknowledgerFaultView(ackSheetBool: .constant(true), dataItems: UpdateFaultRequest(), receivedValueAckFR: .constant("asd"), viewFrom: "")
+    }
+}

@@ -9,7 +9,7 @@ import Foundation
 
 struct CommonStrings {
     
-//    let apiURL: String = "http://192.168.1.4:8081/api/"
+//    let apiURL: String = "http://192.168.1.6:8081/api/"
     let apiURL: String = "http://103.26.41.230:8086/i-cmmstest/api/"
 //    let apiURL: String = "http://103.24.4.168:8085/cmms/api/"
     let usernameTech: String = "Technician"
@@ -29,8 +29,15 @@ struct CommonStrings {
     let quotationStatusAccepted = "Accepted"
     let quotationStatusRejected = "Rejected"
     let editFaultReportActivity = "EditFaultReportActivity"
+    let pmtaskActivity = "PmTaskActivity"
     let searchQuotation = "SearchQuotatio"
     let searchFR = "Search FR"
     let scanEquipment = "Scan Equipment"
     let tasksView = "Tasks"
+    let taskScanView = "TaskScan"
+    let taskSearchView = "TaskSearch"
+    let overdueTask = "Overdue Tasks"
+    let dueTask = "Due Tasks"
+    let overdueTaskActual = "Overdue"
+    let dueTaskActual = "Due"
 }

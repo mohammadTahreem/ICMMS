@@ -38,17 +38,17 @@ struct TaskSearchTechView: View {
                     Text("InActive")
                 }
         }
-        .toolbar(){
-            ToolbarItem(placement: .navigationBarTrailing){
-                Logout().environmentObject(settings)
-            }
-        }
+        .navigationBarTitle("Task Search")
+        .navigationBarItems(trailing: Logout().environmentObject(settings))
     }
 }
 
 struct TaskSearchManView: View {
+    @EnvironmentObject var settings: UserSettings
     var body : some View{
         SearchViewTask(activeInactive: "InActive")
+            .navigationBarTitle("Task Search")
+            .navigationBarItems(trailing: Logout().environmentObject(settings))
     }
 }
 
@@ -80,14 +80,13 @@ struct SearchViewTask: View {
             List (taskSearchResponse, id: \.self)  { taskSearchResponse in
                 ZStack{
                     Button("") {}
-                    NavigationLink(destination: PmTaskView(taskId: taskSearchResponse.taskId!)){
+                    NavigationLink(destination: PmTaskView(taskId: taskSearchResponse.taskId!, viewFrom: CommonStrings().taskSearchView)
+                                    .onDisappear(){
+                                        self.taskSearchResponse = []
+                                        self.searchText = ""
+                                    }
+                    ){
                         TaskSearchCardView(taskSearchResponse: taskSearchResponse)
-                            .padding()
-                            .background(Color("light_gray"))
-                            .foregroundColor(.black)
-                            .cornerRadius(8)
-                            .shadow(radius: 5)
-                            .padding()
                     }
                 }
             }
@@ -116,6 +115,8 @@ struct SearchViewTask: View {
                 }
             }else{
                 print("There was an error: \(error.debugDescription)")
+                self.taskSearchResponse = []
+                self.searchText = ""
             }
             isLoading = false
         }.resume()
@@ -166,6 +167,12 @@ struct TaskSearchCardView: View {
                 }
             }
         }
+        .padding()
+        .background(Color("light_gray"))
+        .foregroundColor(.black)
+        .cornerRadius(8)
+        .shadow(radius: 5)
+        .padding()
     }
     
     
@@ -177,4 +184,60 @@ struct TaskSearchView_Previews : PreviewProvider {
     static var previews : some View{
         TaskSearchView()
     }
+}
+
+struct TaskScanCardView: View {
+    var taskSearchResponse: GetTasksOnEquipmentModel
+    
+    
+    var body: some View{
+        VStack{
+            HStack{
+                if (taskSearchResponse.scheduleDate != nil){
+                    Text(GeneralMethods().convertLongToString(isoDate: taskSearchResponse.scheduleDate!))
+                        .font(.caption)
+                }
+                Spacer()
+                if(taskSearchResponse.status != nil){
+                    Text(taskSearchResponse.status!)
+                        .font(.caption)
+                        .foregroundColor(/*@START_MENU_TOKEN@*/Color(red: 0.024, green: 0.329, blue: 0.645)/*@END_MENU_TOKEN@*/)
+                }
+            }
+            Divider()
+            VStack{
+                if( taskSearchResponse.taskNumber != nil){
+                    Text(taskSearchResponse.taskNumber!)
+                        .font(.title)
+                        .bold()
+                }
+                if(taskSearchResponse.equipmentName != nil){
+                    Text(taskSearchResponse.equipmentName!)
+                        .font(.caption)
+                    
+                }
+            }
+            Divider()
+            HStack{
+                if(taskSearchResponse.equipment != nil && taskSearchResponse.equipment?.building != nil){
+                    Text(taskSearchResponse.equipment?.building?.name! ?? "")
+                        .font(.caption)
+                }
+                Spacer()
+                if(taskSearchResponse.equipment != nil && taskSearchResponse.equipment?.location != nil){
+                    Text(taskSearchResponse.equipment?.location?.name! ?? "")
+                        .font(.caption)
+                }
+            }
+        }
+        .padding()
+        .background(Color("light_gray"))
+        .foregroundColor(.black)
+        .cornerRadius(8)
+        .shadow(radius: 5)
+        .padding()
+    }
+    
+    
+    
 }

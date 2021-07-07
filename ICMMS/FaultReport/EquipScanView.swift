@@ -37,6 +37,8 @@ struct EquipScanView: View {
             $0.draw(lineWidth: lineWidth, lineColor: lineColor, fillColor: fillColor)
         }
         .cornerRadius(10)
+        .padding()
+        .background(Color(.black)).ignoresSafeArea()
     }
 }
 

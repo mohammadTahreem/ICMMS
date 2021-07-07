@@ -14,7 +14,7 @@ struct ImageViewSheet: View {
     @State var valueType : String
     @State var viewName: String
     @State var imageDataList: [ImageDataList] = []
-    @State var uploadButton: Bool = true
+    @State var uploadButton: Bool = false
     @State var deleteButton: Bool = false
     @State var currentFrResonse: CurrentFrResponse
     @State var showUpdateButton: Bool
@@ -27,6 +27,7 @@ struct ImageViewSheet: View {
     @State private var isImagePresent = false
     @State var deleteProgressBool : Bool = false
     @State var currentImage = ImageDataList(imageData: Data(), imageName: "")
+    @State var imageAvailable: Bool = false
     
     var body: some View {
         
@@ -67,7 +68,7 @@ struct ImageViewSheet: View {
                                         , isActive: $isImagePresent){
                             
                             
-                            Image("upload")
+                            Image("camera_icon")
                                 .resizable()
                                 .frame(width: 30, height: 30)
                                 .padding()
@@ -94,13 +95,13 @@ struct ImageViewSheet: View {
                         .padding()
                     Spacer()
                 }else{
+                    if imageAvailable {
                     TabView{
                         ForEach(imageDataList, id:\.self) { imageData in
                             VStack{
                                 Image(uiImage: UIImage(data: imageData.imageData)!)
                                     .resizable()
                                     .shadow(radius: 10)
-                                    .frame(width: 300, height: 500)
                                     .scaledToFit()
                                     .cornerRadius(10)
                                     .onAppear(){
@@ -123,6 +124,10 @@ struct ImageViewSheet: View {
                         }
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+                    }else{
+                        Image("noimage")
+                            .resizable().scaledToFit()
+                    }
                 }
             }
             .background(Color(.black))
@@ -220,6 +225,7 @@ struct ImageViewSheet: View {
                         for imageModelName in frImageResModel{
                             getSingleImage(imageName: imageModelName.image!, reName: imageModelName.name ?? "", reContact: imageModelName.contactNo ?? "")
                         }
+                        imageAvailable = true
                     }
                     else{
                         print("list is empty")
@@ -275,7 +281,7 @@ struct ImageViewSheet: View {
         {
             uploadButton = false
         } else if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech {
-            
+            uploadButton = true
             if
                 currentFrResonse.status! == CommonStrings().statusCompleted ||
                     currentFrResonse.status! == CommonStrings().statusClosed ||
@@ -285,7 +291,7 @@ struct ImageViewSheet: View {
                 uploadButton = false
             }
             
-            if imageDataList.count > 1 {
+            if imageDataList.count >= 1 {
                 deleteButton = true
             }
         }

@@ -16,7 +16,6 @@
 		CC260BB7267CB586002AA8E6 /* ImageViewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB6267CB586002AA8E6 /* ImageViewSheet.swift */; };
 		CC260BB9267CB789002AA8E6 /* FRImageResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC260BB8267CB789002AA8E6 /* FRImageResponseModel.swift */; };
 		CC35D53C2689ECA2004F290A /* AuthDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D53B2689ECA2004F290A /* AuthDetails.swift */; };
-		CC35D53E268C6CBB004F290A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC35D53D268C6CBB004F290A /* Assets.xcassets */; };
 		CC35D547268C8F16004F290A /* TaskSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D540268C8F16004F290A /* TaskSearchResponse.swift */; };
 		CC35D548268C8F16004F290A /* PmTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D541268C8F16004F290A /* PmTaskView.swift */; };
 		CC35D549268C8F16004F290A /* TaskSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC35D542268C8F16004F290A /* TaskSearchView.swift */; };
@@ -65,6 +64,13 @@
 		CC51EAC42681BAB100E6FDBB /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51EAC32681BAB100E6FDBB /* NetworkManager.swift */; };
 		CC5D85D126806E6D0085E2A6 /* UploadPictureRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D85D026806E6D0085E2A6 /* UploadPictureRequestModel.swift */; };
 		CC5D85D326806F1B0085E2A6 /* UploadImageSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D85D226806F1B0085E2A6 /* UploadImageSheet.swift */; };
+		CC65B953268F20AD00FEED2C /* DeleteTaskImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65B952268F20AD00FEED2C /* DeleteTaskImageModel.swift */; };
+		CC65B9C52694220D00FEED2C /* UploadTaskImageSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65B9C42694220D00FEED2C /* UploadTaskImageSheet.swift */; };
+		CC65B9C72695602200FEED2C /* ScanFaultEquipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65B9C62695602200FEED2C /* ScanFaultEquipView.swift */; };
+		CCAAC93D268D9459004D7F48 /* GetTasksOnEquipmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAAC93C268D9459004D7F48 /* GetTasksOnEquipmentModel.swift */; };
+		CCAAC93F268ED342004D7F48 /* ViewTaskImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAAC93E268ED342004D7F48 /* ViewTaskImage.swift */; };
+		CCAAC941268ED45D004D7F48 /* noimage.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAAC940268ED45D004D7F48 /* noimage.png */; };
+		CCAAC943268EE6DB004D7F48 /* AcknowledgerTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAAC942268EE6DB004D7F48 /* AcknowledgerTaskView.swift */; };
 		CCB1CDE126674DB900E6F83A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDE026674DB900E6F83A /* LoginView.swift */; };
 		CCB1CDE426674DF900E6F83A /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDE326674DF900E6F83A /* LoginResponse.swift */; };
 		CCB1CDE626674E2A00E6F83A /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CDE526674E2A00E6F83A /* UserSettings.swift */; };
@@ -89,7 +95,6 @@
 		CC260BB6267CB586002AA8E6 /* ImageViewSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewSheet.swift; sourceTree = "<group>"; };
 		CC260BB8267CB789002AA8E6 /* FRImageResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRImageResponseModel.swift; sourceTree = "<group>"; };
 		CC35D53B2689ECA2004F290A /* AuthDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDetails.swift; sourceTree = "<group>"; };
-		CC35D53D268C6CBB004F290A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC35D540268C8F16004F290A /* TaskSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskSearchResponse.swift; sourceTree = "<group>"; };
 		CC35D541268C8F16004F290A /* PmTaskView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PmTaskView.swift; sourceTree = "<group>"; };
 		CC35D542268C8F16004F290A /* TaskSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskSearchView.swift; sourceTree = "<group>"; };
@@ -137,6 +142,13 @@
 		CC51EAC32681BAB100E6FDBB /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CC5D85D026806E6D0085E2A6 /* UploadPictureRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPictureRequestModel.swift; sourceTree = "<group>"; };
 		CC5D85D226806F1B0085E2A6 /* UploadImageSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageSheet.swift; sourceTree = "<group>"; };
+		CC65B952268F20AD00FEED2C /* DeleteTaskImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteTaskImageModel.swift; sourceTree = "<group>"; };
+		CC65B9C42694220D00FEED2C /* UploadTaskImageSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTaskImageSheet.swift; sourceTree = "<group>"; };
+		CC65B9C62695602200FEED2C /* ScanFaultEquipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFaultEquipView.swift; sourceTree = "<group>"; };
+		CCAAC93C268D9459004D7F48 /* GetTasksOnEquipmentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetTasksOnEquipmentModel.swift; sourceTree = "<group>"; };
+		CCAAC93E268ED342004D7F48 /* ViewTaskImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTaskImage.swift; sourceTree = "<group>"; };
+		CCAAC940268ED45D004D7F48 /* noimage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noimage.png; sourceTree = "<group>"; };
+		CCAAC942268EE6DB004D7F48 /* AcknowledgerTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgerTaskView.swift; sourceTree = "<group>"; };
 		CCB1CDE026674DB900E6F83A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CCB1CDE326674DF900E6F83A /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		CCB1CDE526674E2A00E6F83A /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -194,6 +206,8 @@
 				CC35D540268C8F16004F290A /* TaskSearchResponse.swift */,
 				CC35D542268C8F16004F290A /* TaskSearchView.swift */,
 				CC35D546268C8F16004F290A /* UpdatePmTaskRequest.swift */,
+				CCAAC93E268ED342004D7F48 /* ViewTaskImage.swift */,
+				CCAAC942268EE6DB004D7F48 /* AcknowledgerTaskView.swift */,
 			);
 			path = Tasks;
 			sourceTree = "<group>";
@@ -213,6 +227,7 @@
 				CC3E9F5F2668F9E200BA47F2 /* AcceptPauseSheet.swift */,
 				CC3E9F652668FA7F00BA47F2 /* RequestForPauseSheet.swift */,
 				CC3E9F7D266DDB1E00BA47F2 /* EquipScanView.swift */,
+				CC65B9C62695602200FEED2C /* ScanFaultEquipView.swift */,
 			);
 			path = FaultReport;
 			sourceTree = "<group>";
@@ -251,6 +266,7 @@
 				CC260BB3267CA0C5002AA8E6 /* FloatingMenuPdf.swift */,
 				CC5D85D226806F1B0085E2A6 /* UploadImageSheet.swift */,
 				CC51EABF2681B95000E6FDBB /* SUImagePickerView.swift */,
+				CC65B9C42694220D00FEED2C /* UploadTaskImageSheet.swift */,
 			);
 			path = "UI Views";
 			sourceTree = "<group>";
@@ -296,6 +312,8 @@
 				CC1BF93B268451F300930195 /* AcceptRejectQuotationModel.swift */,
 				CC1BF94226847AC000930195 /* MessagesModel.swift */,
 				CC35D53B2689ECA2004F290A /* AuthDetails.swift */,
+				CCAAC93C268D9459004D7F48 /* GetTasksOnEquipmentModel.swift */,
+				CC65B952268F20AD00FEED2C /* DeleteTaskImageModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -324,6 +342,7 @@
 				CC3E9F77266A236F00BA47F2 /* LocationManager.swift */,
 				CC3E9F7B266A3D5000BA47F2 /* AlertId.swift */,
 				CCE18A4526663D2F00C0E4BD /* Assets.xcassets */,
+				CCAAC940268ED45D004D7F48 /* noimage.png */,
 				CC4340D52679F835009999B6 /* pdfback.png */,
 				CC4340D9267A18CC009999B6 /* WorkspaceAlertId.swift */,
 			);
@@ -334,7 +353,6 @@
 			isa = PBXGroup;
 			children = (
 				CC37EC4A2683374800A3B5CF /* ICMMSRelease.entitlements */,
-				CC35D53D268C6CBB004F290A /* Assets.xcassets */,
 				CCE18A4026663D2B00C0E4BD /* ICMMS */,
 				CCE18A3F26663D2B00C0E4BD /* Products */,
 				CC37EC442683156400A3B5CF /* Frameworks */,
@@ -448,7 +466,7 @@
 			files = (
 				CC4B68072667D38A00682E7A /* Assets.xcassets in Resources */,
 				CC4340D62679F836009999B6 /* pdfback.png in Resources */,
-				CC35D53E268C6CBB004F290A /* Assets.xcassets in Resources */,
+				CCAAC941268ED45D004D7F48 /* noimage.png in Resources */,
 				CC37EC482683188A00A3B5CF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,6 +479,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC4340D8267A09FD009999B6 /* GeneralItemsFaultReport.swift in Sources */,
+				CCAAC93F268ED342004D7F48 /* ViewTaskImage.swift in Sources */,
 				CC4340BF26771B45009999B6 /* PDFKitRepresentedView.swift in Sources */,
 				CC1BF93C268451F300930195 /* AcceptRejectQuotationModel.swift in Sources */,
 				CC1BF94126847A9900930195 /* MessagesSheet.swift in Sources */,
@@ -470,6 +489,7 @@
 				CCB1CDE126674DB900E6F83A /* LoginView.swift in Sources */,
 				CC3E9F682668FADF00BA47F2 /* RequestForPauseModel.swift in Sources */,
 				CC260BB4267CA0C5002AA8E6 /* FloatingMenuPdf.swift in Sources */,
+				CC65B953268F20AD00FEED2C /* DeleteTaskImageModel.swift in Sources */,
 				CC4340DA267A18CD009999B6 /* WorkspaceAlertId.swift in Sources */,
 				CC5D85D326806F1B0085E2A6 /* UploadImageSheet.swift in Sources */,
 				CC4340CD2679C696009999B6 /* UploadQuotationModel.swift in Sources */,
@@ -483,6 +503,7 @@
 				CC4B68022667670800682E7A /* DashboardDetails.swift in Sources */,
 				CC35D54A268C8F16004F290A /* TaskScanView.swift in Sources */,
 				CC3E9F622668FA2300BA47F2 /* AcceptRejectModel.swift in Sources */,
+				CC65B9C52694220D00FEED2C /* UploadTaskImageSheet.swift in Sources */,
 				CC3E9F582668F8A500BA47F2 /* UpdateFaultRequest.swift in Sources */,
 				CC3E9F4C2668F71300BA47F2 /* SearchFaultReportView.swift in Sources */,
 				CC35D54C268C8F16004F290A /* CheckListSheet.swift in Sources */,
@@ -500,9 +521,11 @@
 				CC51EABE2681B11100E6FDBB /* ImageDataList.swift in Sources */,
 				CCB1CDF0266756D400E6F83A /* DashboardView.swift in Sources */,
 				CC3E9F7A266A33CE00BA47F2 /* Geolocation.swift in Sources */,
+				CCAAC93D268D9459004D7F48 /* GetTasksOnEquipmentModel.swift in Sources */,
 				CC3E9F7E266DDB1E00BA47F2 /* EquipScanView.swift in Sources */,
 				CC4340CF2679C7D7009999B6 /* UploadPurchaseOrderView.swift in Sources */,
 				CC3E9F642668FA4B00BA47F2 /* RequestPauseResponse.swift in Sources */,
+				CC65B9C72695602200FEED2C /* ScanFaultEquipView.swift in Sources */,
 				CCB1CDE626674E2A00E6F83A /* UserSettings.swift in Sources */,
 				CC35D548268C8F16004F290A /* PmTaskView.swift in Sources */,
 				CCF6DEAA267328C300716D25 /* AcknowledgerFaultView.swift in Sources */,
@@ -519,6 +542,7 @@
 				CCF6DEAC2673290200716D25 /* PencilKitRepresentable.swift in Sources */,
 				CC4340BD26770E6C009999B6 /* UploadQuotationView.swift in Sources */,
 				CC35D551268C9318004F290A /* ChecklistModel.swift in Sources */,
+				CCAAC943268EE6DB004D7F48 /* AcknowledgerTaskView.swift in Sources */,
 				CC35D53C2689ECA2004F290A /* AuthDetails.swift in Sources */,
 				CC3E9F562668F86800BA47F2 /* PostCurrentFr.swift in Sources */,
 				CC35D54B268C8F16004F290A /* PmTaskResponse.swift in Sources */,
@@ -664,7 +688,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tahreem.ICMMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -692,7 +716,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tahreem.ICMMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -82,9 +82,10 @@ struct FaultSearchView: View {
                 List (searchFaultResponse, id: \.self)  { searchFaultResponse in
                     ZStack{
                         Button("") {}
-                        NavigationLink(destination: EditFaultReportView(frId: searchFaultResponse.frId!, viewFrom: activeInactive)
+                        NavigationLink(destination: EditFaultReportView(frId: searchFaultResponse.frId!,QRValue: "" ,viewFrom: activeInactive)
                                         .onDisappear(){
                                             self.searchFaultResponse = []
+                                            self.searchText = ""
                                         }){
                             FaultSearchCardView(searchFaultResponse: searchFaultResponse)
                                 .padding()
@@ -94,6 +95,7 @@ struct FaultSearchView: View {
                                 .shadow(radius: 5)
                                 .padding()
                         }
+                        .isDetailLink(false)
                     }
                 }
             }
@@ -134,6 +136,7 @@ struct FaultSearchView: View {
             }else{
                 print("There was an error: \(error.debugDescription)")
                 self.searchFaultResponse = []
+                self.searchText = ""
                 let json = try? JSONSerialization.jsonObject(with: data!, options: [])
                 if let dictionary = json as? [String: Any] {
                     print("Error decoding: \(dictionary)")
@@ -161,7 +164,8 @@ struct SearchFaultReportView: View {
                     Text("InActive")
                 }
         }
-        //.tabViewStyle(PageTabViewStyle())
+        .font(.headline)
+//        .tabViewStyle(PageTabViewStyle())
         .navigationBarItems(trailing: Logout().environmentObject(settings))
         .navigationBarTitle("Search Fault Reports")
         
@@ -173,5 +177,4 @@ struct SearchFRView_Preview: PreviewProvider {
     static var previews: some View {
         SearchFaultReportView().environmentObject(UserSettings())
     }
-    
 }

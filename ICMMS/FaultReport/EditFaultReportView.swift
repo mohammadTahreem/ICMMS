@@ -27,14 +27,16 @@ struct EditFaultReportView: View {
     @State var statusPickerList : [String] = []
     @State var remarksList: [String] = []
     @State private var isLoading: Bool = false
+    @State private var isLoadingReject: Bool = false
+    @State private var isLoadingCloseFRDirectly: Bool = false
     @State private var requestPauseIsPresented: Bool = false
     @State private var acceptSheetIsPresented: Bool = false
     @State var ackSheetBool : Bool = false
     @State var responseCode: String = ""
     @State var locationAlert: Bool = false
     @State var alertId: AlertId?
-    @State var QRValue: String = ""
-    @State var frIsLoading = true
+    @State var QRValue: String 
+    @State var frIsLoading : Bool = true
     @Environment(\.presentationMode) var presentationMode
     @State var selection: Int? = nil
     @State var closeSheetString: String = ""
@@ -43,7 +45,6 @@ struct EditFaultReportView: View {
     @State var successBoolQuotation = false
     @State var openPurchaseSheet = false
     @State var successBoolPurchase = false
-    @State private var activeSheet: EditFaultActiveSheet?
     @State var acceptedSuccessBool: Bool = false
     @State var equipmentScanBool = false
     @State var showCloseButtonBool = false
@@ -58,7 +59,15 @@ struct EditFaultReportView: View {
     var userLongitude: String {
         return "\(locationManager.lastLocation?.coordinate.longitude ?? 0)"
     }
-
+    @State var showMenuItem1 = false
+    @State var showMenuItem2 = false
+    @State var showMenuItem3 = false
+    @State var showMenuItem4 = false
+    @State var successBeforeImageBool: Bool = false
+    @State var openBeforeImageSheetBool: Bool = false
+    
+    @State var openAfterImageSheetBool : Bool = false
+    @State var successBeforeImageSheetBool : Bool = false
     
     var body: some View {
         
@@ -71,7 +80,12 @@ struct EditFaultReportView: View {
                     .progressViewStyle(CircularProgressViewStyle())
                     .padding(20)
                     .onAppear(){
-                        getCurrentFaultReport(frId: frId)
+                        
+                        if viewFrom == CommonStrings().scanEquipment {
+                            getCurrentFrUsingEquipment(qrValue: QRValue)
+                        }else {
+                            getCurrentFaultReport(frId: frId)
+                        }
                     }
             }else{
                 
@@ -81,19 +95,11 @@ struct EditFaultReportView: View {
                             //general items. Not editable
                             GeneralItemsFaultReport(frId: frId, currentFrResponse: currentFrResponse,
                                                     observationString: $observationString, actionTakenString: $actionTakenString)
-                                .sheet(item: $activeSheet) { item in
-                                    switch item {
-                                    case .upQuoSheetCase:
-                                        UploadQuotationView(frId: frId, openQuotationSheet: $openQuotationSheet, successBoolQuotation: $successBoolQuotation
-                                                            , quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected,currentFrResponse: currentFrResponse, viewOpenedFrom: CommonStrings().editFaultReportActivity)
-                                    case .second:
-                                        //SecondView()
-                                        Text("sec")
-                                        
-                                    case .upPurSheetCase:
-                                        UploadPurchaseOrderView(frId: frId)
-                                    }
-                                }
+                                
+                                .sheet(isPresented: $openQuotationSheet, content: {
+                                    UploadQuotationView(frId: frId, openQuotationSheet: $openQuotationSheet, successBoolQuotation: $successBoolQuotation
+                                                        , quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected,currentFrResponse: currentFrResponse, viewOpenedFrom: CommonStrings().editFaultReportActivity)
+                                })
                                 .onChange(of: currentFrResponse.status, perform: { value in
                                     enableDisableButtons(currentFrResponse: currentFrResponse )
                                 })
@@ -288,18 +294,19 @@ struct EditFaultReportView: View {
                                         .cornerRadius(8)
                                         .foregroundColor(.white)
                                         .padding()
-                                        .sheet(isPresented: $acceptSheetIsPresented, onDismiss: {
-                                            if acceptedSuccessBool  {
-                                                self.alertId = AlertId(id: .acceptSheetBoolCase)
-                                            }
-                                        }, content: {
+                                        .sheet(isPresented: $acceptSheetIsPresented,  content: {
                                             AcceptPauseSheet(acceptRejectModel: acceptRejectModelFunc(), acceptSheetIsPresented: $acceptSheetIsPresented,
                                                              acceptedSuccessBool: $acceptedSuccessBool)
+                                                .onDisappear(){
+                                                    if acceptedSuccessBool  {
+                                                        self.alertId = AlertId(id: .acceptSheetBoolCase)
+                                                    }
+                                                }
                                         })
                                         
                                         
                                         ZStack{
-                                            if isLoading{
+                                            if isLoadingReject {
                                                 ProgressView()
                                                     .progressViewStyle(CircularProgressViewStyle())
                                                     .padding()
@@ -323,7 +330,7 @@ struct EditFaultReportView: View {
                                         
                                         if showCloseButtonBool{
                                             ZStack{
-                                                if isLoading{
+                                                if isLoadingCloseFRDirectly {
                                                     ProgressView()
                                                         .progressViewStyle(CircularProgressViewStyle())
                                                         .padding()
@@ -437,7 +444,7 @@ struct EditFaultReportView: View {
                                                         self.alertId = AlertId(id: .closeFrAfterUpdate)
                                                     }
                                                 }, content: {
-                                                    AcknowledgerFaultView(ackSheetBool: $ackSheetBool, receivedValueAckFR: $receivedValueAckFR, viewFrom: CommonStrings().editFaultReportActivity)
+                                                    AcknowledgerFaultView(ackSheetBool: $ackSheetBool, dataItems: updateFaultReportRequest, receivedValueAckFR: $receivedValueAckFR, viewFrom: CommonStrings().editFaultReportActivity)
                                                 })
                                             }
                                         }
@@ -447,7 +454,7 @@ struct EditFaultReportView: View {
                                 }
                                 .alert(item: $alertId) { (alertId) -> Alert in
                                     return createAlert(alertId: alertId, updateFaultReportRequest: updateFaultReportRequest,
-                                                       currentStatus: currentFrResponse.status!)
+                                                       currentStatus: currentFrResponse.status ?? "")
                                 }
                             }
                             
@@ -455,28 +462,102 @@ struct EditFaultReportView: View {
                     }
                     
                     
-                    ZStack(alignment: .bottomTrailing) {
-                        
-                        Rectangle()
-                            .foregroundColor(.clear)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        FloatingMenuPdf(moreIcon: "newquote", purchaseImage: "quote_p", quoteImage: "quote_q", frId: frId,
-                                        successBoolQuotation: $successBoolQuotation, openQuotationSheet: $openQuotationSheet,
-                                        openPurchaseSheet: $openPurchaseSheet, successBoolPurchase: $successBoolPurchase,
-                                        currentFrResponse: currentFrResponse, showUpdateButton: showUpdateButton)
-                            .padding()
+                    ZStack {
+                      
+                        HStack{
+                            Spacer()
+                        VStack{
+                            
+                            Spacer()
+                            if showMenuItem1 {
+                                MenuItem(icon: "quote_q")
+                                    .onTapGesture {
+                                        openQuotationSheet = true
+                                    }
+                                    .sheet(isPresented: $openQuotationSheet, content: {
+                                        UploadQuotationView(frId: frId, openQuotationSheet: $openQuotationSheet,
+                                                            successBoolQuotation: $successBoolQuotation, quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected, currentFrResponse: currentFrResponse, viewOpenedFrom: CommonStrings().editFaultReportActivity)
+                                    })
+                            }
+                            if showMenuItem2 {
+                                MenuItem(icon: "quote_p")
+                                    .onTapGesture {
+                                        openPurchaseSheet = true
+                                    }
+                                    .alert(isPresented: $quotationRejected, content: {
+                                        Alert(title: Text("Quotation Rejected"), dismissButton: .cancel())
+                                    })
+                                    .sheet(isPresented: $openPurchaseSheet, content: {
+                                        UploadPurchaseOrderView(frId: frId, currentFrResponse: currentFrResponse)
+                                    })
+                            }
+                            
+                            
+                            Button(action: {
+                                showMenu()
+                            }) {
+                                Image("newquote")
+                                    .resizable()
+                                    .padding()
+                                    .frame(width: 60, height: 60)
+                                    .background(Color(.white))
+                                    .cornerRadius(30)
+                                    .shadow(radius: 10)
+                                
+                            }
+                            .alert(isPresented: $quotationAccepted) {
+                                Alert(title: Text("Quotation Accepted successfully!"), primaryButton: .default(Text("Okay!"), action: {
+                                    presentationMode.wrappedValue.dismiss()
+                                }), secondaryButton: .cancel())
+                            }
+                            
+                        }
+                        .padding()
+                        }
                     }
                     
                     ZStack(alignment: .bottomLeading) {
-                        
-                        Rectangle()
-                            .foregroundColor(.clear)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        FloatingMenuImages(moreIcon: "newquote", purchaseImage: "quote_p", quoteImage: "quote_q", frId: frId,
-                                           successBeforeImageBool: $successBoolQuotation, openBeforeImageSheetBool: $openQuotationSheet,
-                                           openAfterImageSheetBool: $openPurchaseSheet, successBeforeImageSheetBool: $successBoolPurchase,
-                                           currentFrResponse: currentFrResponse, showUpdateButton: showUpdateButton)
-                            .padding()
+                        HStack{
+                        VStack{
+                            
+                            Spacer()
+                            if showMenuItem3 {
+                                MenuItem(icon: "beforeupload")
+                                    .onTapGesture {
+                                        openBeforeImageSheetBool = true
+                                    }
+                                    .sheet(isPresented: $openBeforeImageSheetBool, content: {
+                                        ImageViewSheet(frId: frId, valueType: "FR-BI-", viewName: "Before", currentFrResonse: currentFrResponse, showUpdateButton: showUpdateButton)
+                                    })
+                            }
+                            if showMenuItem4 {
+                                MenuItem(icon: "afterupload")
+                                    .onTapGesture {
+                                        openAfterImageSheetBool = true
+                                    }
+                                    .sheet(isPresented: $openAfterImageSheetBool, content: {
+                                        ImageViewSheet(frId: frId, valueType: "FR-AI-", viewName: "After", currentFrResonse: currentFrResponse, showUpdateButton: showUpdateButton)
+                                    })
+                            }
+                            
+                            
+                            Button(action: {
+                                showMenuImages()
+                            }) {
+                                Image("fabback")
+                                    .resizable()
+                                    .padding()
+                                    .frame(width: 60, height: 60)
+                                    .background(Color(.white))
+                                    .cornerRadius(30)
+                                    .shadow(radius: 10)
+                                
+                            }
+                            
+                        }
+                        .padding()
+                            Spacer()
+                        }
                     }
                     
                     
@@ -489,6 +570,17 @@ struct EditFaultReportView: View {
         
         
     }
+    
+    func showMenu() {
+        showMenuItem2.toggle()
+        showMenuItem1.toggle()
+    }
+    
+    func showMenuImages()  {
+        showMenuItem3.toggle()
+        showMenuItem4.toggle()
+    }
+    
     // FIXME:
     
     func getCurrentFaultReport(frId: String)  {
@@ -541,9 +633,18 @@ struct EditFaultReportView: View {
     }
     
     func getCurrentFrUsingEquipment(qrValue: String) {
+        
+        
+        
         guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/equipment") else {return}
         
-        let body = EquipmentSearchClass(equipmentCode: qrValue, frId: frId)
+        var body = EquipmentSearchClass()
+        
+        if viewFrom == "Active" {
+            body = EquipmentSearchClass(equipmentCode: qrValue, frId: frId)
+        }else if viewFrom == CommonStrings().scanEquipment{
+            body = EquipmentSearchClass(equipmentCode: qrValue, frId: nil)
+        }
         let encodedBody = try? JSONEncoder().encode(body)
         
         var urlRequest = URLRequest(url: url)
@@ -554,6 +655,9 @@ struct EditFaultReportView: View {
         urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
         urlRequest.httpBody = encodedBody
         
+        print(body)
+        print(urlRequest)
+        print(qrValue)
         URLSession.shared.dataTask(with: urlRequest){ (data, response, error) in
             
             if let error = error {
@@ -568,12 +672,14 @@ struct EditFaultReportView: View {
             
             if response.statusCode == 200 {
                 
-                guard let _ = data else { return }
+                guard let data = data else { return }
                 self.alertId = AlertId(id: .responseEquip200)
-                if let currentFrEquip = try? JSONDecoder().decode(CurrentFrResponse.self, from: data!){
-                    DispatchQueue.main.async {
-                        self.currentFrResponse = currentFrEquip
-                        print("the response from equip scan is: \(currentFrResponse)")
+                DispatchQueue.main.async {
+                    do {
+                        let currentFrEquip = try? JSONDecoder().decode(CurrentFrResponse.self, from: data)
+                        self.currentFrResponse = CurrentFrResponse()
+                        self.currentFrResponse = currentFrEquip!
+                        print("the response from equip scan is: \(String(describing: currentFrEquip))")
                     }
                 }
             } else if response.statusCode == 214{
@@ -585,8 +691,8 @@ struct EditFaultReportView: View {
             }else {
                 print("Error code: \(response.statusCode)")
             }
-            print(response.statusCode)
             equipmentScanBool = true
+            frIsLoading = false
         }
         .resume()
     }
@@ -619,12 +725,13 @@ struct EditFaultReportView: View {
             }))
         case .closeFRIfRequestPaused:
             return Alert(title: Text("Request for pause sent"), dismissButton: .default(Text("Okay!"), action: {
-                presentationMode.wrappedValue.dismiss()
+                getCurrentFaultReport(frId: frId)
+                enableDisableButtons(currentFrResponse: currentFrResponse)
             }))
         case .closeFrAfterUpdate:
             return Alert(title: Text("Fault Report Updated"), dismissButton: .default(Text("Okay!"), action: {
                 getCurrentFaultReport(frId: frId)
-                enableDisableButtons(currentFrResponse: currentFrResponse)
+                enableDisableButtons(currentFrResponse: currentFrResponse) 
             }))
         case .response215:
             return Alert(title: Text("Equipment scanned is not of the viewed fault report"), dismissButton: .cancel())
@@ -647,23 +754,25 @@ struct EditFaultReportView: View {
             return Alert(title: Text("Upload Qoutation"), message: Text("Upload Quotation for further action!"),
                          dismissButton: .default(Text("Okay!"), action: {
                             self.openQuotationSheet = true
-                            activeSheet = .upQuoSheetCase
                          }))
         case .uploadPurchaseOrder:
             return Alert(title: Text("Upload Purchase order for further action"), dismissButton: .default(Text("Okay!"), action: {
                 self.openPurchaseSheet = true
-                activeSheet = .upPurSheetCase
             }))
         case .cantTakeActionTillQuotationAcceptedAlert:
             return Alert(title: Text("Can't take action till quotation gets accepted or rejected!"), dismissButton: .default(Text("Okay")))
         case .pauseRequestRejectedCase:
             return
-                Alert(title: Text("Pause request rejected"),message: Text(""), dismissButton: .default(Text("Okay"), action: {
-                    presentationMode.wrappedValue.dismiss()
+                Alert(title: Text("Pause request rejected"), dismissButton: .default(Text("Okay"), action: {
+                    getCurrentFaultReport(frId: frId)
+                    currentFrResponse.status = CommonStrings().statusOpen
+                    enableDisableButtons(currentFrResponse: currentFrResponse)
                 }))
         case .acceptSheetBoolCase:
-            return Alert(title: Text("Pause Accepted"), message: Text(""), dismissButton: .default(Text("Okay!"), action: {
-                presentationMode.wrappedValue.dismiss()
+            return Alert(title: Text("Pause Accepted"), dismissButton: .default(Text("Okay!"), action: {
+                getCurrentFaultReport(frId: frId)
+                currentFrResponse.status = CommonStrings().statusPause
+                enableDisableButtons(currentFrResponse: currentFrResponse)
             }))
             
         case .remarksListLessThanOne:
@@ -683,7 +792,7 @@ struct EditFaultReportView: View {
     }
     
     func pauseRejectCall()  {
-        isLoading = true
+        isLoadingReject = true
         var currentRemarksList: [String] = []
         for remark in remarksList {
             if currentFrResponse.remarks != nil {
@@ -698,7 +807,6 @@ struct EditFaultReportView: View {
         let acceptRejectModel = AcceptRejectModel(frId: frId,
                                                   observation: observationString,
                                                   actionTaken: actionTakenString,
-                                                  // fmmDoc: nil
                                                   remarks: currentRemarksList)
         
         print(currentRemarksList)
@@ -733,7 +841,7 @@ struct EditFaultReportView: View {
                 print("Error: \(response.statusCode). There was an error")
             }
             
-            isLoading = false
+            isLoadingReject = false
         }
         dataTask.resume()
         
@@ -1004,7 +1112,7 @@ struct EditFaultReportView: View {
     
     func closeFRCall() {
         
-        isLoading = true
+        isLoadingCloseFRDirectly = true
         
         let body = CloseFaultReport(remarks: remarksList, frId: currentFrResponse.frId, status: "Closed", username: UserDefaults.standard.string(forKey: "username"), building: currentFrResponse.building, location: currentFrResponse.location, attendedBy: currentFrResponse.attendedBy)
         
@@ -1047,10 +1155,15 @@ struct EditFaultReportView: View {
                 print("Error code: \(response.statusCode)")
             }
         }
-        isLoading = false
+        isLoadingCloseFRDirectly = false
         dataTask.resume()
         
     }
     
 }
 
+struct EditFR_preview: PreviewProvider {
+    static var previews: some View{
+        EditFaultReportView(frId: "", QRValue: "" ,viewFrom: CommonStrings().searchFR).environmentObject(UserSettings())
+    }
+}

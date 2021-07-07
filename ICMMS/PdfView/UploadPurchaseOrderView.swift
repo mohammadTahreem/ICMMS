@@ -25,6 +25,8 @@ struct UploadPurchaseOrderView: View {
         let webView = WebView(request: urlRequest)
         VStack{
             
+            Text("\(currentFrResponse?.frId ?? "FR") Purchase Order" ).font(.body).padding()
+            
             webView
                 .onAppear(){
                     

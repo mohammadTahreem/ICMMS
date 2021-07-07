@@ -42,6 +42,7 @@ struct UploadQuotationView: View {
         
         let webView = WebView(request: urlRequest)
         VStack{
+            Text("\(currentFrResponse.frId ?? "FR") Quotation" ).font(.body).padding()
             VStack{
                 
                 webView

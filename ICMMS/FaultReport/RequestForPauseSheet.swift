@@ -134,10 +134,10 @@ struct RequestForPauseSheet: View {
 }
 
 
-/*
- struct RequestForPauseSheet_Previews: PreviewProvider {
- static var previews: some View {
- RequestForPauseSheet()
- }
- }
- */
+
+struct RequestForPauseSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        RequestForPauseSheet(requestForPauseModel: RequestForPauseModel(eotType: "", eotTime: "", frId: "", observation: "", actionTaken: "", remarks: [""]), requestPauseIsPresented: .constant(true), closeSheetString: .constant(""))
+    }
+}
+

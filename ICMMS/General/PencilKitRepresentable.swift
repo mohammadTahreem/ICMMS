@@ -26,3 +26,9 @@ struct PencilKitRepresentable : UIViewRepresentable {
         }
     }
 }
+
+struct PencilKitPreviews: PreviewProvider {
+    static var previews: some View{
+        PencilKitRepresentable(canvas: .constant(PKCanvasView()))
+    }
+}

@@ -52,7 +52,11 @@ struct ScanLocation: View {
         let geolocation = Geolocation(latitude: Double(String(userLatitude))!, longitude: Double(String(userLongitude))!)
         let locationScanModel = LocationScanModel(locationCode: qrValue, frId: frId , geoLocation: geolocation)
         
-        guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/scan/location") else {return}
+        let urlString = "\(CommonStrings().apiURL)faultreport/scan/location"
+        let newUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+
+        
+        guard let url = URL(string: newUrlString) else {return}
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"

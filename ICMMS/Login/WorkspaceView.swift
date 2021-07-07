@@ -66,9 +66,7 @@ struct WorkspaceView: View {
         urlRequest.httpMethod = "GET"
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
-        
-        print(UserDefaults.standard.string(forKey: "token")!)
-        
+                
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
                 self.workspaceAlertId = WorkspaceAlertId(id: .responseTimeOut)

@@ -12,31 +12,32 @@ struct DashboardView: View {
     @State var showScanSheet = false
     @State var qrValue = ""
     let workspace : String
-    
     var columns: [GridItem] = [
         GridItem(.fixed(150), spacing: 30),
         GridItem(.fixed(150), spacing: 30)
     ]
+    let user = UserDefaults.standard.string(forKey: "role")
+    @State var demo: [DashboadDetails] = []
     
     var body: some View {
         
-        let dashboardDetails = DashboadDetails.demo
         ZStack{
             Color.secondary
                 .edgesIgnoringSafeArea(.all)
             LazyVGrid(columns: columns, spacing: 20){
                 
-                ForEach(dashboardDetails){ dashboardDetails in
+                ForEach(demo){ dashboardDetails in
                     NavigationLink(destination: destination(dashDetails: dashboardDetails)){
                         VStack{
                             Image(dashboardDetails.imageName)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
+                                .scaledToFit()
                             Text(dashboardDetails.itemName)
-                                .lineLimit(0)
                                 .font(.caption)
                                 .foregroundColor(Color("Indeco_blue"))
                         }.padding()
+                        .frame(width: 150, height: 150, alignment: .center)
                     }
                 }
                 
@@ -48,9 +49,22 @@ struct DashboardView: View {
             .navigationBarItems (
                 trailing: Logout().environmentObject(settings)
             )
-        }
-        .onAppear(){
-            saveWorkSpaceInUserDeaults(workspace: workspace)
+            .onAppear(){
+                saveWorkSpaceInUserDeaults(workspace: workspace)
+                demo = []
+                demo = [DashboadDetails(imageName: "searchfault", itemName: "Search Fault Report", viewName: .searchFaultReportView),
+                        DashboadDetails(imageName: "scanfault", itemName: "Scan Fault Report", viewName: .scanFaultReportView),
+                        DashboadDetails(imageName: "tasksearch", itemName: "Task Search", viewName: .taskSearchView)]
+                if user == CommonStrings().usernameTech{
+                    demo.append(DashboadDetails(imageName: "purchase_qoutation", itemName: "Upload Qoutation", viewName: .searchQoutView))
+                    demo.append(DashboadDetails(imageName: "taskscan", itemName: "Task Scan", viewName: .taskScanView))
+                    demo.append(DashboadDetails(imageName: "purchase_order", itemName: "Upload Purchase Order", viewName: .searchPOView))
+                }else{
+                    demo.append(DashboadDetails(imageName: "purchase_qoutation", itemName: "Search Qoutation", viewName: .searchQoutView))
+                    demo.append(DashboadDetails(imageName: "purchase_order", itemName: "Search Purchase Order", viewName: .searchPOView))
+                }
+                
+            }
         }
     }
     
@@ -59,16 +73,15 @@ struct DashboardView: View {
         case .searchFaultReportView:
             SearchFaultReportView()
         case .scanFaultReportView:
-            EquipScanView(showScanSheet: $showScanSheet, QRValue: $qrValue, frId: "frId", responseCode: $qrValue)
-//        Text("scan fault")
+            ScanFaultEquipView()
         case .searchPOView:
             SearchPDFView(quoteOrPurchase: "Purchase Order")
         case .searchQoutView:
             SearchPDFView(quoteOrPurchase: "Quotation")
         case .taskScanView:
-            TaskScanView()
+            TaskScanView().environmentObject(settings)
         case .taskSearchView:
-            TaskSearchView()
+            TaskSearchView().environmentObject(settings)
         }
     }
     
@@ -77,30 +90,6 @@ struct DashboardView: View {
         UserDefaults.standard.synchronize()
     }
     
-}
-
-struct GridStack<Content: View>: View {
-    let rows: Int
-    let columns: Int
-    let content: (Int, Int) -> Content
-    
-    var body: some View {
-        VStack {
-            ForEach(0 ..< rows, id: \.self) { row in
-                HStack {
-                    ForEach(0 ..< columns, id: \.self) { column in
-                        content(row, column)
-                    }
-                }
-            }
-        }
-    }
-    
-    init(rows: Int, columns: Int, @ViewBuilder content: @escaping (Int, Int) -> Content) {
-        self.rows = rows
-        self.columns = columns
-        self.content = content
-    }
 }
 
 

@@ -27,6 +27,7 @@ struct AcceptPauseSheet: View {
                 .alert(isPresented: $acceptedSuccessBool) {
                     Alert(title: Text("Accepted Successfully!"), dismissButton: .default(Text("Okay!"), action: {
                         acceptSheetIsPresented = false
+                        acceptedSuccessBool = true
                     }))
                 }
             HStack{

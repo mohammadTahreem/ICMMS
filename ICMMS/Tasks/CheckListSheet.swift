@@ -44,26 +44,16 @@ struct CheckListCard: View {
                 .padding()
                 .disabled(!enableButtonBool)
                 
-                
             }
             
             Text("Remarks")
-            if checkListData.remarks != nil{
-                TextField("Remarks", text: currentRemark)
-                    .disabled(!enableButtonBool)
-                    .padding()
-                    .background(Color(.white))
-                    .cornerRadius(8)
-                    .accentColor(.gray)
-                
-            }else{
-                TextField("Remarks", text: currentRemark)
-                    .disabled(!enableButtonBool)
-                    .padding()
-                    .background(Color(.white))
-                    .cornerRadius(8)
-                
-            }
+            TextField("Remarks", text: currentRemark)
+                .disabled(!enableButtonBool)
+                .padding()
+                .background(Color(.white))
+                .cornerRadius(8)
+                .accentColor(.gray)
+            
         }
         .padding()
         .background(Color("light_gray"))
@@ -97,49 +87,57 @@ struct CheckListSheet: View {
     @Binding var clSheetBool : Bool
     @State var successAlert: Bool = false
     @State var errorAlert: Bool = false
-    
+    @State var isLoading = false
+    @State var viewFrom : String
+
     var body: some View {
-        
-        Text("Checklist Items")
-            .padding()
-            .font(.title)
-            .alert(isPresented: $errorAlert) { () -> Alert in
-                Alert(title: Text("Error"), message: Text("There was an error."), dismissButton: .cancel())
-            }
-        
-        ScrollView{
+        VStack{
+            Text("Checklist Items")
+                .padding()
+                .font(.title)
+                .alert(isPresented: $errorAlert) { () -> Alert in
+                    Alert(title: Text("Error"), message: Text("There was an error."), dismissButton: .cancel())
+                }
             
-            ForEach(checklistResponse.indices, id:\.self) { index in
-                CheckListCard(checkListData: $checklistResponse[index],
-                              taskId: taskId,
-                              enableButtonBool: $enableButtonBool)
-                    
-                    .alert(isPresented: $successAlert) { () -> Alert in
-                        Alert(title: Text("Updated"), message: Text("Successfully Updated"), dismissButton: .default(Text("Okay!")){
-                            self.clSheetBool = false
-                        })
+            ScrollView{
+                
+                ForEach(checklistResponse.indices, id:\.self) { index in
+                    CheckListCard(checkListData: $checklistResponse[index],
+                                  taskId: taskId,
+                                  enableButtonBool: $enableButtonBool)
+                        
+                        .alert(isPresented: $successAlert) { () -> Alert in
+                            Alert(title: Text("Updated"), message: Text("Successfully Updated"), dismissButton: .default(Text("Okay!")){
+                                self.clSheetBool = false
+                            })
+                        }
+                }
+                
+                if enableButtonBool{
+                    if isLoading{
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .padding()
+                    }else{
+                        Button("Update"){
+                            updateCheckList()
+                        }.frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color("Indeco_blue"))
+                        .cornerRadius(8)
+                        .foregroundColor(.white)
+                        .padding()
                     }
+                }
             }
-            
-            if enableButtonBool{
-                Button("Update"){
-                    updateCheckList()
-                }.frame(maxWidth: .infinity)
-                .padding()
-                .background(Color("Indeco_blue"))
-                .cornerRadius(8)
-                .foregroundColor(.white)
-                .padding()
+            .onAppear(){
+                getChecklists()
             }
         }
-        .onAppear(){
-            getChecklists()
-        }
-        
     }
     
     func updateCheckList()  {
-        
+        isLoading = true
         var updateCheckListObject: [UpdateCheckListModel] = []
         
         for checklist in checklistResponse {
@@ -152,7 +150,10 @@ struct CheckListSheet: View {
         guard let url = URL(string: "\(CommonStrings().apiURL)task/updateChecklists") else {return}
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+        urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
         
         let encodedBody = try? JSONEncoder().encode(updateCheckListObject)
         urlRequest.httpBody = encodedBody
@@ -173,23 +174,13 @@ struct CheckListSheet: View {
             }
             
             if response.statusCode == 200 {
-                
                 guard let _ = data else { return }
-                
-                if let updateResponseChecklist = try? JSONDecoder().decode(ChecklistModel.self, from: data!){
-                    DispatchQueue.main.async {
-                        print("Success: \(updateResponseChecklist)")
-                        self.successAlert = true
-                    }
-                }else{
-                    self.errorAlert = true
-                    print("The response is \(response.statusCode)")
-                }
-                
+                self.successAlert = true
             } else {
                 print("Error code: \(response.statusCode)")
                 self.errorAlert = true
             }
+            isLoading = false
         }
         
         dataTask.resume()
@@ -203,7 +194,7 @@ struct CheckListSheet: View {
         var urlRequest = URLRequest(url: url)
         
         if (UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech
-                && pmTaskResponse.status! == "Open") {
+                && pmTaskResponse.status! == "Open") && viewFrom == CommonStrings().taskScanView {
             enableButtonBool = true
         }
         
@@ -228,10 +219,10 @@ struct CheckListSheet: View {
     }
 }
 
-//struct CheckListSheet_Previews: PreviewProvider {
-//    static var previews: some View {
-//
-//            CheckListSheet(taskId: 1, pmTaskResponse: PmTaskResponse())
-//
-//    }
-//}
+struct CheckListSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        
+        CheckListSheet(taskId: 1, pmTaskResponse: PmTaskResponse(), clSheetBool: .constant(true), viewFrom: "")
+        
+    }
+}

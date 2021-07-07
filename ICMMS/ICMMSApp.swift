@@ -150,6 +150,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         }
         
         UserDefaults.standard.removeObject(forKey: "frId")
+        UserDefaults.standard.removeObject(forKey: "view")
         UserDefaults.standard.synchronize()
         if state == .background || state == .active || state == .inactive  {
             UserDefaults.standard.removeObject(forKey: "frId")

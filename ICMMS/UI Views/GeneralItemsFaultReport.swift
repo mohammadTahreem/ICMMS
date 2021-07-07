@@ -17,7 +17,7 @@ struct GeneralItemsFaultReport: View {
     var body: some View{
         VStack{
             
-            LabelTextField(label: "Case Id", placeHolder: frId)
+            LabelTextField(label: "Case Id", placeHolder: currentFrResponse.frId!)
             
             if(currentFrResponse.department != nil && currentFrResponse.department?.name != nil){
                 LabelTextField(label: "Department", placeHolder: currentFrResponse.department!.name!)

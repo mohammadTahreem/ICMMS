@@ -69,7 +69,16 @@ struct UploadImageSheet: View {
                     .padding()
             }else{
                 Button(action: {
-                    if nameString.isEmpty ||
+                    if(nameString.isEmpty &&
+                        rankString.isEmpty &&
+                        divisionString.isEmpty &&
+                        contactNumber.isEmpty &&
+                        contactNumber.count < 8 &&
+                        imageAckSign.drawing.strokes.isEmpty){
+                        uploadProgressBool = true
+                        uploadImage()
+                    }
+                    else if nameString.isEmpty ||
                         rankString.isEmpty ||
                         divisionString.isEmpty ||
                         contactNumber.isEmpty ||

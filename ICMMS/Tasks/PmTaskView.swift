@@ -10,66 +10,8 @@ import SwiftUI
 struct PmTaskView: View {
     
     @State var pmTaskResponse : PmTaskResponse = PmTaskResponse()
-    @State var taskId: Int
     @EnvironmentObject var settings: UserSettings
-    
-    var body: some View {
-        
-        CurrentPmTaskView(pmTaskResponse: pmTaskResponse, taskId: taskId)
-            .padding(.top, 20)
-            .navigationBarTitle("Pm Task")
-            .onAppear(){
-                viewPmTask(taskId: taskId)
-                print("this appears again")
-            }
-            .toolbar(){
-                ToolbarItem(placement: .navigationBarTrailing){
-                    Logout().environmentObject(settings)
-                }
-            }
-        Spacer()
-    }
-    
-    
-    func viewPmTask(taskId: Int) {
-        guard let url = URL(string: "\(CommonStrings().apiURL)task/\(taskId)") else {return}
-        var urlRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "GET"
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
-        urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
-        urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
-        
-        print(urlRequest)
-        
-        URLSession.shared.dataTask(with: urlRequest){data , _, error  in
-            
-            if let pmTaskResponse = try? JSONDecoder().decode(PmTaskResponse.self, from: data!){
-                DispatchQueue.main.async {
-                    self.pmTaskResponse = pmTaskResponse
-                    print(pmTaskResponse)
-                }
-            }else{
-                let json = try? JSONSerialization.jsonObject(with: data!, options: [])
-                if let dictionary = json as? [String: Any] {
-                    print("Error decoding: \(dictionary)")
-                }
-            }
-            
-        }.resume()
-    }
-    
-}
-
-struct CurrentPmTaskView: View {
-    
-    var pmTaskResponse: PmTaskResponse
-    @State var statusPickerList : [String] = []
-    @State var pickerItem: String = ""
-    @State var enableUpdateButton : Bool = false
-    @State private var date = Date()
-    @State private var currentPmResp : PmTaskResponse = PmTaskResponse()
+    @State var isLoadingPm : Bool = true
     @State var remarksList: [String] = []
     @State private var isLoading = false
     @State private var updateAlertBool = false
@@ -77,16 +19,37 @@ struct CurrentPmTaskView: View {
     @State private var clSheetBool = false
     @State var taskId: Int
     @State var receivedValueAckFR = ""
+    @State var viewFrom: String
+    @Environment(\.presentationMode) var presentationMode
+    @State var showMenuItem1 = false
+    @State var showMenuItem2 = false
+    @State var showMenuItem3 = false
+    @State var showBeforeImageSheet = false
+    @State var showAfterImageSheet = false
+    @State private var date = Date()
+    @State var pickerItem: String = ""
+    @State var enableUpdateButton : Bool = false
+    @State var statusPickerList : [String] = []
+    @State private var currentPmResp : PmTaskResponse = PmTaskResponse()
     
-    var body: some View{
+    var body: some View {
         
         let dateInMilis: Int = GeneralMethods().currentTimeInMiliseconds(currentDate: date)
         
         let bodyUpdate = UpdatePmTaskRequest(status: pickerItem, remarks: remarksList, completedTime: dateInMilis, completedDate: dateInMilis, taskId: pmTaskResponse.id, acknowledger: pmTaskResponse.acknowledger, tech_signature: pmTaskResponse.tech_signature)
         
-        ZStack{
-            ScrollView{
-                
+        if isLoadingPm{
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle())
+                .padding()
+                .onAppear(){
+                    viewPmTask(taskId: taskId)
+                }
+        }else{
+            
+            ZStack{
+                ScrollView{
+                    
                     VStack{
                         
                         if(pmTaskResponse.taskNumber != nil){
@@ -141,11 +104,8 @@ struct CurrentPmTaskView: View {
                                     .datePickerStyle(DefaultDatePickerStyle())
                                     .frame(maxHeight: 400)
                                     .padding()
-                                
                             }
                         }
-                        
-                        
                         if(pmTaskResponse.completedBy != nil){
                             LabelTextField(label: "Completed By", placeHolder: pmTaskResponse.completedBy!)
                         }else{
@@ -207,6 +167,13 @@ struct CurrentPmTaskView: View {
                                         enableDisableMethod(currentPmResponse: pmTaskResponse)
                                     }
                                     .padding()
+                                    .onChange(of: pickerItem, perform: { value in
+                                        if pickerItem == CommonStrings().statusOpen {
+                                            enableUpdateButton = false
+                                        }else{
+                                            enableUpdateButton = true
+                                        }
+                                    })
                                     
                                     Text(pickerItem)
                                         .font(.title2)
@@ -274,7 +241,7 @@ struct CurrentPmTaskView: View {
                             LabelTextField(label: "Status", placeHolder: "Status")
                         }
                     }
-                
+                    
                     if enableUpdateButton {
                         ZStack{
                             if isLoading{
@@ -282,8 +249,7 @@ struct CurrentPmTaskView: View {
                                     .progressViewStyle(CircularProgressViewStyle())
                                     .padding()
                             }else{
-                                Button("Update"){
-                                    
+                                Button("Acknowledge"){
                                     if pickerItem == "Closed"{
                                         ackSheetBool.toggle()
                                     }else{
@@ -297,39 +263,124 @@ struct CurrentPmTaskView: View {
                                 .foregroundColor(.white)
                                 .padding()
                                 .sheet(isPresented: $ackSheetBool, onDismiss: {
-                                        PmTaskView(taskId: pmTaskResponse.id!).viewPmTask(taskId: pmTaskResponse.id!)
+                                    updateAlertBool = true
                                 }){
-                                    AcknowledgerFaultView(ackSheetBool: $ackSheetBool, receivedValueAckFR: $receivedValueAckFR, viewFrom: CommonStrings().tasksView, tasksDataItems: bodyUpdate)
+                                    AcknowledgerTaskView(ackSheetBool: $ackSheetBool, tasksDataItems: bodyUpdate)
                                 }
+                                .alert(isPresented: $updateAlertBool, content: {
+                                    Alert(title: Text("Successfully Updated!"), dismissButton: .default(Text("Okay!"), action: {
+                                        presentationMode.wrappedValue.dismiss()
+                                    }))
+                                })
                             }
                         }
                     }
-                
-            }
-            VStack{
-                Spacer()
-                HStack{
-                    Spacer()
-                    Button(action:{
-                        clSheetBool.toggle()
-                    },
-                    label:{
-                        VStack{
-                            Image("listicon_pm")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width:50)
-                                .shadow(radius: 10)
-                        }
-                    })
                     
-                    .padding()
-                    .sheet(isPresented: $clSheetBool) {
-                        CheckListSheet(taskId: pmTaskResponse.id!, pmTaskResponse: pmTaskResponse, clSheetBool: $clSheetBool)
+                }
+                .padding(.top, 10)
+                VStack{
+                    Spacer()
+                    if showMenuItem1{
+                        HStack{
+                            Spacer()
+                            Button(action: {
+                                showBeforeImageSheet = true
+                            }) {
+                                Image("beforeupload")
+                                    .resizable()
+                                    .padding()
+                                    .frame(width: 65, height: 65)
+                                    .background(Color(.white))
+                                    .cornerRadius(30)
+                                    .shadow(radius: 10)
+                                
+                            }
+                            .sheet(isPresented: $showBeforeImageSheet, onDismiss: {
+                                pmTaskResponse = PmTaskResponse()
+                                viewPmTask(taskId: taskId)
+                            }) {
+                                ViewTaskImage(ackName: pmTaskResponse.beforeImage?.name ?? "",
+                                              ackContact: pmTaskResponse.beforeImage?.contactNo ?? "" ,
+                                              imageName: pmTaskResponse.beforeImage?.image ?? "", imageType: "Before",
+                                              viewFrom: viewFrom, taskId: String(taskId), id: pmTaskResponse.beforeImage?.id ?? 0,
+                                              status: pmTaskResponse.status!)
+                            }
+                        }}
+                    if showMenuItem2{
+                        HStack{
+                            Spacer()
+                            Button(action: {
+                                showAfterImageSheet = true
+                            }) {
+                                Image("afterupload")
+                                    .resizable()
+                                    .padding()
+                                    .frame(width: 65, height: 65)
+                                    .background(Color(.white))
+                                    .cornerRadius(30)
+                                    .shadow(radius: 10)
+                                
+                            }
+                            .sheet(isPresented: $showAfterImageSheet, onDismiss: {
+                                pmTaskResponse = PmTaskResponse()
+                               viewPmTask(taskId: taskId)
+                            }){
+                                ViewTaskImage(ackName: pmTaskResponse.afterImage?.name ?? "",
+                                              ackContact: pmTaskResponse.afterImage?.contactNo ?? "",
+                                              imageName: pmTaskResponse.afterImage?.image ?? "", imageType: "After",
+                                              viewFrom: viewFrom, taskId: String(taskId), id: pmTaskResponse.afterImage?.id ?? 0 ,
+                                              status: pmTaskResponse.status!)
+                            }
+                        }}
+                    if showMenuItem3{
+                        HStack{
+                            Spacer()
+                            Button(action:{
+                                clSheetBool.toggle()
+                            },
+                            label:{
+                                VStack{
+                                    Image("listicon_pm")
+                                        .resizable()
+                                        .padding()
+                                        .frame(width: 65, height: 65)
+                                        .background(Color(.white))
+                                        .cornerRadius(30)
+                                        .shadow(radius: 10)
+                                }
+                            })
+                            .sheet(isPresented: $clSheetBool) {
+                                CheckListSheet(taskId: pmTaskResponse.id!, pmTaskResponse: pmTaskResponse, clSheetBool: $clSheetBool, viewFrom: viewFrom)
+                            }
+                        }}
+                    HStack{
+                        Spacer()
+                        Button(action: {
+                            showMenu()
+                        }) {
+                            Image("more_icon")
+                                .resizable()
+                                .padding()
+                                .frame(width: 65, height: 65)
+                                .background(Color(.white))
+                                .cornerRadius(30)
+                                .shadow(radius: 10)
+                            
+                        }
                     }
                 }
+                .padding()
             }
+            .navigationBarTitle("Pm Task")
+            .navigationBarItems(trailing: Logout().environmentObject(settings))
         }
+    }
+    
+    
+    func showMenu() {
+        showMenuItem3.toggle()
+        showMenuItem2.toggle()
+        showMenuItem1.toggle()
     }
     
     func enableDisableMethod(currentPmResponse: PmTaskResponse)  {
@@ -338,7 +389,8 @@ struct CurrentPmTaskView: View {
         if (currentPmResponse.status == "Closed" ||
                 UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag){
             enableUpdateButton = false
-        }else{
+        }else if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech
+                    && viewFrom == CommonStrings().taskScanView {
             statusPickerList.append("Open")
             statusPickerList.append("Closed")
             enableUpdateButton = true
@@ -383,11 +435,43 @@ struct CurrentPmTaskView: View {
         
         
     }
+    
+    func viewPmTask(taskId: Int) {
+        guard let url = URL(string: "\(CommonStrings().apiURL)task/\(taskId)") else {return}
+        var urlRequest = URLRequest(url: url)
+        
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+        urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+        
+        print(urlRequest)
+        
+        URLSession.shared.dataTask(with: urlRequest){data , _, error  in
+            
+            if let pmTaskResponse = try? JSONDecoder().decode(PmTaskResponse.self, from: data!){
+                DispatchQueue.main.async {
+                    self.pmTaskResponse = pmTaskResponse
+                    print(pmTaskResponse)
+                    isLoadingPm = false
+                }
+            }else{
+                let json = try? JSONSerialization.jsonObject(with: data!, options: [])
+                if let dictionary = json as? [String: Any] {
+                    print("Error decoding: \(dictionary)")
+                }
+            }
+            
+        }.resume()
+    }
+    
 }
 
 
 struct PmTaskView_Previews: PreviewProvider {
     static var previews: some View {
-        PmTaskView(taskId: 1)
+        PmTaskView(taskId: 1, viewFrom: "")
+            .environmentObject(UserSettings())
     }
 }

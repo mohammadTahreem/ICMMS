@@ -40,6 +40,7 @@ struct LoginView: View {
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
                         .padding()
+                    
                 }
                 
                 .background(Color.white)
@@ -89,7 +90,7 @@ struct LoginView: View {
             
             .background(Color.white)
             .cornerRadius(12)
-            .opacity(0.8)
+            .opacity(0.9)
             .padding()
             
             Spacer()
@@ -185,7 +186,7 @@ struct MainScreen: View{
         }else if settings.loggedIn && isFrom.isFromNotication {
             NavigationView{
                 if UserDefaults.standard.string(forKey: "frId") != nil{
-                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!, viewFrom: "Active")
+                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!,QRValue: "" ,viewFrom: "Active")
                         .environmentObject(settings)
                 }
             }
@@ -194,12 +195,23 @@ struct MainScreen: View{
                 WorkspaceView().environmentObject(settings)
             }else if UserDefaults.standard.bool(forKey: "loggedIn") == false && !isFrom.isFromNotication {
                 LoginView().environmentObject(settings)
-            }else if UserDefaults.standard.bool(forKey: "loggedIn") == true && isFrom.isFromNotication && frId != nil{
+            }else if UserDefaults.standard.bool(forKey: "loggedIn") == true
+                        && isFrom.isFromNotication && frId != nil
+                        && view == CommonStrings().editFaultReportActivity{
                 NavigationView{
-                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!, viewFrom: "Active")
+                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!,QRValue: "" ,viewFrom: "Active")
                         .environmentObject(settings)
                 }
-            }else if UserDefaults.standard.bool(forKey: "loggedIn") == false && isFrom.isFromNotication && frId == nil{
+            }else if UserDefaults.standard.bool(forKey: "loggedIn") == true
+                        && isFrom.isFromNotication && frId != nil
+                        && view == CommonStrings().pmtaskActivity {
+                NavigationView{
+                    PmTaskView(taskId: Int(frId!)!, viewFrom: CommonStrings().taskScanView)
+                        .environmentObject(settings)
+                }
+            }
+            
+            else if UserDefaults.standard.bool(forKey: "loggedIn") == false && isFrom.isFromNotication && frId == nil{
                 LoginView().environmentObject(settings)
             }
         }

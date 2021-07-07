@@ -23,7 +23,7 @@ struct PmTaskResponse: Codable, Identifiable {
 
 
 struct BeforeImage: Codable {
-    var name, image: String?
+    var name, image, contactNo: String?
     var id: Int?
 }
 
