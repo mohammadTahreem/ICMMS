@@ -96,7 +96,7 @@ struct RequestForPauseSheet: View {
             eotTypeSelected = CommonStrings().eotTypeLesserActual
         }
         
-        let body : RequestForPauseModel = RequestForPauseModel(eotType: eotTypeSelected, eotTime: eotTime, frId: requestForPauseModel.frId, observation: requestForPauseModel.observation, actionTaken: requestForPauseModel.actionTaken, remarks: requestForPauseModel.remarks)
+        let body : RequestForPauseModel = RequestForPauseModel(eotType: eotTypeSelected, eotTime: eotTime, frId: requestForPauseModel.frId, observation: requestForPauseModel.observation, actionTaken: requestForPauseModel.actionTaken, remarks: requestForPauseModel.remarks, fmm: requestForPauseModel.fmm)
         
         let encodedBody = try? JSONEncoder().encode(body)
         

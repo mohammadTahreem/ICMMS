@@ -9,8 +9,8 @@ import Foundation
 
 struct CommonStrings {
     
-//    let apiURL: String = "http://192.168.1.6:8081/api/"
-    let apiURL: String = "http://103.26.41.230:8086/i-cmmstest/api/"
+    let apiURL: String = "http://192.168.2.17:8081/api/"
+//    let apiURL: String = "http://103.26.41.230:8086/i-cmmstest/api/"
 //    let apiURL: String = "http://103.24.4.168:8085/cmms/api/"
     let usernameTech: String = "Technician"
     let usernameManag: String  = "ManagingAgent"
@@ -40,4 +40,6 @@ struct CommonStrings {
     let dueTask = "Due Tasks"
     let overdueTaskActual = "Overdue"
     let dueTaskActual = "Due"
+    let messagesView = "MessagesView"
+    let noData = "No data"
 }

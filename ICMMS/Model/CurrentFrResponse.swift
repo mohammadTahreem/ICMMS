@@ -63,8 +63,7 @@ struct CurrentFrResponse: Codable {
     var eotTime : String?
     var technicianSignature: String?
     var reportedDate: String?
-    
-    
+    var fmm: Fmm?
 }
 
 struct Equipment: Codable {

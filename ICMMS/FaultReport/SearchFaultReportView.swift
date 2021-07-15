@@ -72,6 +72,7 @@ struct FaultSearchView: View {
                 .foregroundColor(.black)
                 .cornerRadius(8)
                 .padding()
+             
             Spacer()
             if searchBool {
                 ProgressView()
@@ -83,7 +84,7 @@ struct FaultSearchView: View {
                     ZStack{
                         Button("") {}
                         NavigationLink(destination: EditFaultReportView(frId: searchFaultResponse.frId!,QRValue: "" ,viewFrom: activeInactive)
-                                        .onDisappear(){
+                                        .onAppear(){
                                             self.searchFaultResponse = []
                                             self.searchText = ""
                                         }){
@@ -166,7 +167,7 @@ struct SearchFaultReportView: View {
         }
         .font(.headline)
 //        .tabViewStyle(PageTabViewStyle())
-        .navigationBarItems(trailing: Logout().environmentObject(settings))
+        .navigationBarItems(trailing: Logout(workspaceViewBool: true, viewFrom: "").environmentObject(settings))
         .navigationBarTitle("Search Fault Reports")
         
     }

@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import Combine
+import SwiftUI
 
 struct GeneralMethods {
+    
     func convertLongToString(isoDate: Int)-> String{
         let epochTime = TimeInterval(isoDate) / 1000
         let date = Date(timeIntervalSince1970: epochTime)
@@ -73,6 +76,46 @@ struct GeneralMethods {
         let date = dateFormatter.date(from: dateFormatter.string(from: currentDate as Date))
         let nowDouble = date!.timeIntervalSince1970
         return Int(nowDouble*1000)
+    }
+    
+    func getMessages(badges: MessageIconBadge) -> MessageIconBadge {
+        badges.items = 0
+        guard let url = URL(string: "\(CommonStrings().apiURL)msg/messages") else {return MessageIconBadge()}
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+        print(urlRequest)
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            if let error = error {
+                print("Request error: ", error)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                print("response error: \(String(describing: error))")
+                return
+            }
+            
+            if response.statusCode == 200 {
+                
+                guard let _ = data else { return }
+                
+                if let messagesCountModel = try? JSONDecoder().decode(MessageCountModel.self, from: data!){
+                    DispatchQueue.main.async {
+                        badges.items = messagesCountModel.count
+                    }
+                }
+            } else {
+                print("Error code: \(response.statusCode)")
+            }
+        }
+        
+        dataTask.resume()
+        return badges
     }
     
 }

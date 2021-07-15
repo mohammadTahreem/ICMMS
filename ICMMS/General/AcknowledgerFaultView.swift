@@ -26,10 +26,9 @@ struct AcknowledgerFaultView: View {
     @State private var onFailure: Bool = false
     @State private var isLoading: Bool = false
     @State var dataItems: UpdateFaultRequest
-    @State var currentFrResponse : CurrentFrResponse?
+    @State var currentFrResponse : CurrentFrResponse
     @Binding var receivedValueAckFR: String
     @State var viewFrom: String
-    @State var tasksDataItems: UpdatePmTaskRequest?
     
     var body: some View {
         
@@ -61,7 +60,7 @@ struct AcknowledgerFaultView: View {
                     .cornerRadius(8)
                     .padding()
                     .alert(isPresented: $onFailure, content: {
-                        Alert(title: Text("Error"), message: Text("Fault Id:\(currentFrResponse?.frId ?? "" )  couldn't be updated"), dismissButton: .default(Text("Okay")))
+                        Alert(title: Text("Error"), message: Text("Fault Id:\(currentFrResponse.frId!)  couldn't be updated"), dismissButton: .default(Text("Okay")))
                     })
                 
                 PencilKitRepresentable(canvas: $techSignCanvas)
@@ -122,58 +121,11 @@ struct AcknowledgerFaultView: View {
     func updateMessage() -> String {
         if viewFrom == CommonStrings().editFaultReportActivity{
             return "Fault: \(String(describing: dataItems.frId)) is updated"
-        }else{
-            return "Task: \(String(describing: tasksDataItems?.taskId)) is updated"
         }
+        return ""
     }
     
-    func updatePmTask()  {
-        
-        print("this method called")
-        isLoading = true
-        tasksDataItems = UpdatePmTaskRequest(status: tasksDataItems?.status, remarks: tasksDataItems?.remarks, completedTime: tasksDataItems?.completedTime, completedDate: tasksDataItems?.completedDate, taskId: tasksDataItems?.taskId, acknowledger: Acknowledger(rank: ackRank, signature: ackSign, name: ackName), tech_signature: techSign)
-        let encodedBody = try? JSONEncoder().encode(tasksDataItems)
-        
-        guard let url = URL(string: "\(CommonStrings().apiURL)task/updateTask") else {
-            return
-        }
-        var urlRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "PUT"
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
-        urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
-        urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
-        urlRequest.httpBody = encodedBody
-        
-        print(urlRequest)
-        
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            if let error = error {
-                print("Request error: ", error)
-                self.onFailure = true
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else {
-                print("response error: \(String(describing: error))")
-                self.onFailure = true
-                return
-            }
-            
-            if response.statusCode == 200 {
-                guard let _ = data else { return }
-                self.onSuccess = true
-            } else {
-                print("Error code: \(response.statusCode)")
-                self.onFailure = true
-            }
-            isLoading = false
-        }
-        
-        dataTask.resume()
-        
-    }
+    
     
     
     func checkForConditions() {
@@ -214,7 +166,10 @@ struct AcknowledgerFaultView: View {
         
         
         dataItems =
-            UpdateFaultRequest(acknowledgerCode: dataItems.acknowledgerCode, frId: dataItems.frId, requestorName: dataItems.requestorName, requestorContactNo: dataItems.requestorContactNo,
+            UpdateFaultRequest(acknowledgerCode: dataItems.acknowledgerCode,
+                               frId: dataItems.frId,
+                               requestorName: dataItems.requestorName,
+                               requestorContactNo: dataItems.requestorContactNo,
                                locationDesc: dataItems.locationDesc,
                                faultCategoryDesc: dataItems.faultCategoryDesc,
                                acknowledgedBy: AcknowledgedBy( frId: dataItems.frId, rank: ackRank, signature: ackSign, name: ackName),
@@ -222,8 +177,9 @@ struct AcknowledgerFaultView: View {
                                location: dataItems.location,
                                department: dataItems.department,
                                faultCategory: dataItems.faultCategory,
-                               priority: dataItems.priority, maintGrp:
-                                dataItems.maintGrp, division: dataItems.division,
+                               priority: dataItems.priority,
+                               maintGrp: dataItems.maintGrp,
+                               division: dataItems.division,
                                observation: dataItems.observation,
                                diagnosis: dataItems.diagnosis,
                                actionTaken: dataItems.actionTaken,
@@ -242,7 +198,8 @@ struct AcknowledgerFaultView: View {
                                pauseTime: dataItems.pauseTime,
                                completionTime: dataItems.completionTime,
                                acknowledgementTime: dataItems.acknowledgementTime,
-                               reportedDate: dataItems.reportedDate)
+                               reportedDate: dataItems.reportedDate,
+                               fmm: dataItems.fmm)
         
         let encodedBody = try? JSONEncoder().encode(dataItems)
         
@@ -268,7 +225,7 @@ struct AcknowledgerFaultView: View {
                 if let updateFrResponse = try? JSONDecoder().decode(CurrentFrResponse.self, from: data!){
                     DispatchQueue.main.async {
                         self.currentFrResponse = updateFrResponse
-                        print(currentFrResponse!)
+                        print(currentFrResponse)
                         onSuccess = true
                     }
                 }else{
@@ -292,6 +249,54 @@ struct AckWindowView_Previews: PreviewProvider {
 
     static var previews: some View {
 
-        AcknowledgerFaultView(ackSheetBool: .constant(true), dataItems: UpdateFaultRequest(), receivedValueAckFR: .constant("asd"), viewFrom: "")
+        AcknowledgerFaultView(ackSheetBool: .constant(true), dataItems: UpdateFaultRequest(), currentFrResponse: CurrentFrResponse(), receivedValueAckFR: .constant("asd"), viewFrom: "")
     }
 }
+
+/*func updatePmTask()  {
+ 
+ print("this method called")
+ isLoading = true
+ tasksDataItems = UpdatePmTaskRequest(status: tasksDataItems?.status, remarks: tasksDataItems?.remarks, completedTime: tasksDataItems?.completedTime, completedDate: tasksDataItems?.completedDate, taskId: tasksDataItems?.taskId, acknowledger: Acknowledger(rank: ackRank, signature: ackSign, name: ackName), tech_signature: techSign)
+ let encodedBody = try? JSONEncoder().encode(tasksDataItems)
+ 
+ guard let url = URL(string: "\(CommonStrings().apiURL)task/updateTask") else {
+ return
+ }
+ var urlRequest = URLRequest(url: url)
+ 
+ urlRequest.httpMethod = "PUT"
+ urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+ urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+ urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+ urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+ urlRequest.httpBody = encodedBody
+ 
+ print(urlRequest)
+ 
+ let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+ if let error = error {
+ print("Request error: ", error)
+ self.onFailure = true
+ return
+ }
+ 
+ guard let response = response as? HTTPURLResponse else {
+ print("response error: \(String(describing: error))")
+ self.onFailure = true
+ return
+ }
+ 
+ if response.statusCode == 200 {
+ guard let _ = data else { return }
+ self.onSuccess = true
+ } else {
+ print("Error code: \(response.statusCode)")
+ self.onFailure = true
+ }
+ isLoading = false
+ }
+ 
+ dataTask.resume()
+ 
+ } */

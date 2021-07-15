@@ -52,7 +52,7 @@ struct SearchPDFView: View {
             }
         }
         .navigationBarTitle("Search \(quoteOrPurchase)")
-        .navigationBarItems(trailing: Logout().environmentObject(settings))
+        .navigationBarItems(trailing: Logout(workspaceViewBool: true, viewFrom: "").environmentObject(settings))
     }
     
     func getSearchResults(searchText: String)  {

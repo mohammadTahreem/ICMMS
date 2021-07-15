@@ -33,16 +33,22 @@ struct ScanLocation: View {
                     }
                 }
         } else {
-            CBScanner(
-                supportBarcode: .constant([.qr, .code128]), //Set type of barcode you want to scan
-                scanInterval: .constant(5.0), //Event will trigger every 5 seconds
-                //mockBarCode: .constant(BarcodeData(value:"Mocking data", type: .qr)),
-                cameraPosition: $cameraPosition //Bind to switch front/back camera
-            ){
-                print("BarCodeType =",$0.type.rawValue, "Value =",$0.value)
-                if $0.value != "" {
-                    qrValue = $0.value
-                    locationCall(qrValue: qrValue, userLatitude: userLatitude, userLongitude: userLongitude)
+            ZStack{
+                Color(.black).ignoresSafeArea()
+                CBScanner(
+                    supportBarcode: .constant([.qr, .code128]), //Set type of barcode you want to scan
+                    scanInterval: .constant(5.0), //Event will trigger every 5 seconds
+                    //mockBarCode: .constant(BarcodeData(value:"Mocking data", type: .qr)),
+                    cameraPosition: $cameraPosition //Bind to switch front/back camera
+                ){
+                    print("BarCodeType =",$0.type.rawValue, "Value =",$0.value)
+                    if $0.value != "" {
+                        qrValue = $0.value
+                        locationCall(qrValue: qrValue, userLatitude: userLatitude, userLongitude: userLongitude)
+                    }
+                }.padding(30)
+                .onAppear(){
+                    responseCode = ""
                 }
             }
         }

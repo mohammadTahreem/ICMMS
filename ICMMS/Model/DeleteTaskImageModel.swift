@@ -19,3 +19,8 @@ struct UploadTaskImageResponse: Codable {
     var id: Int?
     var image, name, contactNo, type: String?
 }
+
+struct Fmm: Codable, Hashable {
+    var username: String
+    var id: Int
+}

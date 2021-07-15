@@ -55,9 +55,7 @@ struct TaskScanView: View {
                         dueOverDueList.append(CommonStrings().overdueTask)
                     }
                     .cornerRadius(10)
-                    .padding()
-                    .background(Color(.black)).ignoresSafeArea()
-                
+                    .ignoresSafeArea()
             }else{
                 if !isScanSuccess{
                     VStack{
@@ -114,7 +112,7 @@ struct TaskScanView: View {
             }
         }
         .navigationBarTitle(Text("Scan Tasks"))
-        .navigationBarItems(trailing: Logout().environmentObject(settings))
+        .navigationBarItems(trailing: Logout(workspaceViewBool: true, viewFrom: "").environmentObject(settings))
     }
     
     

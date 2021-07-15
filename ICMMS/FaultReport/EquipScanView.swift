@@ -16,29 +16,31 @@ struct EquipScanView: View {
     @State var frId: String
     @Binding var responseCode: String 
     var body: some View {
-        CBScanner(
-            supportBarcode: .constant([.qr, .code128]),
-            scanInterval: .constant(5.0),
-            cameraPosition: $cameraPosition
-        ){
-            print("BarCodeType =",$0.type.rawValue, "Value =",$0.value)
-            if $0.value != "" {
-                QRValue = $0.value
-                showScanSheet = false
-                responseCode = String(Int(200))
+        ZStack{
+            Color(.black).ignoresSafeArea()
+            CBScanner(
+                supportBarcode: .constant([.qr, .code128]),
+                scanInterval: .constant(5.0),
+                cameraPosition: $cameraPosition
+            ){
+                print("BarCodeType =",$0.type.rawValue, "Value =",$0.value)
+                if $0.value != "" {
+                    QRValue = $0.value
+                    showScanSheet = false
+                    responseCode = String(Int(200))
+                }
             }
+            onDraw: {
+                let lineWidth: CGFloat = 2
+                let lineColor = UIColor.red
+                
+                let fillColor = UIColor(red: 0, green: 1, blue: 0.2, alpha: 0.4)
+                
+                $0.draw(lineWidth: lineWidth, lineColor: lineColor, fillColor: fillColor)
+            }
+            .cornerRadius(10)
+            .padding(30)
         }
-        onDraw: {
-            let lineWidth: CGFloat = 2
-            let lineColor = UIColor.red
-            
-            let fillColor = UIColor(red: 0, green: 1, blue: 0.2, alpha: 0.4)
-            
-            $0.draw(lineWidth: lineWidth, lineColor: lineColor, fillColor: fillColor)
-        }
-        .cornerRadius(10)
-        .padding()
-        .background(Color(.black)).ignoresSafeArea()
     }
 }
 

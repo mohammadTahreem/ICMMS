@@ -20,37 +20,37 @@ struct ScanFaultEquipView: View {
             if isScanSuccess{
                 EditFaultReportView(frId: "", QRValue: qrValue, viewFrom: CommonStrings().scanEquipment)
             }else{
-                CBScanner(
-                    supportBarcode: .constant([.qr, .code128]),
-                    scanInterval: .constant(5.0),
-                    cameraPosition: $cameraPosition
-                ){
-                    print("BarCodeType =",$0.type.rawValue, "Value =",$0.value)
-                    if $0.value != "" {
-                        qrValue = $0.value
-                        isScanSuccess = true
+                ZStack{
+                    Color(.black).ignoresSafeArea()
+                    CBScanner(
+                        supportBarcode: .constant([.qr, .code128]),
+                        scanInterval: .constant(5.0),
+                        cameraPosition: $cameraPosition
+                    ){
+                        print("BarCodeType =",$0.type.rawValue, "Value =",$0.value)
+                        if $0.value != "" {
+                            qrValue = $0.value
+                            isScanSuccess = true
+                        }
                     }
-                }
-                onDraw: {
-                    let lineWidth: CGFloat = 2
-                    let lineColor = UIColor.red
-                    
-                    let fillColor = UIColor(red: 0, green: 1, blue: 0.2, alpha: 0.4)
-                    
-                    $0.draw(lineWidth: lineWidth, lineColor: lineColor, fillColor: fillColor)
-                }
-                
-                .cornerRadius(10)
-                .padding()
-                .background(Color(.black)).ignoresSafeArea()
-            }
+                    onDraw: {
+                        let lineWidth: CGFloat = 2
+                        let lineColor = UIColor.red
+                        
+                        let fillColor = UIColor(red: 0, green: 1, blue: 0.2, alpha: 0.4)
+                        
+                        $0.draw(lineWidth: lineWidth, lineColor: lineColor, fillColor: fillColor)
+                    }
+                    .cornerRadius(10)
+                    .padding(30)
+                }}
         }.navigationBarTitle("Scan Equipment")
-        .navigationBarItems(trailing: Logout().environmentObject(settings))
+        .navigationBarItems(trailing: Logout(workspaceViewBool: true, viewFrom: "").environmentObject(settings))
     }
 }
 
 struct ScanFaultEquipView_Previews: PreviewProvider {
     static var previews: some View {
-        ScanFaultEquipView()
+        ScanFaultEquipView().environmentObject(UserSettings())
     }
 }

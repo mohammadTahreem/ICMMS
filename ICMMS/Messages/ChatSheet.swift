@@ -11,30 +11,33 @@ struct ChatSheet: View {
     
     @State var chats: [MessagesModel] = [MessagesModel()]
     @State var type: String?
+    @State var id: Int?
     @State var messageTitle: String?
     @State var isLoading = false
     var body: some View {
         VStack{
-            if isLoading{
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .padding()
-            }else{
-                List(chats, id:\.self){ chat in
-                    MessageCardView(message: chat)
-                        .padding()
-                }
-            }
+//            if isLoading{
+//                ProgressView()
+//                    .progressViewStyle(CircularProgressViewStyle())
+//                    .padding()
+//            }else{
+//                List(chats, id:\.self){ chat in
+//                    MessageCardView(message: chat)
+//                        .padding()
+//                }
+//            }
+            Text("\(id ?? 1)")
+            
         }.navigationBarTitle("\(messageTitle!)")
         .onAppear(){
-            if (type != nil){
+            
                 getChats()
-            }
+            
         }
     }
     func getChats() {
         isLoading = true
-        guard let url = URL(string: "\(CommonStrings().apiURL)msg/type?type=\(type!)") else {return}
+        guard let url = URL(string: "\(CommonStrings().apiURL)msg/\(id!)") else {return}
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
@@ -42,6 +45,8 @@ struct ChatSheet: View {
         urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
         urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
         urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+        
+        print(urlRequest)
                 
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
@@ -58,13 +63,12 @@ struct ChatSheet: View {
                 
                 guard let _ = data else { return }
                 
-                if let messagesModel = try? JSONDecoder().decode([MessagesModel].self, from: data!){
-                    DispatchQueue.main.async {
-                        self.chats = messagesModel
-                        print(chats)
-                    }
-                }
-                
+//                if let messagesModel = try? JSONDecoder().decode([MessagesModel].self, from: data!){
+//                    DispatchQueue.main.async {
+//                        self.chats = messagesModel
+//                        print("chat success")
+//                    }
+//                }
             } else {
                 print("Error code: \(response.statusCode)")
             }

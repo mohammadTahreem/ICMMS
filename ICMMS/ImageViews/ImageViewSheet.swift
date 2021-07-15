@@ -88,26 +88,30 @@ struct ImageViewSheet: View {
                     }
                 }
                 .padding()
-                if gettingImagesBool{
-                    Spacer()
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
-                        .padding()
-                    Spacer()
-                }else{
-                    if imageAvailable {
+                
+                if imageAvailable {
                     TabView{
                         ForEach(imageDataList, id:\.self) { imageData in
                             VStack{
-                                Image(uiImage: UIImage(data: imageData.imageData)!)
-                                    .resizable()
-                                    .shadow(radius: 10)
-                                    .scaledToFit()
-                                    .cornerRadius(10)
-                                    .onAppear(){
-                                        currentImage = imageData
-                                    }
-                                
+                                if gettingImagesBool{
+                                    Spacer()
+                                    ProgressView()
+                                        .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+                                        .padding()
+                                        .onAppear(){
+                                            checkForConditions()
+                                        }
+                                    Spacer()
+                                }else{
+                                    Image(uiImage: UIImage(data: imageData.imageData)!)
+                                        .resizable()
+                                        .shadow(radius: 10)
+                                        .aspectRatio(contentMode: .fit)
+                                        .cornerRadius(10)
+                                        .onAppear(){
+                                            currentImage = imageData
+                                        }
+                                }
                                 HStack{
                                     Text(imageData.reName!)
                                         .foregroundColor(.white)
@@ -119,16 +123,16 @@ struct ImageViewSheet: View {
                                 }
                             }
                         }
-                        .onAppear(){
-                            checkForConditions()
-                        }
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                     }else{
-                        Image("noimage")
-                            .resizable().scaledToFit()
+                        ZStack{
+                            Color.black.ignoresSafeArea()
+                            Image("noimage")
+                                .resizable().scaledToFit()
+                        }
                     }
-                }
+                
             }
             .background(Color(.black))
             .navigationBarTitle(Text("\(viewName) Image"), displayMode: .inline)
@@ -228,6 +232,7 @@ struct ImageViewSheet: View {
                         imageAvailable = true
                     }
                     else{
+                        checkForConditions()
                         print("list is empty")
                     }
                     
@@ -269,6 +274,7 @@ struct ImageViewSheet: View {
                 
                 guard let imageData = data else { return }
                 imageDataList.append(ImageDataList(imageData: imageData, imageName: imageName, reName: reName, reContact: reContact))
+                checkForConditions()
             } else {
                 print("Error code: \(response.statusCode)")
             }
@@ -293,6 +299,9 @@ struct ImageViewSheet: View {
             
             if imageDataList.count >= 1 {
                 deleteButton = true
+            }else{
+                deleteButton = false
+                imageAvailable = false
             }
         }
     }

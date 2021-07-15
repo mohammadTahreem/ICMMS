@@ -38,342 +38,323 @@ struct PmTaskView: View {
         
         let bodyUpdate = UpdatePmTaskRequest(status: pickerItem, remarks: remarksList, completedTime: dateInMilis, completedDate: dateInMilis, taskId: pmTaskResponse.id, acknowledger: pmTaskResponse.acknowledger, tech_signature: pmTaskResponse.tech_signature)
         
-        if isLoadingPm{
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle())
-                .padding()
-                .onAppear(){
-                    viewPmTask(taskId: taskId)
-                }
-        }else{
-            
-            ZStack{
-                ScrollView{
-                    
-                    VStack{
-                        
-                        if(pmTaskResponse.taskNumber != nil){
-                            LabelTextField(label: "Task Number", placeHolder: pmTaskResponse.taskNumber!)
-                        }else{
-                            LabelTextField(label: "Task Number", placeHolder: "Task Number")
-                        }
-                        
-                        if(pmTaskResponse.schedule != nil && pmTaskResponse.schedule?.scheduleNumber != nil){
-                            LabelTextField(label: "Schedule Number", placeHolder: pmTaskResponse.schedule!.scheduleNumber!)
-                        }else{
-                            LabelTextField(label: "Schedule Number", placeHolder: "Schedule Number")
-                        }
-                        
-                        if( pmTaskResponse.equipment != nil && pmTaskResponse.equipment?.building != nil && pmTaskResponse.equipment?.building?.name != nil){
-                            LabelTextField(label: "Building", placeHolder: pmTaskResponse.equipment!.building!.name!)
-                        }
-                        else{
-                            LabelTextField(label: "Building", placeHolder: "Building")
-                        }
-                        if (pmTaskResponse.equipment != nil && pmTaskResponse.equipment?.location != nil && pmTaskResponse.equipment?.location?.name != nil) {
-                            LabelTextField(label: "Location", placeHolder: pmTaskResponse.equipment!.location!.name!)
-                        }else{
-                            LabelTextField(label: "Location", placeHolder: "Location")
-                        }
-                        if (pmTaskResponse.equipment?.name != nil) {
-                            LabelTextField(label: "Equipment", placeHolder: pmTaskResponse.equipment!.name!)
-                        }else{
-                            LabelTextField(label: "Equipment", placeHolder: "Equipment")
-                        }
-                        
-                        if(pmTaskResponse.schedule != nil && pmTaskResponse.schedule?.briefDescription != nil){
-                            LabelTextField(label: "Brief Description", placeHolder: pmTaskResponse.schedule!.briefDescription!)
-                        }else{
-                            LabelTextField(label: "Brief Description", placeHolder: "Brief Description")
-                        }
+        VStack{
+            if isLoadingPm{
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .padding()
+                    .onAppear(){
+                        viewPmTask(taskId: taskId)
                     }
-                    
-                    VStack{
-                        if(pmTaskResponse.scheduleDate != nil){
-                            LabelTextField(label: "Schedule Date", placeHolder: String(GeneralMethods().convertLongToDate(isoDate: pmTaskResponse.scheduleDate!)))
-                        }else{
-                            LabelTextField(label: "Schedule Date", placeHolder: "Schedule Date")
-                        }
+            }else{
+                ZStack{
+                    ScrollView{
                         
-                        if(pmTaskResponse.completedDate != nil && pmTaskResponse.completedTime != nil){
-                            LabelTextField(label: "Completed Date", placeHolder: String(GeneralMethods().convertLongToDate(isoDate: pmTaskResponse.completedDate!)))
-                            LabelTextField(label: "Completed Time", placeHolder: pmTaskResponse.completedTime!)
-                        }else{
-                            VStack {
-                                DatePicker("Completed Date and Time", selection: $date)
-                                    .datePickerStyle(DefaultDatePickerStyle())
-                                    .frame(maxHeight: 400)
-                                    .padding()
+                        VStack{
+                            
+                            if(pmTaskResponse.taskNumber != nil){
+                                LabelTextField(label: "Task Number", placeHolder: pmTaskResponse.taskNumber!)
+                            }else{
+                                LabelTextField(label: "Task Number", placeHolder: "Task Number")
                             }
-                        }
-                        if(pmTaskResponse.completedBy != nil){
-                            LabelTextField(label: "Completed By", placeHolder: pmTaskResponse.completedBy!)
-                        }else{
-                            LabelTextField(label: "Completed By", placeHolder: "Completed By")
+                            
+                            if(pmTaskResponse.schedule != nil && pmTaskResponse.schedule?.scheduleNumber != nil){
+                                LabelTextField(label: "Schedule Number", placeHolder: pmTaskResponse.schedule!.scheduleNumber!)
+                            }else{
+                                LabelTextField(label: "Schedule Number", placeHolder: "Schedule Number")
+                            }
+                            
+                            if( pmTaskResponse.equipment != nil && pmTaskResponse.equipment?.building != nil && pmTaskResponse.equipment?.building?.name != nil){
+                                LabelTextField(label: "Building", placeHolder: pmTaskResponse.equipment!.building!.name!)
+                            }
+                            else{
+                                LabelTextField(label: "Building", placeHolder: "Building")
+                            }
+                            if (pmTaskResponse.equipment != nil && pmTaskResponse.equipment?.location != nil && pmTaskResponse.equipment?.location?.name != nil) {
+                                LabelTextField(label: "Location", placeHolder: pmTaskResponse.equipment!.location!.name!)
+                            }else{
+                                LabelTextField(label: "Location", placeHolder: "Location")
+                            }
+                            if (pmTaskResponse.equipment?.name != nil) {
+                                LabelTextField(label: "Equipment", placeHolder: pmTaskResponse.equipment!.name!)
+                            }else{
+                                LabelTextField(label: "Equipment", placeHolder: "Equipment")
+                            }
+                            
+                            if(pmTaskResponse.schedule != nil && pmTaskResponse.schedule?.briefDescription != nil){
+                                LabelTextField(label: "Brief Description", placeHolder: pmTaskResponse.schedule!.briefDescription!)
+                            }else{
+                                LabelTextField(label: "Brief Description", placeHolder: "Brief Description")
+                            }
                         }
                         
                         VStack{
-                            Text("Remarks")
-                                .padding(.horizontal, 15)
-                                .font(.title2)
+                            if(pmTaskResponse.scheduleDate != nil){
+                                LabelTextField(label: "Schedule Date", placeHolder: String(GeneralMethods().convertLongToDate(isoDate: pmTaskResponse.scheduleDate!)))
+                            }else{
+                                LabelTextField(label: "Schedule Date", placeHolder: "Schedule Date")
+                            }
                             
-                            if(pmTaskResponse.remarks != nil){
-                                
-                                ForEach(0..<remarksList.count, id: \.self) { index in
-                                    TextField("Remarks", text: Binding<String>(
-                                                get: {remarksList[index] }, set: {remarksList[index] = $0}) )
+                            if(pmTaskResponse.completedDate != nil && pmTaskResponse.completedTime != nil){
+                                LabelTextField(label: "Completed Date", placeHolder: String(GeneralMethods().convertLongToDate(isoDate: pmTaskResponse.completedDate!)))
+                                LabelTextField(label: "Completed Time", placeHolder: pmTaskResponse.completedTime!)
+                            }else{
+                                VStack {
+                                    DatePicker("Completed Date and Time", selection: $date)
+                                        .datePickerStyle(DefaultDatePickerStyle())
+                                        .frame(maxHeight: 400)
                                         .padding()
-                                        .background(Color("light_gray"))
-                                        .foregroundColor(.black)
-                                        .cornerRadius(8)
-                                        .disabled(!enableUpdateButton)
                                 }
-                                .padding(.horizontal, 10)
+                            }
+                            if(pmTaskResponse.completedBy != nil){
+                                LabelTextField(label: "Completed By", placeHolder: pmTaskResponse.completedBy!)
+                            }else{
+                                LabelTextField(label: "Completed By", placeHolder: "Completed By")
+                            }
+                            
+                            VStack{
+                                Text("Remarks")
+                                    .padding(.horizontal, 15)
+                                    .font(.title2)
+                                
+                                if(pmTaskResponse.remarks != nil){
+                                    
+                                    ForEach(0..<remarksList.count, id: \.self) { index in
+                                        TextField("Remarks", text: Binding<String>(
+                                                    get: {remarksList[index] }, set: {remarksList[index] = $0}) )
+                                            .padding()
+                                            .background(Color("light_gray"))
+                                            .foregroundColor(.black)
+                                            .cornerRadius(8)
+                                            .disabled(!enableUpdateButton)
+                                    }
+                                    .padding(.horizontal, 10)
+                                }
+                            }
+                            
+                            if enableUpdateButton {
+                                HStack{
+                                    Button(action:{
+                                        self.remarksList.append("")
+                                    }) {
+                                        Text("Add Remarks")
+                                    }
+                                    Spacer()
+                                    Button(action:{
+                                        _ = self.remarksList.popLast()
+                                    }) {
+                                        Text("Delete Remarks")
+                                    }
+                                }.padding(30)
+                            }
+                            
+                            if(pmTaskResponse.status != nil){
+                                
+                                if (UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech
+                                        && pmTaskResponse.status == "Open") {
+                                    
+                                    VStack{
+                                        
+                                        Picker("Select Status",selection: $pickerItem) {
+                                            ForEach(GeneralMethods().uniqueElementsFrom(array: statusPickerList) , id:\.self) { val in
+                                                Text(val)
+                                            }
+                                        }
+                                        .pickerStyle(MenuPickerStyle())
+                                        .onAppear(){
+                                            statusPickerList.removeAll()
+                                            statusPickerList.append(pmTaskResponse.status!)
+                                            enableDisableMethod(currentPmResponse: pmTaskResponse)
+                                        }
+                                        .padding()
+                                        .onChange(of: pickerItem, perform: { value in
+                                            if pickerItem == CommonStrings().statusOpen {
+                                                enableUpdateButton = false
+                                            }else{
+                                                enableUpdateButton = true
+                                            }
+                                        })
+                                        
+                                        Text(pickerItem)
+                                            .font(.title2)
+                                            .padding()
+                                        
+                                    }
+                                    
+                                }
+                                else{
+                                    
+                                    VStack{
+                                        LabelTextField(label: "Status", placeHolder: pmTaskResponse.status!)
+                                        
+                                        
+                                        if (pmTaskResponse.acknowledger != nil ){
+                                            
+                                            if(pmTaskResponse.acknowledger?.signature != nil){
+                                                let signature: String = pmTaskResponse.acknowledger!.signature!
+                                                let url = "\(CommonStrings().apiURL)task/acksignature/\(signature)"
+                                                SignView(url: url)
+                                            }
+                                            
+                                            if (pmTaskResponse.acknowledger?.name != nil){
+                                                LabelTextField(label: "Acknowledger Name", placeHolder: (pmTaskResponse.acknowledger?.name!)!)
+                                            }
+                                            if pmTaskResponse.acknowledger?.rank != nil {
+                                                LabelTextField(label: "Acknowledger Rank", placeHolder: (pmTaskResponse.acknowledger?.rank!)!)
+                                            }
+                                        }
+                                        
+                                        if(pmTaskResponse.tech_signature != nil){
+                                           
+                                            let signature: String = pmTaskResponse.tech_signature!
+                                            let url = "\(CommonStrings().apiURL)task/techsignature/\(signature)"
+                                            SignView(url: url)
+                                        }
+                                        
+                                    }
+                                    .onAppear(){
+                                        enableDisableMethod(currentPmResponse: pmTaskResponse)
+                                    }
+                                }
+                            }else{
+                                LabelTextField(label: "Status", placeHolder: "Status")
                             }
                         }
                         
                         if enableUpdateButton {
-                            HStack{
-                                Button(action:{
-                                    self.remarksList.append("")
-                                }) {
-                                    Text("Add Remarks")
+                            ZStack{
+                                if isLoading{
+                                    ProgressView()
+                                        .progressViewStyle(CircularProgressViewStyle())
+                                        .padding()
+                                }else{
+                                    Button("Acknowledge"){
+                                        if pickerItem == "Closed"{
+                                            ackSheetBool.toggle()
+                                        }else{
+                                            self.updatePmTaskMethod(bodyUpdate: bodyUpdate)
+                                            isLoading = true
+                                        }
+                                    }.frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color("Indeco_blue"))
+                                    .cornerRadius(8)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .sheet(isPresented: $ackSheetBool, onDismiss: {
+                                        updateAlertBool = true
+                                    }){
+                                        AcknowledgerTaskView(ackSheetBool: $ackSheetBool, tasksDataItems: bodyUpdate)
+                                    }
+                                    .alert(isPresented: $updateAlertBool, content: {
+                                        Alert(title: Text("Successfully Updated!"), dismissButton: .default(Text("Okay!"), action: {
+                                            presentationMode.wrappedValue.dismiss()
+                                        }))
+                                    })
                                 }
-                                Spacer()
-                                Button(action:{
-                                    _ = self.remarksList.popLast()
-                                }) {
-                                    Text("Delete Remarks")
-                                }
-                            }.padding(30)
+                            }
                         }
                         
-                        if(pmTaskResponse.status != nil){
-                            
-                            if (UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech
-                                    && pmTaskResponse.status == "Open") {
-                                
-                                VStack{
-                                    
-                                    Picker("Select Status",selection: $pickerItem) {
-                                        ForEach(GeneralMethods().uniqueElementsFrom(array: statusPickerList) , id:\.self) { val in
-                                            Text(val)
-                                        }
-                                    }
-                                    .pickerStyle(MenuPickerStyle())
-                                    .onAppear(){
-                                        statusPickerList.removeAll()
-                                        statusPickerList.append(pmTaskResponse.status!)
-                                        enableDisableMethod(currentPmResponse: pmTaskResponse)
-                                    }
-                                    .padding()
-                                    .onChange(of: pickerItem, perform: { value in
-                                        if pickerItem == CommonStrings().statusOpen {
-                                            enableUpdateButton = false
-                                        }else{
-                                            enableUpdateButton = true
-                                        }
-                                    })
-                                    
-                                    Text(pickerItem)
-                                        .font(.title2)
-                                        .padding()
-                                    
-                                }
-                                
-                            }
-                            else{
-                                
-                                VStack{
-                                    LabelTextField(label: "Status", placeHolder: pmTaskResponse.status!)
-                                    
-                                    
-                                    if (pmTaskResponse.acknowledger != nil ){
-                                        
-                                        if(pmTaskResponse.acknowledger?.signature != nil){
-                                            VStack{
-                                                Text("Acknowledger Signature")
-                                                    .padding()
-                                                let signature: String = pmTaskResponse.acknowledger!.signature!
-                                                let url = "\(CommonStrings().apiURL)task/acksignature/\(signature)"
-                                                URLImage(url: url)
-                                                    .scaledToFit()
-                                                    .padding()
-                                                    .cornerRadius(8)
-                                            }
-                                            .background(Color("light_gray"))
-                                            .foregroundColor(.black)
-                                            .cornerRadius(8)
-                                            .padding()
-                                        }
-                                        
-                                        if (pmTaskResponse.acknowledger?.name != nil){
-                                            LabelTextField(label: "Acknowledger Name", placeHolder: (pmTaskResponse.acknowledger?.name!)!)
-                                        }
-                                        if pmTaskResponse.acknowledger?.rank != nil {
-                                            LabelTextField(label: "Acknowledger Rank", placeHolder: (pmTaskResponse.acknowledger?.rank!)!)
-                                        }
-                                    }
-                                    
-                                    if(pmTaskResponse.tech_signature != nil){
-                                        VStack{
-                                            Text("Technician Signature")
-                                                .padding()
-                                            let signature: String = pmTaskResponse.tech_signature!
-                                            let url = "\(CommonStrings().apiURL)task/techsignature/\(signature)"
-                                            URLImage(url: url)
-                                                .scaledToFit()
-                                                .padding()
-                                                .cornerRadius(8)
-                                        }
-                                        .background(Color("light_gray"))
-                                        .foregroundColor(.black)
-                                        .cornerRadius(8)
-                                        .padding()
-                                    }
-                                    
-                                }
-                                .onAppear(){
-                                    enableDisableMethod(currentPmResponse: pmTaskResponse)
-                                }
-                            }
-                        }else{
-                            LabelTextField(label: "Status", placeHolder: "Status")
-                        }
                     }
-                    
-                    if enableUpdateButton {
-                        ZStack{
-                            if isLoading{
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle())
-                                    .padding()
-                            }else{
-                                Button("Acknowledge"){
-                                    if pickerItem == "Closed"{
-                                        ackSheetBool.toggle()
-                                    }else{
-                                        self.updatePmTaskMethod(bodyUpdate: bodyUpdate)
-                                        isLoading = true
-                                    }
-                                }.frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color("Indeco_blue"))
-                                .cornerRadius(8)
-                                .foregroundColor(.white)
-                                .padding()
-                                .sheet(isPresented: $ackSheetBool, onDismiss: {
-                                    updateAlertBool = true
-                                }){
-                                    AcknowledgerTaskView(ackSheetBool: $ackSheetBool, tasksDataItems: bodyUpdate)
-                                }
-                                .alert(isPresented: $updateAlertBool, content: {
-                                    Alert(title: Text("Successfully Updated!"), dismissButton: .default(Text("Okay!"), action: {
-                                        presentationMode.wrappedValue.dismiss()
-                                    }))
-                                })
-                            }
-                        }
-                    }
-                    
-                }
-                .padding(.top, 10)
-                VStack{
-                    Spacer()
-                    if showMenuItem1{
-                        HStack{
-                            Spacer()
-                            Button(action: {
-                                showBeforeImageSheet = true
-                            }) {
-                                Image("beforeupload")
-                                    .resizable()
-                                    .padding()
-                                    .frame(width: 65, height: 65)
-                                    .background(Color(.white))
-                                    .cornerRadius(30)
-                                    .shadow(radius: 10)
-                                
-                            }
-                            .sheet(isPresented: $showBeforeImageSheet, onDismiss: {
-                                pmTaskResponse = PmTaskResponse()
-                                viewPmTask(taskId: taskId)
-                            }) {
-                                ViewTaskImage(ackName: pmTaskResponse.beforeImage?.name ?? "",
-                                              ackContact: pmTaskResponse.beforeImage?.contactNo ?? "" ,
-                                              imageName: pmTaskResponse.beforeImage?.image ?? "", imageType: "Before",
-                                              viewFrom: viewFrom, taskId: String(taskId), id: pmTaskResponse.beforeImage?.id ?? 0,
-                                              status: pmTaskResponse.status!)
-                            }
-                        }}
-                    if showMenuItem2{
-                        HStack{
-                            Spacer()
-                            Button(action: {
-                                showAfterImageSheet = true
-                            }) {
-                                Image("afterupload")
-                                    .resizable()
-                                    .padding()
-                                    .frame(width: 65, height: 65)
-                                    .background(Color(.white))
-                                    .cornerRadius(30)
-                                    .shadow(radius: 10)
-                                
-                            }
-                            .sheet(isPresented: $showAfterImageSheet, onDismiss: {
-                                pmTaskResponse = PmTaskResponse()
-                               viewPmTask(taskId: taskId)
-                            }){
-                                ViewTaskImage(ackName: pmTaskResponse.afterImage?.name ?? "",
-                                              ackContact: pmTaskResponse.afterImage?.contactNo ?? "",
-                                              imageName: pmTaskResponse.afterImage?.image ?? "", imageType: "After",
-                                              viewFrom: viewFrom, taskId: String(taskId), id: pmTaskResponse.afterImage?.id ?? 0 ,
-                                              status: pmTaskResponse.status!)
-                            }
-                        }}
-                    if showMenuItem3{
-                        HStack{
-                            Spacer()
-                            Button(action:{
-                                clSheetBool.toggle()
-                            },
-                            label:{
-                                VStack{
-                                    Image("listicon_pm")
+                    .padding(.top, 10)
+                    VStack{
+                        Spacer()
+                        if showMenuItem1{
+                            HStack{
+                                Spacer()
+                                Button(action: {
+                                    showBeforeImageSheet = true
+                                }) {
+                                    Image("beforeupload")
                                         .resizable()
                                         .padding()
-                                        .frame(width: 65, height: 65)
+                                        .frame(width: 60, height: 60)
                                         .background(Color(.white))
                                         .cornerRadius(30)
                                         .shadow(radius: 10)
+                                    
                                 }
-                            })
-                            .sheet(isPresented: $clSheetBool) {
-                                CheckListSheet(taskId: pmTaskResponse.id!, pmTaskResponse: pmTaskResponse, clSheetBool: $clSheetBool, viewFrom: viewFrom)
+                                .sheet(isPresented: $showBeforeImageSheet, onDismiss: {
+                                    pmTaskResponse = PmTaskResponse()
+                                    remarksList = []
+                                    viewPmTask(taskId: taskId)
+                                }) {
+                                    ViewTaskImage(ackName: pmTaskResponse.beforeImage?.name ?? "",
+                                                  ackContact: pmTaskResponse.beforeImage?.contactNo ?? "" ,
+                                                  imageName: pmTaskResponse.beforeImage?.image ?? "", imageType: "Before",
+                                                  viewFrom: viewFrom, taskId: String(taskId), id: pmTaskResponse.beforeImage?.id ?? 0,
+                                                  status: pmTaskResponse.status!)
+                                }
+                            }}
+                        if showMenuItem2{
+                            HStack{
+                                Spacer()
+                                Button(action: {
+                                    showAfterImageSheet = true
+                                }) {
+                                    Image("afterupload")
+                                        .resizable()
+                                        .padding()
+                                        .frame(width: 60, height: 60)
+                                        .background(Color(.white))
+                                        .cornerRadius(30)
+                                        .shadow(radius: 10)
+                                    
+                                }
+                                .sheet(isPresented: $showAfterImageSheet, onDismiss: {
+                                    pmTaskResponse = PmTaskResponse()
+                                    remarksList = []
+                                    viewPmTask(taskId: taskId)
+                                }){
+                                    ViewTaskImage(ackName: pmTaskResponse.afterImage?.name ?? "",
+                                                  ackContact: pmTaskResponse.afterImage?.contactNo ?? "",
+                                                  imageName: pmTaskResponse.afterImage?.image ?? "", imageType: "After",
+                                                  viewFrom: viewFrom, taskId: String(taskId), id: pmTaskResponse.afterImage?.id ?? 0 ,
+                                                  status: pmTaskResponse.status!)
+                                }
+                            }}
+                        if showMenuItem3{
+                            HStack{
+                                Spacer()
+                                Button(action:{
+                                    clSheetBool.toggle()
+                                },
+                                label:{
+                                    VStack{
+                                        Image("listicon_pm")
+                                            .resizable()
+                                            .padding()
+                                            .frame(width: 60, height: 60)
+                                            .background(Color(.white))
+                                            .cornerRadius(30)
+                                            .shadow(radius: 10)
+                                    }
+                                })
+                                .sheet(isPresented: $clSheetBool) {
+                                    CheckListSheet(taskId: pmTaskResponse.id!, pmTaskResponse: pmTaskResponse, clSheetBool: $clSheetBool, viewFrom: viewFrom)
+                                }
+                            }}
+                        HStack{
+                            Spacer()
+                            Button(action: {
+                                showMenu()
+                            }) {
+                                Image("more_icon")
+                                    .resizable()
+                                    .padding()
+                                    .frame(width: 60, height: 60)
+                                    .background(Color(.white))
+                                    .cornerRadius(30)
+                                    .shadow(radius: 10)
+                                
                             }
-                        }}
-                    HStack{
-                        Spacer()
-                        Button(action: {
-                            showMenu()
-                        }) {
-                            Image("more_icon")
-                                .resizable()
-                                .padding()
-                                .frame(width: 65, height: 65)
-                                .background(Color(.white))
-                                .cornerRadius(30)
-                                .shadow(radius: 10)
-                            
                         }
                     }
+                    .padding()
                 }
-                .padding()
             }
-            .navigationBarTitle("Pm Task")
-            .navigationBarItems(trailing: Logout().environmentObject(settings))
-        }
+        }.navigationBarTitle("Pm Task")
+        .navigationBarItems(trailing: Logout(workspaceViewBool: true, viewFrom: "").environmentObject(settings))
     }
     
     

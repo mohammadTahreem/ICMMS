@@ -8,7 +8,19 @@
 import Foundation
 
 
-struct MessagesModel: Decodable, Hashable {
+struct MessagesModel: Codable, Hashable {
     var title, text, createdDate, type: String?
     var id : Int?
+    var seen: Bool?
+    var extras: Extras?
+}
+
+struct MessageCountModel: Codable, Hashable {
+    var count: Int
+    var messages: [MessagesModel]
+}
+
+struct Extras: Codable, Hashable {
+    var id: String?
+    var workspace: String?
 }

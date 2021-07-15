@@ -16,7 +16,8 @@ struct LoginView: View {
     @State private var buttonClicked = false
     @State var errorCode: String = ""
     @EnvironmentObject var settings: UserSettings
-    
+    @State var showForgetAlert : Bool = false
+    @State var resetEmail: String = ""
     
     var body: some View {
         
@@ -59,6 +60,9 @@ struct LoginView: View {
                 .cornerRadius(8)
                 .foregroundColor(.black)
                 .padding(.horizontal, 20)
+                .sheet(isPresented: $showForgetAlert, content: {
+                    ResetPasswordView()
+                })
                 
                 
                 ZStack{
@@ -86,8 +90,14 @@ struct LoginView: View {
                         })
                     }
                 }
+                
+                Button {
+                    //                    showForgetAlert = true
+                } label: {
+                    Text("Forget Password?")
+                }
+                .padding()
             }
-            
             .background(Color.white)
             .cornerRadius(12)
             .opacity(0.9)
@@ -184,12 +194,17 @@ struct MainScreen: View{
         if settings.loggedIn && !isFrom.isFromNotication {
             WorkspaceView().environmentObject(settings)
         }else if settings.loggedIn && isFrom.isFromNotication {
-            NavigationView{
-                if UserDefaults.standard.string(forKey: "frId") != nil{
-                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!,QRValue: "" ,viewFrom: "Active")
+            
+            if UserDefaults.standard.string(forKey: "frId") != nil {
+                NavigationView{
+                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!,QRValue: "" ,
+                                        viewFrom: "Active")
                         .environmentObject(settings)
                 }
+            }else{
+                WorkspaceView().environmentObject(settings)
             }
+            
         } else {
             if UserDefaults.standard.bool(forKey: "loggedIn") == true && !isFrom.isFromNotication {
                 WorkspaceView().environmentObject(settings)
@@ -197,19 +212,22 @@ struct MainScreen: View{
                 LoginView().environmentObject(settings)
             }else if UserDefaults.standard.bool(forKey: "loggedIn") == true
                         && isFrom.isFromNotication && frId != nil
-                        && view == CommonStrings().editFaultReportActivity{
+//                        && view == CommonStrings().editFaultReportActivity
+            {
                 NavigationView{
-                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!,QRValue: "" ,viewFrom: "Active")
-                        .environmentObject(settings)
-                }
-            }else if UserDefaults.standard.bool(forKey: "loggedIn") == true
-                        && isFrom.isFromNotication && frId != nil
-                        && view == CommonStrings().pmtaskActivity {
-                NavigationView{
-                    PmTaskView(taskId: Int(frId!)!, viewFrom: CommonStrings().taskScanView)
+                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!,QRValue: "" ,
+                                        viewFrom: "Active")
                         .environmentObject(settings)
                 }
             }
+//            else if UserDefaults.standard.bool(forKey: "loggedIn") == true
+//                        && isFrom.isFromNotication && frId != nil
+//                        && view == CommonStrings().pmtaskActivity {
+//                NavigationView{
+//                    PmTaskView(taskId: Int(frId!)!, viewFrom: CommonStrings().taskScanView)
+//                        .environmentObject(settings)
+//                }
+//            }
             
             else if UserDefaults.standard.bool(forKey: "loggedIn") == false && isFrom.isFromNotication && frId == nil{
                 LoginView().environmentObject(settings)

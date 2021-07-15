@@ -11,5 +11,5 @@ struct RequestForPauseModel: Codable {
     
     var eotType, eotTime, frId, observation, actionTaken: String?
     var remarks: [String]
-    
+    var fmm: Fmm?
 }

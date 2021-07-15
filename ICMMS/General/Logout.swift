@@ -15,18 +15,43 @@ struct Logout: View {
     @State var messageSheetBool: Bool = false
     @State var errorPresented: Bool = false
     @State var logoutLoading: Bool = false
+    @State var workspaceViewBool: Bool
+    @EnvironmentObject var order: MessageIconBadge
+    @State private var badgeCount: Int = 1
+    private var badgePosition: CGFloat = 2
+    @State var viewSource: String
     
     var body: some View{
+        if viewSource != CommonStrings().messagesView{
         HStack{
-            Image("messages")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 35, height: 35)
-                .onTapGesture {
-                    messageSheetBool = true
-                }.sheet(isPresented: $messageSheetBool, content: {
-                    MessagesSheet(messageSheetBool: $messageSheetBool)
-                })
+            
+            if workspaceViewBool {
+            ZStack(alignment: .topTrailing){
+                
+                Image("messages")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 35, height: 35)
+                    .onTapGesture {
+                        messageSheetBool = true
+                    }.sheet(isPresented: $messageSheetBool, content: {
+                        MessagesSheet(messageSheetBool: $messageSheetBool)
+                            .environmentObject(settings)
+                            .environmentObject(order)
+                    })
+                if self.order.items != 0 {
+                    ZStack {
+                        Circle()
+                            .foregroundColor(.red)
+
+                        Text("\(self.order.items)")
+                            .foregroundColor(.white)
+                            .font(Font.system(size: 12))
+                    }
+                    .frame(width: 15, height: 15)
+                }
+            }
+            }
             if logoutLoading {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
@@ -42,6 +67,10 @@ struct Logout: View {
                     Alert(title: Text("Error"), message: Text("There was an error:"), dismissButton: .cancel())
                 })
             }
+            
+        }
+        }else{
+            EmptyView()
         }
     }
     
@@ -91,12 +120,18 @@ struct Logout: View {
             logoutLoading = false
         }.resume()
     }
+    
+    public init(workspaceViewBool: Bool, viewFrom: String) {
+        self.workspaceViewBool = workspaceViewBool
+        self.viewSource = viewFrom
+    }
+
 }
 
 
 struct LogoutPreview: PreviewProvider {
     static var previews: some View {
-        Logout()
+        Logout(workspaceViewBool: true, viewFrom: "").environmentObject(UserSettings()).environmentObject(MessageIconBadge())
     }
 }
 

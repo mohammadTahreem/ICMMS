@@ -20,6 +20,7 @@ struct EditFaultReportView: View {
     @State var showUpdateButton = false
     @State var showScanSheet = false
     @State var ackName = ""
+    @State var selectedManagingAgent : Int = 0
     @State var ackRank = ""
     @State var observationString = ""
     @State var actionTakenString = ""
@@ -55,7 +56,6 @@ struct EditFaultReportView: View {
     var userLatitude: String {
         return "\(locationManager.lastLocation?.coordinate.latitude ?? 0)"
     }
-    
     var userLongitude: String {
         return "\(locationManager.lastLocation?.coordinate.longitude ?? 0)"
     }
@@ -65,13 +65,16 @@ struct EditFaultReportView: View {
     @State var showMenuItem4 = false
     @State var successBeforeImageBool: Bool = false
     @State var openBeforeImageSheetBool: Bool = false
-    
     @State var openAfterImageSheetBool : Bool = false
     @State var successBeforeImageSheetBool : Bool = false
+    @State var fmmList: [Fmm] = []
+    @State var logoutView : Bool = true
+    var msgId : String = UserDefaults.standard.string(forKey: "msgId") ?? CommonStrings().noData
+    @EnvironmentObject var order: MessageIconBadge
     
     var body: some View {
         
-        let updateFaultReportRequest : UpdateFaultRequest = UpdateFaultRequest(acknowledgerCode: currentFrResponse.acknowledgerCode, frId: currentFrResponse.frId, requestorName: currentFrResponse.requestorName, requestorContactNo: currentFrResponse.requestorContactNo, locationDesc: currentFrResponse.locationDesc, faultCategoryDesc: currentFrResponse.faultCategoryDesc, building: currentFrResponse.building, location: currentFrResponse.location, department: currentFrResponse.department, faultCategory: currentFrResponse.faultCategory, priority: currentFrResponse.priority, maintGrp: currentFrResponse.maintGrp, division: currentFrResponse.division, observation: observationString, diagnosis: "", actionTaken: actionTakenString, status: pickerItem, remarks: remarksList, attendedBy: currentFrResponse.attendedBy, eotTime: currentFrResponse.eotTime, eotType: currentFrResponse.eotType, activationTime: currentFrResponse.activationTime,arrivalTime: currentFrResponse.arrivalTime, restartTime: currentFrResponse.restartTime, responseTime: currentFrResponse.responseTime, downTime: currentFrResponse.downTime, pauseTime: currentFrResponse.pauseTime, completionTime: currentFrResponse.completionTime, acknowledgementTime: currentFrResponse.acknowledgementTime, reportedDate: currentFrResponse.reportedDate)
+        var updateFaultReportRequest : UpdateFaultRequest = UpdateFaultRequest(acknowledgerCode: currentFrResponse.acknowledgerCode, frId: currentFrResponse.frId, requestorName: currentFrResponse.requestorName, requestorContactNo: currentFrResponse.requestorContactNo, locationDesc: currentFrResponse.locationDesc, faultCategoryDesc: currentFrResponse.faultCategoryDesc, building: currentFrResponse.building, location: currentFrResponse.location, department: currentFrResponse.department, faultCategory: currentFrResponse.faultCategory, priority: currentFrResponse.priority, maintGrp: currentFrResponse.maintGrp, division: currentFrResponse.division, observation: observationString, diagnosis: "", actionTaken: actionTakenString, status: pickerItem, equipment: currentFrResponse.equipment, remarks: remarksList, attendedBy: currentFrResponse.attendedBy, eotTime: currentFrResponse.eotTime, eotType: currentFrResponse.eotType, activationTime: currentFrResponse.activationTime,arrivalTime: currentFrResponse.arrivalTime, restartTime: currentFrResponse.restartTime, responseTime: currentFrResponse.responseTime, downTime: currentFrResponse.downTime, pauseTime: currentFrResponse.pauseTime, completionTime: currentFrResponse.completionTime, acknowledgementTime: currentFrResponse.acknowledgementTime, reportedDate: currentFrResponse.reportedDate, fmm: currentFrResponse.fmm)
         
         
         VStack{
@@ -79,12 +82,16 @@ struct EditFaultReportView: View {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
                     .padding(20)
-                    .onAppear(){
-                        
+                    .onAppear{
                         if viewFrom == CommonStrings().scanEquipment {
                             getCurrentFrUsingEquipment(qrValue: QRValue)
                         }else {
                             getCurrentFaultReport(frId: frId)
+                            if msgId != CommonStrings().noData {
+                                updateNotification(id: msgId)
+                                UserDefaults.standard.removeObject(forKey: "msgId")
+                                UserDefaults.standard.synchronize()
+                            }
                         }
                     }
             }else{
@@ -92,10 +99,10 @@ struct EditFaultReportView: View {
                 ZStack{
                     ScrollView {
                         VStack{
-                            //general items. Not editable
+                            //General items
                             GeneralItemsFaultReport(frId: frId, currentFrResponse: currentFrResponse,
                                                     observationString: $observationString, actionTakenString: $actionTakenString)
-                                
+
                                 .sheet(isPresented: $openQuotationSheet, content: {
                                     UploadQuotationView(frId: frId, openQuotationSheet: $openQuotationSheet, successBoolQuotation: $successBoolQuotation
                                                         , quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected,currentFrResponse: currentFrResponse, viewOpenedFrom: CommonStrings().editFaultReportActivity)
@@ -141,7 +148,7 @@ struct EditFaultReportView: View {
                                     }
                                 }
                                 //status
-                                VStack{
+                               VStack{
                                     if(currentFrResponse.status != nil){
                                         VStack{
                                             if (showUpdateButton) {
@@ -182,25 +189,43 @@ struct EditFaultReportView: View {
                                         LabelTextField(label: "Attended By", placeHolder: "Attended By")
                                     }
                                 }
+                                
+                                //fmm list and textfield
+                               VStack{
+                                    if currentFrResponse.fmm != nil && currentFrResponse.fmm?.username != nil{
+                                        LabelTextField(label: "Fmm", placeHolder: currentFrResponse.fmm?.username ?? "", disableBool: true)
+                                    }else{
+                                        if !fmmList.isEmpty{
+                                            VStack{
+                                                Picker(selection: $selectedManagingAgent, label: Text("Select ManagingAgent")) {
+                                                    ForEach(0 ..< fmmList.count){
+                                                        Text(self.fmmList[$0].username).tag($0)
+                                                    }
+                                                }.pickerStyle(MenuPickerStyle())
+                                                HStack{
+                                                    Spacer()
+                                                    Text(fmmList[selectedManagingAgent].username).padding()
+                                                    Spacer()
+                                                }
+                                            }.padding()
+                                            .background(Color.white)
+                                            .cornerRadius(10)
+                                            .shadow(radius: 10)
+                                            .padding()
+                                        }
+                                    }
+                                }.onAppear{
+                                    getAllFmm()
+                                }
+                                
                                 // ack signature and tech signature
                                 VStack{
                                     if (currentFrResponse.acknowledgedBy != nil){
                                         
                                         if(currentFrResponse.acknowledgedBy?.signature != nil){
-                                            VStack{
-                                                Text("Acknowledger Signature")
-                                                    .padding()
-                                                let signature: String = currentFrResponse.acknowledgedBy!.signature!
-                                                let url = "\(CommonStrings().apiURL)faultreport/techsignature/\(signature)"
-                                                URLImage(url: url)
-                                                    .scaledToFit()
-                                                    .padding()
-                                                    .cornerRadius(8)
-                                            }
-                                            .background(Color("light_gray"))
-                                            .foregroundColor(.black)
-                                            .cornerRadius(8)
-                                            .padding()
+                                            let signature: String = currentFrResponse.acknowledgedBy!.signature!
+                                            let url = "\(CommonStrings().apiURL)faultreport/techsignature/\(signature)"
+                                            SignView(url: url)
                                         }
                                         
                                         if (currentFrResponse.acknowledgedBy?.name != nil){
@@ -212,20 +237,9 @@ struct EditFaultReportView: View {
                                     }
                                     
                                     if(currentFrResponse.technicianSignature != nil){
-                                        VStack{
-                                            Text("Technician Signature")
-                                                .padding()
-                                            let signature: String = currentFrResponse.technicianSignature!
-                                            let url = "\(CommonStrings().apiURL)faultreport/acksignature/\(signature)"
-                                            URLImage(url: url)
-                                                .scaledToFit()
-                                                .padding()
-                                                .cornerRadius(8)
-                                        }
-                                        .background(Color("light_gray"))
-                                        .foregroundColor(.black)
-                                        .cornerRadius(8)
-                                        .padding()
+                                        let signature: String = currentFrResponse.technicianSignature!
+                                        let url = "\(CommonStrings().apiURL)faultreport/acksignature/\(signature)"
+                                        SignView(url: url)
                                     }
                                 }
                                 //buttons
@@ -387,7 +401,7 @@ struct EditFaultReportView: View {
                                     }else{
                                         EmptyView()
                                     }
-                                    
+                                
                                     if showUpdateButton {
                                         
                                         ZStack{
@@ -397,6 +411,11 @@ struct EditFaultReportView: View {
                                                     .padding()
                                             }else{
                                                 Button(action: {
+                                                    
+                                                    if currentFrResponse.fmm == nil{
+                                                        updateFaultReportRequest.fmm = fmmList[selectedManagingAgent]
+                                                    }
+                                                    
                                                     if (pickerItem != currentFrResponse.status!){
                                                         if (UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech){
                                                             if pickerItem == CommonStrings().statusOpen {
@@ -444,7 +463,7 @@ struct EditFaultReportView: View {
                                                         self.alertId = AlertId(id: .closeFrAfterUpdate)
                                                     }
                                                 }, content: {
-                                                    AcknowledgerFaultView(ackSheetBool: $ackSheetBool, dataItems: updateFaultReportRequest, receivedValueAckFR: $receivedValueAckFR, viewFrom: CommonStrings().editFaultReportActivity)
+                                                    AcknowledgerFaultView(ackSheetBool: $ackSheetBool, dataItems: updateFaultReportRequest, currentFrResponse: currentFrResponse, receivedValueAckFR: $receivedValueAckFR, viewFrom: CommonStrings().editFaultReportActivity)
                                                 })
                                             }
                                         }
@@ -453,6 +472,9 @@ struct EditFaultReportView: View {
                                     }
                                 }
                                 .alert(item: $alertId) { (alertId) -> Alert in
+                                    if currentFrResponse.fmm == nil{
+                                        updateFaultReportRequest.fmm = fmmList[selectedManagingAgent]
+                                    }
                                     return createAlert(alertId: alertId, updateFaultReportRequest: updateFaultReportRequest,
                                                        currentStatus: currentFrResponse.status ?? "")
                                 }
@@ -461,124 +483,176 @@ struct EditFaultReportView: View {
                         }.padding(.top, 20)
                     }
                     
-                    
+                    //floating menu for pdf
                     ZStack {
-                      
+                        
                         HStack{
                             Spacer()
-                        VStack{
-                            
-                            Spacer()
-                            if showMenuItem1 {
-                                MenuItem(icon: "quote_q")
-                                    .onTapGesture {
-                                        openQuotationSheet = true
-                                    }
-                                    .sheet(isPresented: $openQuotationSheet, content: {
-                                        UploadQuotationView(frId: frId, openQuotationSheet: $openQuotationSheet,
-                                                            successBoolQuotation: $successBoolQuotation, quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected, currentFrResponse: currentFrResponse, viewOpenedFrom: CommonStrings().editFaultReportActivity)
-                                    })
-                            }
-                            if showMenuItem2 {
-                                MenuItem(icon: "quote_p")
-                                    .onTapGesture {
-                                        openPurchaseSheet = true
-                                    }
-                                    .alert(isPresented: $quotationRejected, content: {
-                                        Alert(title: Text("Quotation Rejected"), dismissButton: .cancel())
-                                    })
-                                    .sheet(isPresented: $openPurchaseSheet, content: {
-                                        UploadPurchaseOrderView(frId: frId, currentFrResponse: currentFrResponse)
-                                    })
-                            }
-                            
-                            
-                            Button(action: {
-                                showMenu()
-                            }) {
-                                Image("newquote")
-                                    .resizable()
-                                    .padding()
-                                    .frame(width: 60, height: 60)
-                                    .background(Color(.white))
-                                    .cornerRadius(30)
-                                    .shadow(radius: 10)
+                            VStack{
+                                
+                                Spacer()
+                                if showMenuItem1 {
+                                    MenuItem(icon: "quote_q")
+                                        .onTapGesture {
+                                            openQuotationSheet = true
+                                        }
+                                        .sheet(isPresented: $openQuotationSheet, content: {
+                                            UploadQuotationView(frId: frId, openQuotationSheet: $openQuotationSheet,
+                                                                successBoolQuotation: $successBoolQuotation, quotationAccepted: $quotationAccepted, quotationRejected: $quotationRejected, currentFrResponse: currentFrResponse, viewOpenedFrom: CommonStrings().editFaultReportActivity)
+                                        })
+                                }
+                                if showMenuItem2 {
+                                    MenuItem(icon: "quote_p")
+                                        .onTapGesture {
+                                            openPurchaseSheet = true
+                                        }
+                                        .alert(isPresented: $quotationRejected, content: {
+                                            Alert(title: Text("Quotation Rejected"), dismissButton: .cancel())
+                                        })
+                                        .sheet(isPresented: $openPurchaseSheet, content: {
+                                            UploadPurchaseOrderView(frId: frId, currentFrResponse: currentFrResponse)
+                                        })
+                                }
+                                
+                                
+                                Button(action: {
+                                    showMenu()
+                                }) {
+                                    Image("newquote")
+                                        .resizable()
+                                        .padding()
+                                        .frame(width: 60, height: 60)
+                                        .background(Color(.white))
+                                        .cornerRadius(30)
+                                        .shadow(radius: 10)
+                                    
+                                }
+                                .alert(isPresented: $quotationAccepted) {
+                                    Alert(title: Text("Quotation Accepted successfully!"), primaryButton: .default(Text("Okay!"), action: {
+                                        presentationMode.wrappedValue.dismiss()
+                                    }), secondaryButton: .cancel())
+                                }
                                 
                             }
-                            .alert(isPresented: $quotationAccepted) {
-                                Alert(title: Text("Quotation Accepted successfully!"), primaryButton: .default(Text("Okay!"), action: {
-                                    presentationMode.wrappedValue.dismiss()
-                                }), secondaryButton: .cancel())
-                            }
-                            
-                        }
-                        .padding()
+                            .padding()
                         }
                     }
+                    .padding(.bottom, 60)
                     
+                    //floating menu for images
                     ZStack(alignment: .bottomLeading) {
                         HStack{
-                        VStack{
-                            
-                            Spacer()
-                            if showMenuItem3 {
-                                MenuItem(icon: "beforeupload")
-                                    .onTapGesture {
-                                        openBeforeImageSheetBool = true
-                                    }
-                                    .sheet(isPresented: $openBeforeImageSheetBool, content: {
-                                        ImageViewSheet(frId: frId, valueType: "FR-BI-", viewName: "Before", currentFrResonse: currentFrResponse, showUpdateButton: showUpdateButton)
-                                    })
-                            }
-                            if showMenuItem4 {
-                                MenuItem(icon: "afterupload")
-                                    .onTapGesture {
-                                        openAfterImageSheetBool = true
-                                    }
-                                    .sheet(isPresented: $openAfterImageSheetBool, content: {
-                                        ImageViewSheet(frId: frId, valueType: "FR-AI-", viewName: "After", currentFrResonse: currentFrResponse, showUpdateButton: showUpdateButton)
-                                    })
-                            }
-                            
-                            
-                            Button(action: {
-                                showMenuImages()
-                            }) {
-                                Image("fabback")
-                                    .resizable()
-                                    .padding()
-                                    .frame(width: 60, height: 60)
-                                    .background(Color(.white))
-                                    .cornerRadius(30)
-                                    .shadow(radius: 10)
+                            VStack{
+                                
+                                Spacer()
+                                if showMenuItem3 {
+                                    MenuItem(icon: "beforeupload")
+                                        .onTapGesture {
+                                            openBeforeImageSheetBool = true
+                                        }
+                                        .sheet(isPresented: $openBeforeImageSheetBool, content: {
+                                            ImageViewSheet(frId: frId, valueType: "FR-BI-", viewName: "Before", currentFrResonse: currentFrResponse, showUpdateButton: showUpdateButton)
+                                        })
+                                }
+                                if showMenuItem4 {
+                                    MenuItem(icon: "afterupload")
+                                        .onTapGesture {
+                                            openAfterImageSheetBool = true
+                                        }
+                                        .sheet(isPresented: $openAfterImageSheetBool, content: {
+                                            ImageViewSheet(frId: frId, valueType: "FR-AI-", viewName: "After", currentFrResonse: currentFrResponse, showUpdateButton: showUpdateButton)
+                                        })
+                                }
+                                
+                                
+                                Button(action: {
+                                    showMenuImages()
+                                }) {
+                                    Image("fabback")
+                                        .resizable()
+                                        .padding()
+                                        .frame(width: 60, height: 60)
+                                        .background(Color(.white))
+                                        .cornerRadius(30)
+                                        .shadow(radius: 10)
+                                    
+                                }
                                 
                             }
-                            
-                        }
-                        .padding()
+                            .padding()
                             Spacer()
                         }
                     }
+                    .padding(.bottom, 60)
                     
                     
                 }
             }
         }
-        .navigationBarItems(trailing: Logout().environmentObject(settings))
+       
+        .navigationBarItems(trailing: Logout(workspaceViewBool: logoutView, viewFrom: viewFrom).environmentObject(settings))
+        .navigationBarTitle("Edit Fault Report", displayMode: .inline)
+    }
+    
+    func getAllFmm()  {
+       
+        guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/fmmlist") else {return}
         
-        .navigationBarTitle("Edit Fault Report")
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+        urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
         
+        print(urlRequest)
+        print(UserDefaults.standard.string(forKey: "workspace")!)
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            if let error = error {
+                print("Request error: ", error)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else { return }
+            
+            if response.statusCode == 200 {
+                
+                guard let _ = data else { return }
+                DispatchQueue.main.async {
+                    do {
+                        let fmmList = try JSONDecoder().decode([Fmm].self, from: data!)
+                        self.fmmList = fmmList
+                        
+                        print("the list of fmm : \(fmmList)")
+                    } catch let error {
+                        print("Error decoding: ", error)
+                    }
+                }
+            }else if response.statusCode == 401 {
+                print("error: \(response.statusCode)")
+            }
+            else{
+                print("The last print statement: \(data!)")
+            }
+            frIsLoading = false
+        }
+        
+        dataTask.resume()
         
     }
     
     func showMenu() {
         showMenuItem2.toggle()
         showMenuItem1.toggle()
+        showMenuItem3 = false
+        showMenuItem4 = false
     }
     
     func showMenuImages()  {
         showMenuItem3.toggle()
         showMenuItem4.toggle()
+        showMenuItem1 = false
+        showMenuItem2 = false
     }
     
     // FIXME:
@@ -634,15 +708,11 @@ struct EditFaultReportView: View {
     
     func getCurrentFrUsingEquipment(qrValue: String) {
         
-        
-        
         guard let url = URL(string: "\(CommonStrings().apiURL)faultreport/equipment") else {return}
         
-        var body = EquipmentSearchClass()
+        var body = EquipmentSearchClass(equipmentCode: qrValue, frId: frId)
         
-        if viewFrom == "Active" {
-            body = EquipmentSearchClass(equipmentCode: qrValue, frId: frId)
-        }else if viewFrom == CommonStrings().scanEquipment{
+        if viewFrom == CommonStrings().scanEquipment{
             body = EquipmentSearchClass(equipmentCode: qrValue, frId: nil)
         }
         let encodedBody = try? JSONEncoder().encode(body)
@@ -848,8 +918,6 @@ struct EditFaultReportView: View {
         
     }
     
-    
-    
     func updateFaultReportFunc(updateFaultReportRequest: UpdateFaultRequest) {
         
         isLoading = true
@@ -861,6 +929,8 @@ struct EditFaultReportView: View {
         urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
         urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
         urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+        
+        print(updateFaultReportRequest)
         
         let encodedBody = try? JSONEncoder().encode(updateFaultReportRequest)
         
@@ -893,14 +963,16 @@ struct EditFaultReportView: View {
             } else {
                 print("Error code: \(response.statusCode)")
             }
+            isLoading = false
         }
-        isLoading = false
+        
         dataTask.resume()
         
         
     }
     
     func enableDisableButtons(currentFrResponse: CurrentFrResponse){
+        self.order.items = GeneralMethods().getMessages(badges: order).items
         if (UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameTech){
             statusPickerList.append(CommonStrings().statusCompleted)
             if currentFrResponse.status != nil{
@@ -915,14 +987,14 @@ struct EditFaultReportView: View {
                             showRequestPauseButton = true
                             showLocationButton = false
                             showEquipButton = false
-                        }else{
+                        } else {
                             showEquipButton = true
                             showLocationButton = false
                             showUpdateButton = false
                         }
                     }
                 }
-                else if currentFrResponse.status == CommonStrings().statusPause{
+                else if currentFrResponse.status == CommonStrings().statusPause {
                     showRequestPauseButton = false
                     showAcceptReject = false
                     
@@ -988,7 +1060,8 @@ struct EditFaultReportView: View {
             }
             
             
-        } else if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag {
+        }
+        else if UserDefaults.standard.string(forKey: "role") == CommonStrings().usernameManag {
             statusPickerList.append("Open")
             statusPickerList.append("Closed")
             statusPickerList.append("Completed")
@@ -998,6 +1071,7 @@ struct EditFaultReportView: View {
                 if currentFrResponse.status! == CommonStrings().statusPause{
                     showUpdateButton = false
                     showAcceptReject = false
+                    // this condition needs to be checked further
                 }else if currentFrResponse.status! == CommonStrings().statusPauseRequested{
                     showAcceptReject = true
                     showUpdateButton = false
@@ -1025,8 +1099,11 @@ struct EditFaultReportView: View {
         
         if currentFrResponse.actionTaken != nil { actionTakenString = currentFrResponse.actionTaken! }
         
+        if viewFrom == CommonStrings().messagesView{
+            logoutView = false
+        }
+        
     }
-    
     
     func checkIfCompletedRecently() {
         
@@ -1089,7 +1166,14 @@ struct EditFaultReportView: View {
             }
         }
         
-        return RequestForPauseModel(eotType: currentFrResponse.eotType, eotTime: currentFrResponse.eotTime, frId: currentFrResponse.frId!, observation: observationString, actionTaken: actionTakenString, remarks: currentRemarksList)
+        var requestPauseModel: RequestForPauseModel = RequestForPauseModel(eotType: currentFrResponse.eotType, eotTime: currentFrResponse.eotTime, frId: currentFrResponse.frId!, observation: observationString, actionTaken: actionTakenString, remarks: currentRemarksList, fmm: currentFrResponse.fmm)
+        
+        
+        if currentFrResponse.fmm == nil{
+            requestPauseModel.fmm = fmmList[selectedManagingAgent]
+        }
+        
+        return requestPauseModel
     }
     
     func acceptRejectModelFunc() -> AcceptRejectModel {
@@ -1108,7 +1192,6 @@ struct EditFaultReportView: View {
         
         return AcceptRejectModel(frId: currentFrResponse.frId, observation: observationString, actionTaken: actionTakenString, fmmDocForAuthorize: "", remarks: currentRemarksList)
     }
-    
     
     func closeFRCall() {
         
@@ -1160,10 +1243,59 @@ struct EditFaultReportView: View {
         
     }
     
+    func updateNotification(id: String) {
+        
+        guard let url = URL(string: "\(CommonStrings().apiURL)msg/\(id)") else {return}
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
+        urlRequest.setValue(UserDefaults.standard.string(forKey: "role"), forHTTPHeaderField: "role")
+        urlRequest.setValue( UserDefaults.standard.string(forKey: "workspace"), forHTTPHeaderField: "workspace")
+        
+        print(urlRequest)
+        
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            if let error = error {
+                print("Request error: ", error)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                print("response error: \(String(describing: error))")
+                return
+            }
+            
+            if response.statusCode == 200 {
+                
+                guard let _ = data else { return }
+                
+//                if let messageReadResponse = try? JSONDecoder().decode(MessagesModel.self, from: data!){
+//                    DispatchQueue.main.async {
+//                        self.frId = messageReadResponse.extras?.id ?? ""
+//
+//                        if !frId.isEmpty {
+//                            showFR = true
+//                        }
+//                        print(messageReadResponse)
+//                    }
+//                }
+                
+                print("notification reset")
+            } else {
+                print("Error code: \(response.statusCode)")
+            }
+        }
+        
+        dataTask.resume()
+    }
+    
 }
 
 struct EditFR_preview: PreviewProvider {
     static var previews: some View{
         EditFaultReportView(frId: "", QRValue: "" ,viewFrom: CommonStrings().searchFR).environmentObject(UserSettings())
+            .environmentObject(MessageIconBadge())
     }
 }

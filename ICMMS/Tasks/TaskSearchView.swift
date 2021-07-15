@@ -39,7 +39,7 @@ struct TaskSearchTechView: View {
                 }
         }
         .navigationBarTitle("Task Search")
-        .navigationBarItems(trailing: Logout().environmentObject(settings))
+        .navigationBarItems(trailing: Logout(workspaceViewBool: true, viewFrom: "").environmentObject(settings))
     }
 }
 
@@ -48,7 +48,7 @@ struct TaskSearchManView: View {
     var body : some View{
         SearchViewTask(activeInactive: "InActive")
             .navigationBarTitle("Task Search")
-            .navigationBarItems(trailing: Logout().environmentObject(settings))
+            .navigationBarItems(trailing: Logout(workspaceViewBool: true, viewFrom: "").environmentObject(settings))
     }
 }
 
@@ -71,6 +71,9 @@ struct SearchViewTask: View {
                 .foregroundColor(.black)
                 .cornerRadius(8)
                 .padding()
+                .onAppear(){
+                    //GeneralMethods().getMessages()
+                }
             if isLoading{
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
@@ -81,7 +84,7 @@ struct SearchViewTask: View {
                 ZStack{
                     Button("") {}
                     NavigationLink(destination: PmTaskView(taskId: taskSearchResponse.taskId!, viewFrom: CommonStrings().taskSearchView)
-                                    .onDisappear(){
+                                    .onAppear(){
                                         self.taskSearchResponse = []
                                         self.searchText = ""
                                     }

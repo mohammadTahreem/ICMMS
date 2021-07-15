@@ -10,10 +10,11 @@ import SwiftUI
 struct WorkspaceView: View {
     
     @State var workspaceResponse: [WorkspaceResponse] = []
-    @State var progressViewBool: Bool = false
+    @State var progressViewBool: Bool = true
     @State var workspaceAlertId: WorkspaceAlertId?
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var settings: UserSettings
+    @EnvironmentObject var badges : MessageIconBadge
 
     var body: some View {
         NavigationView{
@@ -22,6 +23,9 @@ struct WorkspaceView: View {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding()
+                        .onAppear(){
+                            getWorkspaces()
+                        }
                 }else{
                     List(workspaceResponse, id: \.self) { workspaceResponse in
                         
@@ -33,12 +37,10 @@ struct WorkspaceView: View {
                     .alert(item: $workspaceAlertId) { alertId -> Alert in
                         return createAlert(alertId: alertId)}
                 }
-            }.onAppear(){
-                getWorkspaces()
             }
             .navigationBarTitle("Workspaces", displayMode: .inline)
          //   .navigationBarItems(trailing: Text(UserDefaults.standard.string(forKey: "role") ?? "").foregroundColor(Color("Indeco_blue")))
-            .navigationBarItems(trailing: Logout().environmentObject(settings))
+            .navigationBarItems(trailing: Logout(workspaceViewBool: false, viewFrom: "").environmentObject(settings))
         }
     }
     
@@ -46,7 +48,7 @@ struct WorkspaceView: View {
         switch alertId.id {
         
         case .responseTimeOut:
-            return Alert(title: Text("Time Out Error"), dismissButton: .default(Text("Okay"), action: {
+            return Alert(title: Text("Time Out Error"),message: Text("Please close the app and try again!"), dismissButton: .default(Text("Okay"), action: {
                 presentationMode.wrappedValue.dismiss()
             }))
         case .errorAlert:
@@ -58,7 +60,6 @@ struct WorkspaceView: View {
         }
     }
     func getWorkspaces()  {
-        progressViewBool = true
         let currentUrl = CommonStrings().apiURL
         guard let url = URL(string: "\(currentUrl)workspaces") else {return}
         print(url)

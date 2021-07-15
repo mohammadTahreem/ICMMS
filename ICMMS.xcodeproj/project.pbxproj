@@ -64,6 +64,8 @@
 		CC51EAC42681BAB100E6FDBB /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51EAC32681BAB100E6FDBB /* NetworkManager.swift */; };
 		CC5D85D126806E6D0085E2A6 /* UploadPictureRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D85D026806E6D0085E2A6 /* UploadPictureRequestModel.swift */; };
 		CC5D85D326806F1B0085E2A6 /* UploadImageSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D85D226806F1B0085E2A6 /* UploadImageSheet.swift */; };
+		CC645B6A2695BEE8003FE0F2 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC645B692695BEE8003FE0F2 /* ResetPasswordView.swift */; };
+		CC645B6C2696D275003FE0F2 /* SignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC645B6B2696D275003FE0F2 /* SignView.swift */; };
 		CC65B953268F20AD00FEED2C /* DeleteTaskImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65B952268F20AD00FEED2C /* DeleteTaskImageModel.swift */; };
 		CC65B9C52694220D00FEED2C /* UploadTaskImageSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65B9C42694220D00FEED2C /* UploadTaskImageSheet.swift */; };
 		CC65B9C72695602200FEED2C /* ScanFaultEquipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC65B9C62695602200FEED2C /* ScanFaultEquipView.swift */; };
@@ -83,6 +85,7 @@
 		CCE18A5326663D8F00C0E4BD /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CCE18A5226663D8F00C0E4BD /* FirebaseMessaging */; };
 		CCF6DEAA267328C300716D25 /* AcknowledgerFaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF6DEA9267328C300716D25 /* AcknowledgerFaultView.swift */; };
 		CCF6DEAC2673290200716D25 /* PencilKitRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF6DEAB2673290200716D25 /* PencilKitRepresentable.swift */; };
+		CCF935D0269BF8E9009DEB57 /* MessageIconBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF935CF269BF8E9009DEB57 /* MessageIconBadge.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -142,6 +145,8 @@
 		CC51EAC32681BAB100E6FDBB /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CC5D85D026806E6D0085E2A6 /* UploadPictureRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPictureRequestModel.swift; sourceTree = "<group>"; };
 		CC5D85D226806F1B0085E2A6 /* UploadImageSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageSheet.swift; sourceTree = "<group>"; };
+		CC645B692695BEE8003FE0F2 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
+		CC645B6B2696D275003FE0F2 /* SignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignView.swift; sourceTree = "<group>"; };
 		CC65B952268F20AD00FEED2C /* DeleteTaskImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteTaskImageModel.swift; sourceTree = "<group>"; };
 		CC65B9C42694220D00FEED2C /* UploadTaskImageSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTaskImageSheet.swift; sourceTree = "<group>"; };
 		CC65B9C62695602200FEED2C /* ScanFaultEquipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFaultEquipView.swift; sourceTree = "<group>"; };
@@ -164,6 +169,7 @@
 		CCE18A4826663D3000C0E4BD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CCF6DEA9267328C300716D25 /* AcknowledgerFaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgerFaultView.swift; sourceTree = "<group>"; };
 		CCF6DEAB2673290200716D25 /* PencilKitRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PencilKitRepresentable.swift; sourceTree = "<group>"; };
+		CCF935CF269BF8E9009DEB57 /* MessageIconBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageIconBadge.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,6 +234,7 @@
 				CC3E9F652668FA7F00BA47F2 /* RequestForPauseSheet.swift */,
 				CC3E9F7D266DDB1E00BA47F2 /* EquipScanView.swift */,
 				CC65B9C62695602200FEED2C /* ScanFaultEquipView.swift */,
+				CC645B6B2696D275003FE0F2 /* SignView.swift */,
 			);
 			path = FaultReport;
 			sourceTree = "<group>";
@@ -286,6 +293,7 @@
 				CCB1CDE026674DB900E6F83A /* LoginView.swift */,
 				CCB1CDEF266756D400E6F83A /* DashboardView.swift */,
 				CC4B68012667670800682E7A /* DashboardDetails.swift */,
+				CC645B692695BEE8003FE0F2 /* ResetPasswordView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -345,6 +353,7 @@
 				CCAAC940268ED45D004D7F48 /* noimage.png */,
 				CC4340D52679F835009999B6 /* pdfback.png */,
 				CC4340D9267A18CC009999B6 /* WorkspaceAlertId.swift */,
+				CCF935CF269BF8E9009DEB57 /* MessageIconBadge.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -499,6 +508,7 @@
 				CC3E9F4E2668F75600BA47F2 /* FaultSearchResponse.swift in Sources */,
 				CC35D54D268C8F16004F290A /* UpdatePmTaskRequest.swift in Sources */,
 				CC4340C726775919009999B6 /* DocumentPicker.swift in Sources */,
+				CCF935D0269BF8E9009DEB57 /* MessageIconBadge.swift in Sources */,
 				CC3E9F5E2668F9A400BA47F2 /* ImageLoader.swift in Sources */,
 				CC4B68022667670800682E7A /* DashboardDetails.swift in Sources */,
 				CC35D54A268C8F16004F290A /* TaskScanView.swift in Sources */,
@@ -523,6 +533,7 @@
 				CC3E9F7A266A33CE00BA47F2 /* Geolocation.swift in Sources */,
 				CCAAC93D268D9459004D7F48 /* GetTasksOnEquipmentModel.swift in Sources */,
 				CC3E9F7E266DDB1E00BA47F2 /* EquipScanView.swift in Sources */,
+				CC645B6C2696D275003FE0F2 /* SignView.swift in Sources */,
 				CC4340CF2679C7D7009999B6 /* UploadPurchaseOrderView.swift in Sources */,
 				CC3E9F642668FA4B00BA47F2 /* RequestPauseResponse.swift in Sources */,
 				CC65B9C72695602200FEED2C /* ScanFaultEquipView.swift in Sources */,
@@ -539,6 +550,7 @@
 				CC1BF94026847A9900930195 /* ChatSheet.swift in Sources */,
 				CCB1CDEC2667565500E6F83A /* WorkspaceResponse.swift in Sources */,
 				CCB1CDE92667506500E6F83A /* CommonStrings.swift in Sources */,
+				CC645B6A2695BEE8003FE0F2 /* ResetPasswordView.swift in Sources */,
 				CCF6DEAC2673290200716D25 /* PencilKitRepresentable.swift in Sources */,
 				CC4340BD26770E6C009999B6 /* UploadQuotationView.swift in Sources */,
 				CC35D551268C9318004F290A /* ChecklistModel.swift in Sources */,
@@ -688,7 +700,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.3.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tahreem.ICMMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -716,7 +728,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.3.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tahreem.ICMMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";

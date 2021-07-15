@@ -213,7 +213,7 @@ struct UploadQuotationView: View {
             }
         }
         .navigationBarTitle(quotationTitle)
-        .navigationBarItems(trailing: Logout().environmentObject(settings))
+        .navigationBarItems(trailing: Logout(workspaceViewBool: true, viewFrom: "").environmentObject(settings))
     }
     
     private func uploadToServer(fileStream: String)  {
