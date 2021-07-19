@@ -18,6 +18,7 @@ struct LoginView: View {
     @EnvironmentObject var settings: UserSettings
     @State var showForgetAlert : Bool = false
     @State var resetEmail: String = ""
+    @State var deviceToken : String
     
     var body: some View {
         
@@ -43,6 +44,7 @@ struct LoginView: View {
                         .padding()
                     
                 }
+                
                 
                 .background(Color.white)
                 .cornerRadius(8)
@@ -116,7 +118,7 @@ struct LoginView: View {
         let params: [String: Any] = [
             "username": username,
             "password": password,
-            "deviceToken": UserDefaults.standard.string(forKey: "deviceToken")!
+            "deviceToken": deviceToken
         ]
         
         buttonClicked = true
@@ -154,6 +156,7 @@ struct LoginView: View {
                         UserDefaults.standard.set(loginResponse.token, forKey: "token")
                         UserDefaults.standard.set(loginResponse.role, forKey: "role")
                         UserDefaults.standard.set(loginResponse.username, forKey: "username")
+                        UserDefaults.standard.setValue(deviceToken, forKey: "deviceToken")
                         UserDefaults.standard.synchronize()
                         print(loginResponse)
                         self.settings.loggedIn = true
@@ -177,61 +180,57 @@ struct LoginView: View {
 
 struct LoginViewPre: PreviewProvider {
     static var previews: some View{
-        LoginView()
+        LoginView(deviceToken: "")
     }
 }
 
-struct MainScreen: View{
+ struct MainScreen: View{
     @EnvironmentObject var isFrom : IsFromNotificationClass
     @EnvironmentObject var settings: UserSettings
     var frId = UserDefaults.standard.string(forKey: "frId")
     var workspace = UserDefaults.standard.string(forKey: "workspace")
     var view = UserDefaults.standard.string(forKey: "view")
     @State var showEditFr = UserDefaults.standard.string(forKey: "showEditFr")
+    @State var deviceToken: String
     
     var body: some View{
         
-        if settings.loggedIn && !isFrom.isFromNotication {
-            WorkspaceView().environmentObject(settings)
-        }else if settings.loggedIn && isFrom.isFromNotication {
-            
-            if UserDefaults.standard.string(forKey: "frId") != nil {
-                NavigationView{
-                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!,QRValue: "" ,
-                                        viewFrom: "Active")
-                        .environmentObject(settings)
-                }
-            }else{
+        if settings.loggedIn {
+            if !isFrom.isFromNotication {
                 WorkspaceView().environmentObject(settings)
-            }
-            
-        } else {
-            if UserDefaults.standard.bool(forKey: "loggedIn") == true && !isFrom.isFromNotication {
-                WorkspaceView().environmentObject(settings)
-            }else if UserDefaults.standard.bool(forKey: "loggedIn") == false && !isFrom.isFromNotication {
-                LoginView().environmentObject(settings)
-            }else if UserDefaults.standard.bool(forKey: "loggedIn") == true
-                        && isFrom.isFromNotication && frId != nil
-//                        && view == CommonStrings().editFaultReportActivity
-            {
-                NavigationView{
-                    EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!,QRValue: "" ,
-                                        viewFrom: "Active")
-                        .environmentObject(settings)
+            }else if isFrom.isFromNotication {
+                
+                if UserDefaults.standard.string(forKey: "frId") != nil {
+                    NavigationView{
+                        EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!,QRValue: "" ,
+                                            viewFrom: "Active")
+                            .environmentObject(settings)
+                    }
+                }else{
+                    WorkspaceView().environmentObject(settings)
                 }
             }
-//            else if UserDefaults.standard.bool(forKey: "loggedIn") == true
-//                        && isFrom.isFromNotication && frId != nil
-//                        && view == CommonStrings().pmtaskActivity {
-//                NavigationView{
-//                    PmTaskView(taskId: Int(frId!)!, viewFrom: CommonStrings().taskScanView)
-//                        .environmentObject(settings)
-//                }
-//            }
-            
-            else if UserDefaults.standard.bool(forKey: "loggedIn") == false && isFrom.isFromNotication && frId == nil{
-                LoginView().environmentObject(settings)
+        } else if !settings.loggedIn {
+            if UserDefaults.standard.bool(forKey: "loggedIn") == true {
+                
+                if  !isFrom.isFromNotication {
+                    WorkspaceView().environmentObject(settings)
+                }else if  isFrom.isFromNotication && frId != nil {
+                    NavigationView{
+                        EditFaultReportView(frId: UserDefaults.standard.string(forKey: "frId")!,QRValue: "" ,
+                                            viewFrom: "Active")
+                            .environmentObject(settings)
+                    }
+                }
+            }
+            else if UserDefaults.standard.bool(forKey: "loggedIn") == false {
+                if isFrom.isFromNotication {
+                    LoginView(deviceToken: deviceToken).environmentObject(settings)
+                }
+                else if !isFrom.isFromNotication {
+                    LoginView(deviceToken: deviceToken).environmentObject(settings)
+                }
             }
         }
     }
-}
+ }

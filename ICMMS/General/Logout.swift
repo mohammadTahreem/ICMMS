@@ -17,59 +17,61 @@ struct Logout: View {
     @State var logoutLoading: Bool = false
     @State var workspaceViewBool: Bool
     @EnvironmentObject var order: MessageIconBadge
-    @State private var badgeCount: Int = 1
+    @State private var badgeCount: String = ""
     private var badgePosition: CGFloat = 2
     @State var viewSource: String
     
+    
     var body: some View{
         if viewSource != CommonStrings().messagesView{
-        HStack{
-            
-            if workspaceViewBool {
-            ZStack(alignment: .topTrailing){
+            HStack{
                 
-                Image("messages")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 35, height: 35)
-                    .onTapGesture {
-                        messageSheetBool = true
-                    }.sheet(isPresented: $messageSheetBool, content: {
-                        MessagesSheet(messageSheetBool: $messageSheetBool)
-                            .environmentObject(settings)
-                            .environmentObject(order)
-                    })
-                if self.order.items != 0 {
-                    ZStack {
-                        Circle()
-                            .foregroundColor(.red)
-
-                        Text("\(self.order.items)")
-                            .foregroundColor(.white)
-                            .font(Font.system(size: 12))
+                if workspaceViewBool {
+                    ZStack(alignment: .topTrailing){
+                        
+                        Image("messages")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 35, height: 35)
+                            .onTapGesture {
+                                messageSheetBool = true
+                            }.sheet(isPresented: $messageSheetBool, content: {
+                                MessagesSheet(messageSheetBool: $messageSheetBool)
+                                    .environmentObject(settings)
+                                    .environmentObject(order)
+                            })
+                        if self.order.items != 0 {
+                        ZStack {
+                            Circle()
+                                .foregroundColor(.red)
+                            
+                            Text("\(self.order.items)")
+                                    .foregroundColor(.white)
+                                    .font(Font.system(size: 8))
+                            
+                        }
+                        .frame(width: 15, height: 15)
+                        }
                     }
-                    .frame(width: 15, height: 15)
                 }
+                if logoutLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .padding()
+                }else{
+                    Button(
+                        action: {logout()},
+                        label: {Image("logout").resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 45, height: 45)
+                        }
+                    ).alert(isPresented: $errorPresented, content: {
+                        Alert(title: Text("Error"), message: Text("There was an error:"), dismissButton: .cancel())
+                    })
+                }
+
             }
-            }
-            if logoutLoading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .padding()
-            }else{
-                Button(
-                    action: {logout()},
-                    label: {Image("logout").resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 45, height: 45)
-                    }
-                ).alert(isPresented: $errorPresented, content: {
-                    Alert(title: Text("Error"), message: Text("There was an error:"), dismissButton: .cancel())
-                })
-            }
-            
-        }
-        }else{
+        } else {
             EmptyView()
         }
     }
@@ -107,8 +109,6 @@ struct Logout: View {
                     _ = try? JSONSerialization.jsonObject(with: data!, options: [])
                     let domain = Bundle.main.bundleIdentifier!
                     UserDefaults.standard.removePersistentDomain(forName: domain)
-                    UserDefaults.standard.synchronize()
-                    UserDefaults.standard.setValue(deviceToken, forKey: "deviceToken")
                     UserDefaults.standard.synchronize()
                     self.settings.loggedIn = false
                 }
