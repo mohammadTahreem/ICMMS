@@ -21,8 +21,7 @@ struct ICMMSApp: App {
                 .environmentObject(MessageIconBadge())
                 .environmentObject(UserSettings())
                 .environmentObject(delegate.isFrom)
-            
-            
+
         }
     }
 }

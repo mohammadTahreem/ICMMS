@@ -63,7 +63,7 @@ struct LoginView: View {
                 .foregroundColor(.black)
                 .padding(.horizontal, 20)
                 .sheet(isPresented: $showForgetAlert, content: {
-                    ResetPasswordView()
+                    ResetPasswordView(showForgetAlert: $showForgetAlert)
                 })
                 
                 
@@ -94,7 +94,7 @@ struct LoginView: View {
                 }
                 
                 Button {
-                    //                    showForgetAlert = true
+                    showForgetAlert = true
                 } label: {
                     Text("Forget Password?")
                 }

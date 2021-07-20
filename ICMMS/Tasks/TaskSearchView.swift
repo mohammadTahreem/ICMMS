@@ -141,7 +141,7 @@ struct TaskSearchCardView: View {
                 if(taskSearchResponse.status != nil){
                     Text(taskSearchResponse.status!)
                         .font(.caption)
-                        .foregroundColor(/*@START_MENU_TOKEN@*/Color(red: 0.024, green: 0.329, blue: 0.645)/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(Color("Indeco_blue"))
                 }
             }
             Divider()

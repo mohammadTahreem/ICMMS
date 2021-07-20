@@ -20,15 +20,15 @@ struct FaultSearchCardView: View {
                 }
                 Spacer()
                 if(searchFaultResponse.status != nil){
-                    Text((searchFaultResponse.status!))
-                        .foregroundColor(/*@START_MENU_TOKEN@*/Color(red: 0.024, green: 0.329, blue: 0.645)/*@END_MENU_TOKEN@*/)
+                    Text(searchFaultResponse.status!)
+                        .foregroundColor(Color("Indeco_blue"))
                         .font(.caption)
                 }
             }
             Divider()
             HStack{
                 if(searchFaultResponse.frId != nil){
-                    Text((searchFaultResponse.frId!))
+                    Text(searchFaultResponse.frId!)
                         .font(.headline)
                         .bold()
                 }
@@ -36,12 +36,12 @@ struct FaultSearchCardView: View {
             Divider()
             HStack{
                 if(searchFaultResponse.buildingName != nil){
-                    Text((searchFaultResponse.buildingName!))
+                    Text(searchFaultResponse.buildingName!)
                         .font(.caption)
                 }
                 Spacer()
                 if(searchFaultResponse.locationName != nil){
-                    Text((searchFaultResponse.locationName!))
+                    Text(searchFaultResponse.locationName!)
                         .font(.caption)
                 }
             }
